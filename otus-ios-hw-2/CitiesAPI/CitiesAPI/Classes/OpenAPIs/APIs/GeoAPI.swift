@@ -32,19 +32,11 @@ open class GeoAPI {
      - parameter offset: (query) The zero-ary offset index into the results (optional, default to 0)
      - parameter sort: (query) How to sort places.  Format: ±SORT_FIELD,±SORT_FIELD  where SORT_FIELD &#x3D; countryCode | elevation | name | population  (optional)
      - parameter includeDeleted: (query) Whether to include any divisions marked deleted: ALL | SINCE_YESTERDAY | SINCE_LAST_WEEK | NONE (optional, default to "NONE")
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: PopulatedPlacesResponse
      */
-    @discardableResult
-    open class func findAdminDivisionsUsingGET(location: String? = nil, radius: Int? = nil, distanceUnit: String? = nil, countryIds: String? = nil, excludedCountryIds: String? = nil, minPopulation: Int? = nil, maxPopulation: Int? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, timeZoneIds: String? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, includeDeleted: String? = nil, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: PopulatedPlacesResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return findAdminDivisionsUsingGETWithRequestBuilder(location: location, radius: radius, distanceUnit: distanceUnit, countryIds: countryIds, excludedCountryIds: excludedCountryIds, minPopulation: minPopulation, maxPopulation: maxPopulation, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, timeZoneIds: timeZoneIds, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort, includeDeleted: includeDeleted).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func findAdminDivisionsUsingGET(location: String? = nil, radius: Int? = nil, distanceUnit: String? = nil, countryIds: String? = nil, excludedCountryIds: String? = nil, minPopulation: Int? = nil, maxPopulation: Int? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, timeZoneIds: String? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, includeDeleted: String? = nil) async throws -> PopulatedPlacesResponse {
+        return try await findAdminDivisionsUsingGETWithRequestBuilder(location: location, radius: radius, distanceUnit: distanceUnit, countryIds: countryIds, excludedCountryIds: excludedCountryIds, minPopulation: minPopulation, maxPopulation: maxPopulation, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, timeZoneIds: timeZoneIds, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort, includeDeleted: includeDeleted).execute().body
     }
 
     /**
@@ -131,19 +123,11 @@ open class GeoAPI {
      - parameter offset: (query) The zero-ary offset index into the results (optional, default to 0)
      - parameter sort: (query) How to sort places.  Format: ±SORT_FIELD,±SORT_FIELD  where SORT_FIELD &#x3D; countryCode | elevation | name | population  (optional)
      - parameter includeDeleted: (query) Whether to include any divisions marked deleted: ALL | SINCE_YESTERDAY | SINCE_LAST_WEEK | NONE (optional, default to "NONE")
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: PopulatedPlacesResponse
      */
-    @discardableResult
-    open class func findCitiesNearAdminDivisionUsingGET(divisionId: String, radius: Int? = nil, distanceUnit: String? = nil, countryIds: String? = nil, excludedCountryIds: String? = nil, minPopulation: Int? = nil, maxPopulation: Int? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, timeZoneIds: String? = nil, types: String? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, includeDeleted: String? = nil, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: PopulatedPlacesResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return findCitiesNearAdminDivisionUsingGETWithRequestBuilder(divisionId: divisionId, radius: radius, distanceUnit: distanceUnit, countryIds: countryIds, excludedCountryIds: excludedCountryIds, minPopulation: minPopulation, maxPopulation: maxPopulation, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, timeZoneIds: timeZoneIds, types: types, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort, includeDeleted: includeDeleted).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func findCitiesNearAdminDivisionUsingGET(divisionId: String, radius: Int? = nil, distanceUnit: String? = nil, countryIds: String? = nil, excludedCountryIds: String? = nil, minPopulation: Int? = nil, maxPopulation: Int? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, timeZoneIds: String? = nil, types: String? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, includeDeleted: String? = nil) async throws -> PopulatedPlacesResponse {
+        return try await findCitiesNearAdminDivisionUsingGETWithRequestBuilder(divisionId: divisionId, radius: radius, distanceUnit: distanceUnit, countryIds: countryIds, excludedCountryIds: excludedCountryIds, minPopulation: minPopulation, maxPopulation: maxPopulation, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, timeZoneIds: timeZoneIds, types: types, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort, includeDeleted: includeDeleted).execute().body
     }
 
     /**
@@ -234,19 +218,11 @@ open class GeoAPI {
      - parameter offset: (query) The zero-ary offset index into the results (optional, default to 0)
      - parameter sort: (query) How to sort places.  Format: ±SORT_FIELD,±SORT_FIELD  where SORT_FIELD &#x3D; countryCode | elevation | name | population  (optional)
      - parameter includeDeleted: (query) Whether to include any divisions marked deleted: ALL | SINCE_YESTERDAY | SINCE_LAST_WEEK | NONE (optional, default to "NONE")
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: PopulatedPlacesResponse
      */
-    @discardableResult
-    open class func findCitiesNearCityUsingGET(cityId: String, radius: Int? = nil, distanceUnit: String? = nil, countryIds: String? = nil, excludedCountryIds: String? = nil, minPopulation: Int? = nil, maxPopulation: Int? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, timeZoneIds: String? = nil, types: String? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, includeDeleted: String? = nil, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: PopulatedPlacesResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return findCitiesNearCityUsingGETWithRequestBuilder(cityId: cityId, radius: radius, distanceUnit: distanceUnit, countryIds: countryIds, excludedCountryIds: excludedCountryIds, minPopulation: minPopulation, maxPopulation: maxPopulation, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, timeZoneIds: timeZoneIds, types: types, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort, includeDeleted: includeDeleted).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func findCitiesNearCityUsingGET(cityId: String, radius: Int? = nil, distanceUnit: String? = nil, countryIds: String? = nil, excludedCountryIds: String? = nil, minPopulation: Int? = nil, maxPopulation: Int? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, timeZoneIds: String? = nil, types: String? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, includeDeleted: String? = nil) async throws -> PopulatedPlacesResponse {
+        return try await findCitiesNearCityUsingGETWithRequestBuilder(cityId: cityId, radius: radius, distanceUnit: distanceUnit, countryIds: countryIds, excludedCountryIds: excludedCountryIds, minPopulation: minPopulation, maxPopulation: maxPopulation, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, timeZoneIds: timeZoneIds, types: types, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort, includeDeleted: includeDeleted).execute().body
     }
 
     /**
@@ -337,19 +313,11 @@ open class GeoAPI {
      - parameter offset: (query) The zero-ary offset index into the results (optional, default to 0)
      - parameter sort: (query) How to sort places.  Format: ±SORT_FIELD,±SORT_FIELD  where SORT_FIELD &#x3D; countryCode | elevation | name | population  (optional)
      - parameter includeDeleted: (query) Whether to include any divisions marked deleted: ALL | SINCE_YESTERDAY | SINCE_LAST_WEEK | NONE (optional, default to "NONE")
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: PopulatedPlacesResponse
      */
-    @discardableResult
-    open class func findCitiesNearLocationUsingGET(locationId: String, radius: Int? = nil, distanceUnit: String? = nil, countryIds: String? = nil, excludedCountryIds: String? = nil, minPopulation: Int? = nil, maxPopulation: Int? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, timeZoneIds: String? = nil, types: String? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, includeDeleted: String? = nil, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: PopulatedPlacesResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return findCitiesNearLocationUsingGETWithRequestBuilder(locationId: locationId, radius: radius, distanceUnit: distanceUnit, countryIds: countryIds, excludedCountryIds: excludedCountryIds, minPopulation: minPopulation, maxPopulation: maxPopulation, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, timeZoneIds: timeZoneIds, types: types, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort, includeDeleted: includeDeleted).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func findCitiesNearLocationUsingGET(locationId: String, radius: Int? = nil, distanceUnit: String? = nil, countryIds: String? = nil, excludedCountryIds: String? = nil, minPopulation: Int? = nil, maxPopulation: Int? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, timeZoneIds: String? = nil, types: String? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, includeDeleted: String? = nil) async throws -> PopulatedPlacesResponse {
+        return try await findCitiesNearLocationUsingGETWithRequestBuilder(locationId: locationId, radius: radius, distanceUnit: distanceUnit, countryIds: countryIds, excludedCountryIds: excludedCountryIds, minPopulation: minPopulation, maxPopulation: maxPopulation, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, timeZoneIds: timeZoneIds, types: types, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort, includeDeleted: includeDeleted).execute().body
     }
 
     /**
@@ -440,19 +408,11 @@ open class GeoAPI {
      - parameter offset: (query) The zero-ary offset index into the results (optional, default to 0)
      - parameter sort: (query) How to sort places.  Format: ±SORT_FIELD,±SORT_FIELD  where SORT_FIELD &#x3D; countryCode | elevation | name | population  (optional)
      - parameter includeDeleted: (query) Whether to include any divisions marked deleted: ALL | SINCE_YESTERDAY | SINCE_LAST_WEEK | NONE (optional, default to "NONE")
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: PopulatedPlacesResponse
      */
-    @discardableResult
-    open class func findCitiesUsingGET(location: String? = nil, radius: Int? = nil, distanceUnit: String? = nil, countryIds: String? = nil, excludedCountryIds: String? = nil, minPopulation: Int? = nil, maxPopulation: Int? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, timeZoneIds: String? = nil, types: String? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, includeDeleted: String? = nil, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: PopulatedPlacesResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return findCitiesUsingGETWithRequestBuilder(location: location, radius: radius, distanceUnit: distanceUnit, countryIds: countryIds, excludedCountryIds: excludedCountryIds, minPopulation: minPopulation, maxPopulation: maxPopulation, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, timeZoneIds: timeZoneIds, types: types, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort, includeDeleted: includeDeleted).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func findCitiesUsingGET(location: String? = nil, radius: Int? = nil, distanceUnit: String? = nil, countryIds: String? = nil, excludedCountryIds: String? = nil, minPopulation: Int? = nil, maxPopulation: Int? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, timeZoneIds: String? = nil, types: String? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, includeDeleted: String? = nil) async throws -> PopulatedPlacesResponse {
+        return try await findCitiesUsingGETWithRequestBuilder(location: location, radius: radius, distanceUnit: distanceUnit, countryIds: countryIds, excludedCountryIds: excludedCountryIds, minPopulation: minPopulation, maxPopulation: maxPopulation, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, timeZoneIds: timeZoneIds, types: types, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort, includeDeleted: includeDeleted).execute().body
     }
 
     /**
@@ -537,19 +497,11 @@ open class GeoAPI {
      - parameter offset: (query) The zero-ary offset index into the results (optional, default to 0)
      - parameter sort: (query) How to sort place results.  &#39;Format: ±SORT_FIELD,±SORT_FIELD&#39;  where SORT_FIELD &#x3D; elevation | name | population  (optional)
      - parameter includeDeleted: (query) Whether to include any divisions marked deleted: ALL | SINCE_YESTERDAY | SINCE_LAST_WEEK | NONE (optional, default to "NONE")
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: PopulatedPlacesResponse
      */
-    @discardableResult
-    open class func findCountryPlacesUsingGET(countryId: String, minPopulation: Int? = nil, maxPopulation: Int? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, timeZoneIds: String? = nil, types: String? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, includeDeleted: String? = nil, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: PopulatedPlacesResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return findCountryPlacesUsingGETWithRequestBuilder(countryId: countryId, minPopulation: minPopulation, maxPopulation: maxPopulation, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, timeZoneIds: timeZoneIds, types: types, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort, includeDeleted: includeDeleted).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func findCountryPlacesUsingGET(countryId: String, minPopulation: Int? = nil, maxPopulation: Int? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, timeZoneIds: String? = nil, types: String? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, includeDeleted: String? = nil) async throws -> PopulatedPlacesResponse {
+        return try await findCountryPlacesUsingGETWithRequestBuilder(countryId: countryId, minPopulation: minPopulation, maxPopulation: maxPopulation, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, timeZoneIds: timeZoneIds, types: types, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort, includeDeleted: includeDeleted).execute().body
     }
 
     /**
@@ -631,19 +583,11 @@ open class GeoAPI {
      - parameter offset: (query) The zero-ary offset index into the results (optional, default to 0)
      - parameter sort: (query) How to sort places.  Format: ±SORT_FIELD,±SORT_FIELD  where SORT_FIELD &#x3D; countryCode | elevation | name | population  (optional)
      - parameter includeDeleted: (query) Whether to include any divisions marked deleted: ALL | SINCE_YESTERDAY | SINCE_LAST_WEEK | NONE (optional, default to "NONE")
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: PopulatedPlacesResponse
      */
-    @discardableResult
-    open class func findDivisionsNearAdminDivisionUsingGET(divisionId: String, radius: Int? = nil, distanceUnit: String? = nil, countryIds: String? = nil, excludedCountryIds: String? = nil, minPopulation: Int? = nil, maxPopulation: Int? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, timeZoneIds: String? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, includeDeleted: String? = nil, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: PopulatedPlacesResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return findDivisionsNearAdminDivisionUsingGETWithRequestBuilder(divisionId: divisionId, radius: radius, distanceUnit: distanceUnit, countryIds: countryIds, excludedCountryIds: excludedCountryIds, minPopulation: minPopulation, maxPopulation: maxPopulation, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, timeZoneIds: timeZoneIds, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort, includeDeleted: includeDeleted).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func findDivisionsNearAdminDivisionUsingGET(divisionId: String, radius: Int? = nil, distanceUnit: String? = nil, countryIds: String? = nil, excludedCountryIds: String? = nil, minPopulation: Int? = nil, maxPopulation: Int? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, timeZoneIds: String? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, includeDeleted: String? = nil) async throws -> PopulatedPlacesResponse {
+        return try await findDivisionsNearAdminDivisionUsingGETWithRequestBuilder(divisionId: divisionId, radius: radius, distanceUnit: distanceUnit, countryIds: countryIds, excludedCountryIds: excludedCountryIds, minPopulation: minPopulation, maxPopulation: maxPopulation, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, timeZoneIds: timeZoneIds, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort, includeDeleted: includeDeleted).execute().body
     }
 
     /**
@@ -731,19 +675,11 @@ open class GeoAPI {
      - parameter offset: (query) The zero-ary offset index into the results (optional, default to 0)
      - parameter sort: (query) How to sort places.  Format: ±SORT_FIELD,±SORT_FIELD  where SORT_FIELD &#x3D; countryCode | elevation | name | population  (optional)
      - parameter includeDeleted: (query) Whether to include any divisions marked deleted: ALL | SINCE_YESTERDAY | SINCE_LAST_WEEK | NONE (optional, default to "NONE")
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: PopulatedPlacesResponse
      */
-    @discardableResult
-    open class func findDivisionsNearCityUsingGET(cityId: String, radius: Int? = nil, distanceUnit: String? = nil, countryIds: String? = nil, excludedCountryIds: String? = nil, minPopulation: Int? = nil, maxPopulation: Int? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, timeZoneIds: String? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, includeDeleted: String? = nil, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: PopulatedPlacesResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return findDivisionsNearCityUsingGETWithRequestBuilder(cityId: cityId, radius: radius, distanceUnit: distanceUnit, countryIds: countryIds, excludedCountryIds: excludedCountryIds, minPopulation: minPopulation, maxPopulation: maxPopulation, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, timeZoneIds: timeZoneIds, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort, includeDeleted: includeDeleted).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func findDivisionsNearCityUsingGET(cityId: String, radius: Int? = nil, distanceUnit: String? = nil, countryIds: String? = nil, excludedCountryIds: String? = nil, minPopulation: Int? = nil, maxPopulation: Int? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, timeZoneIds: String? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, includeDeleted: String? = nil) async throws -> PopulatedPlacesResponse {
+        return try await findDivisionsNearCityUsingGETWithRequestBuilder(cityId: cityId, radius: radius, distanceUnit: distanceUnit, countryIds: countryIds, excludedCountryIds: excludedCountryIds, minPopulation: minPopulation, maxPopulation: maxPopulation, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, timeZoneIds: timeZoneIds, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort, includeDeleted: includeDeleted).execute().body
     }
 
     /**
@@ -831,19 +767,11 @@ open class GeoAPI {
      - parameter offset: (query) The zero-ary offset index into the results (optional, default to 0)
      - parameter sort: (query) How to sort places.  Format: ±SORT_FIELD,±SORT_FIELD  where SORT_FIELD &#x3D; countryCode | elevation | name | population  (optional)
      - parameter includeDeleted: (query) Whether to include any divisions marked deleted: ALL | SINCE_YESTERDAY | SINCE_LAST_WEEK | NONE (optional, default to "NONE")
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: PopulatedPlacesResponse
      */
-    @discardableResult
-    open class func findDivisionsNearLocationUsingGET(locationId: String, radius: Int? = nil, distanceUnit: String? = nil, countryIds: String? = nil, excludedCountryIds: String? = nil, minPopulation: Int? = nil, maxPopulation: Int? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, timeZoneIds: String? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, includeDeleted: String? = nil, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: PopulatedPlacesResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return findDivisionsNearLocationUsingGETWithRequestBuilder(locationId: locationId, radius: radius, distanceUnit: distanceUnit, countryIds: countryIds, excludedCountryIds: excludedCountryIds, minPopulation: minPopulation, maxPopulation: maxPopulation, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, timeZoneIds: timeZoneIds, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort, includeDeleted: includeDeleted).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func findDivisionsNearLocationUsingGET(locationId: String, radius: Int? = nil, distanceUnit: String? = nil, countryIds: String? = nil, excludedCountryIds: String? = nil, minPopulation: Int? = nil, maxPopulation: Int? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, timeZoneIds: String? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, includeDeleted: String? = nil) async throws -> PopulatedPlacesResponse {
+        return try await findDivisionsNearLocationUsingGETWithRequestBuilder(locationId: locationId, radius: radius, distanceUnit: distanceUnit, countryIds: countryIds, excludedCountryIds: excludedCountryIds, minPopulation: minPopulation, maxPopulation: maxPopulation, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, timeZoneIds: timeZoneIds, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort, includeDeleted: includeDeleted).execute().body
     }
 
     /**
@@ -932,19 +860,11 @@ open class GeoAPI {
      - parameter offset: (query) The zero-ary offset index into the results (optional, default to 0)
      - parameter sort: (query) How to sort places.  Format: ±SORT_FIELD,±SORT_FIELD  where SORT_FIELD &#x3D; countryCode | elevation | name | population  (optional)
      - parameter includeDeleted: (query) Whether to include any divisions marked deleted: ALL | SINCE_YESTERDAY | SINCE_LAST_WEEK | NONE (optional, default to "NONE")
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: PopulatedPlacesResponse
      */
-    @discardableResult
-    open class func findPlacesNearAdminDivisionUsingGET(divisionId: String, radius: Int? = nil, distanceUnit: String? = nil, countryIds: String? = nil, excludedCountryIds: String? = nil, minPopulation: Int? = nil, maxPopulation: Int? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, timeZoneIds: String? = nil, types: String? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, includeDeleted: String? = nil, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: PopulatedPlacesResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return findPlacesNearAdminDivisionUsingGETWithRequestBuilder(divisionId: divisionId, radius: radius, distanceUnit: distanceUnit, countryIds: countryIds, excludedCountryIds: excludedCountryIds, minPopulation: minPopulation, maxPopulation: maxPopulation, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, timeZoneIds: timeZoneIds, types: types, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort, includeDeleted: includeDeleted).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func findPlacesNearAdminDivisionUsingGET(divisionId: String, radius: Int? = nil, distanceUnit: String? = nil, countryIds: String? = nil, excludedCountryIds: String? = nil, minPopulation: Int? = nil, maxPopulation: Int? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, timeZoneIds: String? = nil, types: String? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, includeDeleted: String? = nil) async throws -> PopulatedPlacesResponse {
+        return try await findPlacesNearAdminDivisionUsingGETWithRequestBuilder(divisionId: divisionId, radius: radius, distanceUnit: distanceUnit, countryIds: countryIds, excludedCountryIds: excludedCountryIds, minPopulation: minPopulation, maxPopulation: maxPopulation, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, timeZoneIds: timeZoneIds, types: types, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort, includeDeleted: includeDeleted).execute().body
     }
 
     /**
@@ -1035,19 +955,11 @@ open class GeoAPI {
      - parameter offset: (query) The zero-ary offset index into the results (optional, default to 0)
      - parameter sort: (query) How to sort places.  Format: ±SORT_FIELD,±SORT_FIELD  where SORT_FIELD &#x3D; countryCode | elevation | name | population  (optional)
      - parameter includeDeleted: (query) Whether to include any divisions marked deleted: ALL | SINCE_YESTERDAY | SINCE_LAST_WEEK | NONE (optional, default to "NONE")
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: PopulatedPlacesResponse
      */
-    @discardableResult
-    open class func findPlacesNearCityUsingGET(cityId: String, radius: Int? = nil, distanceUnit: String? = nil, countryIds: String? = nil, excludedCountryIds: String? = nil, minPopulation: Int? = nil, maxPopulation: Int? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, timeZoneIds: String? = nil, types: String? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, includeDeleted: String? = nil, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: PopulatedPlacesResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return findPlacesNearCityUsingGETWithRequestBuilder(cityId: cityId, radius: radius, distanceUnit: distanceUnit, countryIds: countryIds, excludedCountryIds: excludedCountryIds, minPopulation: minPopulation, maxPopulation: maxPopulation, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, timeZoneIds: timeZoneIds, types: types, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort, includeDeleted: includeDeleted).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func findPlacesNearCityUsingGET(cityId: String, radius: Int? = nil, distanceUnit: String? = nil, countryIds: String? = nil, excludedCountryIds: String? = nil, minPopulation: Int? = nil, maxPopulation: Int? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, timeZoneIds: String? = nil, types: String? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, includeDeleted: String? = nil) async throws -> PopulatedPlacesResponse {
+        return try await findPlacesNearCityUsingGETWithRequestBuilder(cityId: cityId, radius: radius, distanceUnit: distanceUnit, countryIds: countryIds, excludedCountryIds: excludedCountryIds, minPopulation: minPopulation, maxPopulation: maxPopulation, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, timeZoneIds: timeZoneIds, types: types, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort, includeDeleted: includeDeleted).execute().body
     }
 
     /**
@@ -1138,19 +1050,11 @@ open class GeoAPI {
      - parameter offset: (query) The zero-ary offset index into the results (optional, default to 0)
      - parameter sort: (query) How to sort places.  Format: ±SORT_FIELD,±SORT_FIELD  where SORT_FIELD &#x3D; countryCode | elevation | name | population  (optional)
      - parameter includeDeleted: (query) Whether to include any divisions marked deleted: ALL | SINCE_YESTERDAY | SINCE_LAST_WEEK | NONE (optional, default to "NONE")
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: PopulatedPlacesResponse
      */
-    @discardableResult
-    open class func findPlacesNearLocationUsingGET(locationId: String, radius: Int? = nil, distanceUnit: String? = nil, countryIds: String? = nil, excludedCountryIds: String? = nil, minPopulation: Int? = nil, maxPopulation: Int? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, timeZoneIds: String? = nil, types: String? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, includeDeleted: String? = nil, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: PopulatedPlacesResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return findPlacesNearLocationUsingGETWithRequestBuilder(locationId: locationId, radius: radius, distanceUnit: distanceUnit, countryIds: countryIds, excludedCountryIds: excludedCountryIds, minPopulation: minPopulation, maxPopulation: maxPopulation, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, timeZoneIds: timeZoneIds, types: types, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort, includeDeleted: includeDeleted).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func findPlacesNearLocationUsingGET(locationId: String, radius: Int? = nil, distanceUnit: String? = nil, countryIds: String? = nil, excludedCountryIds: String? = nil, minPopulation: Int? = nil, maxPopulation: Int? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, timeZoneIds: String? = nil, types: String? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, includeDeleted: String? = nil) async throws -> PopulatedPlacesResponse {
+        return try await findPlacesNearLocationUsingGETWithRequestBuilder(locationId: locationId, radius: radius, distanceUnit: distanceUnit, countryIds: countryIds, excludedCountryIds: excludedCountryIds, minPopulation: minPopulation, maxPopulation: maxPopulation, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, timeZoneIds: timeZoneIds, types: types, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort, includeDeleted: includeDeleted).execute().body
     }
 
     /**
@@ -1241,19 +1145,11 @@ open class GeoAPI {
      - parameter offset: (query) The zero-ary offset index into the results (optional, default to 0)
      - parameter sort: (query) How to sort places.  Format: ±SORT_FIELD,±SORT_FIELD  where SORT_FIELD &#x3D; countryCode | elevation | name | population  (optional)
      - parameter includeDeleted: (query) Whether to include any divisions marked deleted: ALL | SINCE_YESTERDAY | SINCE_LAST_WEEK | NONE (optional, default to "NONE")
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: PopulatedPlacesResponse
      */
-    @discardableResult
-    open class func findPlacesNearPlaceUsingGET(placeId: String, radius: Int? = nil, distanceUnit: String? = nil, countryIds: String? = nil, excludedCountryIds: String? = nil, minPopulation: Int? = nil, maxPopulation: Int? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, timeZoneIds: String? = nil, types: String? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, includeDeleted: String? = nil, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: PopulatedPlacesResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return findPlacesNearPlaceUsingGETWithRequestBuilder(placeId: placeId, radius: radius, distanceUnit: distanceUnit, countryIds: countryIds, excludedCountryIds: excludedCountryIds, minPopulation: minPopulation, maxPopulation: maxPopulation, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, timeZoneIds: timeZoneIds, types: types, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort, includeDeleted: includeDeleted).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func findPlacesNearPlaceUsingGET(placeId: String, radius: Int? = nil, distanceUnit: String? = nil, countryIds: String? = nil, excludedCountryIds: String? = nil, minPopulation: Int? = nil, maxPopulation: Int? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, timeZoneIds: String? = nil, types: String? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, includeDeleted: String? = nil) async throws -> PopulatedPlacesResponse {
+        return try await findPlacesNearPlaceUsingGETWithRequestBuilder(placeId: placeId, radius: radius, distanceUnit: distanceUnit, countryIds: countryIds, excludedCountryIds: excludedCountryIds, minPopulation: minPopulation, maxPopulation: maxPopulation, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, timeZoneIds: timeZoneIds, types: types, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort, includeDeleted: includeDeleted).execute().body
     }
 
     /**
@@ -1344,19 +1240,11 @@ open class GeoAPI {
      - parameter offset: (query) The zero-ary offset index into the results (optional, default to 0)
      - parameter sort: (query) How to sort places.  Format: ±SORT_FIELD,±SORT_FIELD  where SORT_FIELD &#x3D; countryCode | elevation | name | population  (optional)
      - parameter includeDeleted: (query) Whether to include any divisions marked deleted: ALL | SINCE_YESTERDAY | SINCE_LAST_WEEK | NONE (optional, default to "NONE")
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: PopulatedPlacesResponse
      */
-    @discardableResult
-    open class func findPlacesUsingGET(location: String? = nil, radius: Int? = nil, distanceUnit: String? = nil, countryIds: String? = nil, excludedCountryIds: String? = nil, minPopulation: Int? = nil, maxPopulation: Int? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, timeZoneIds: String? = nil, types: String? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, includeDeleted: String? = nil, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: PopulatedPlacesResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return findPlacesUsingGETWithRequestBuilder(location: location, radius: radius, distanceUnit: distanceUnit, countryIds: countryIds, excludedCountryIds: excludedCountryIds, minPopulation: minPopulation, maxPopulation: maxPopulation, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, timeZoneIds: timeZoneIds, types: types, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort, includeDeleted: includeDeleted).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func findPlacesUsingGET(location: String? = nil, radius: Int? = nil, distanceUnit: String? = nil, countryIds: String? = nil, excludedCountryIds: String? = nil, minPopulation: Int? = nil, maxPopulation: Int? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, timeZoneIds: String? = nil, types: String? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, includeDeleted: String? = nil) async throws -> PopulatedPlacesResponse {
+        return try await findPlacesUsingGETWithRequestBuilder(location: location, radius: radius, distanceUnit: distanceUnit, countryIds: countryIds, excludedCountryIds: excludedCountryIds, minPopulation: minPopulation, maxPopulation: maxPopulation, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, timeZoneIds: timeZoneIds, types: types, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort, includeDeleted: includeDeleted).execute().body
     }
 
     /**
@@ -1442,19 +1330,11 @@ open class GeoAPI {
      - parameter offset: (query) The zero-ary offset index into the results (optional, default to 0)
      - parameter sort: (query) How to sort place results.  &#39;Format: ±SORT_FIELD,±SORT_FIELD&#39;  where SORT_FIELD &#x3D; elevation | name | population  (optional)
      - parameter includeDeleted: (query) Whether to include any divisions marked deleted: ALL | SINCE_YESTERDAY | SINCE_LAST_WEEK | NONE (optional, default to "NONE")
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: PopulatedPlacesResponse
      */
-    @discardableResult
-    open class func findRegionCitiesUsingGET(countryId: String, regionCode: String, minPopulation: Int? = nil, maxPopulation: Int? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, timeZoneIds: String? = nil, types: String? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, includeDeleted: String? = nil, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: PopulatedPlacesResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return findRegionCitiesUsingGETWithRequestBuilder(countryId: countryId, regionCode: regionCode, minPopulation: minPopulation, maxPopulation: maxPopulation, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, timeZoneIds: timeZoneIds, types: types, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort, includeDeleted: includeDeleted).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func findRegionCitiesUsingGET(countryId: String, regionCode: String, minPopulation: Int? = nil, maxPopulation: Int? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, timeZoneIds: String? = nil, types: String? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, includeDeleted: String? = nil) async throws -> PopulatedPlacesResponse {
+        return try await findRegionCitiesUsingGETWithRequestBuilder(countryId: countryId, regionCode: regionCode, minPopulation: minPopulation, maxPopulation: maxPopulation, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, timeZoneIds: timeZoneIds, types: types, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort, includeDeleted: includeDeleted).execute().body
     }
 
     /**
@@ -1537,19 +1417,11 @@ open class GeoAPI {
      - parameter offset: (query) The zero-ary offset index into the results (optional, default to 0)
      - parameter sort: (query) How to sort place results.  &#39;Format: ±SORT_FIELD,±SORT_FIELD&#39;  where SORT_FIELD &#x3D; elevation | name | population  (optional)
      - parameter includeDeleted: (query) Whether to include any divisions marked deleted: ALL | SINCE_YESTERDAY | SINCE_LAST_WEEK | NONE (optional, default to "NONE")
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: PopulatedPlacesResponse
      */
-    @discardableResult
-    open class func findRegionDivisionsUsingGET(countryId: String, regionCode: String, minPopulation: Int? = nil, maxPopulation: Int? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, timeZoneIds: String? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, includeDeleted: String? = nil, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: PopulatedPlacesResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return findRegionDivisionsUsingGETWithRequestBuilder(countryId: countryId, regionCode: regionCode, minPopulation: minPopulation, maxPopulation: maxPopulation, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, timeZoneIds: timeZoneIds, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort, includeDeleted: includeDeleted).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func findRegionDivisionsUsingGET(countryId: String, regionCode: String, minPopulation: Int? = nil, maxPopulation: Int? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, timeZoneIds: String? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, includeDeleted: String? = nil) async throws -> PopulatedPlacesResponse {
+        return try await findRegionDivisionsUsingGETWithRequestBuilder(countryId: countryId, regionCode: regionCode, minPopulation: minPopulation, maxPopulation: maxPopulation, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, timeZoneIds: timeZoneIds, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort, includeDeleted: includeDeleted).execute().body
     }
 
     /**
@@ -1631,19 +1503,11 @@ open class GeoAPI {
      - parameter offset: (query) The zero-ary offset index into the results (optional, default to 0)
      - parameter sort: (query) How to sort place results.  &#39;Format: ±SORT_FIELD,±SORT_FIELD&#39;  where SORT_FIELD &#x3D; elevation | name | population  (optional)
      - parameter includeDeleted: (query) Whether to include any divisions marked deleted: ALL | SINCE_YESTERDAY | SINCE_LAST_WEEK | NONE (optional, default to "NONE")
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: PopulatedPlacesResponse
      */
-    @discardableResult
-    open class func findRegionPlacesUsingGET(countryId: String, regionCode: String, minPopulation: Int? = nil, maxPopulation: Int? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, timeZoneIds: String? = nil, types: String? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, includeDeleted: String? = nil, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: PopulatedPlacesResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return findRegionPlacesUsingGETWithRequestBuilder(countryId: countryId, regionCode: regionCode, minPopulation: minPopulation, maxPopulation: maxPopulation, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, timeZoneIds: timeZoneIds, types: types, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort, includeDeleted: includeDeleted).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func findRegionPlacesUsingGET(countryId: String, regionCode: String, minPopulation: Int? = nil, maxPopulation: Int? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, timeZoneIds: String? = nil, types: String? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, includeDeleted: String? = nil) async throws -> PopulatedPlacesResponse {
+        return try await findRegionPlacesUsingGETWithRequestBuilder(countryId: countryId, regionCode: regionCode, minPopulation: minPopulation, maxPopulation: maxPopulation, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, timeZoneIds: timeZoneIds, types: types, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort, includeDeleted: includeDeleted).execute().body
     }
 
     /**
@@ -1715,19 +1579,11 @@ open class GeoAPI {
      - parameter divisionId: (path) An admin-division id (either native &#39;id&#39; or &#39;wikiDataId&#39;) 
      - parameter asciiMode: (query) Display results using ASCII characters (optional, default to false)
      - parameter languageCode: (query) Display results in this language (optional)
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: PopulatedPlaceResponse
      */
-    @discardableResult
-    open class func getAdminDivisionUsingGET(divisionId: String, asciiMode: Bool? = nil, languageCode: String? = nil, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: PopulatedPlaceResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return getAdminDivisionUsingGETWithRequestBuilder(divisionId: divisionId, asciiMode: asciiMode, languageCode: languageCode).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func getAdminDivisionUsingGET(divisionId: String, asciiMode: Bool? = nil, languageCode: String? = nil) async throws -> PopulatedPlaceResponse {
+        return try await getAdminDivisionUsingGETWithRequestBuilder(divisionId: divisionId, asciiMode: asciiMode, languageCode: languageCode).execute().body
     }
 
     /**
@@ -1771,19 +1627,11 @@ open class GeoAPI {
      Get city date-time
      
      - parameter cityId: (path) A city id (either native &#39;id&#39; or &#39;wikiDataId&#39;) 
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: DateTimeResponse
      */
-    @discardableResult
-    open class func getCityDateTimeUsingGET(cityId: String, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: DateTimeResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return getCityDateTimeUsingGETWithRequestBuilder(cityId: cityId).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func getCityDateTimeUsingGET(cityId: String) async throws -> DateTimeResponse {
+        return try await getCityDateTimeUsingGETWithRequestBuilder(cityId: cityId).execute().body
     }
 
     /**
@@ -1823,19 +1671,11 @@ open class GeoAPI {
      - parameter cityId: (path) A city id (either native &#39;id&#39; or &#39;wikiDataId&#39;) 
      - parameter toCityId: (query) Distance to this city 
      - parameter distanceUnit: (query) The unit of distance: MI | KM (optional, default to "MI")
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: DistanceResponse
      */
-    @discardableResult
-    open class func getCityDistanceUsingGET(cityId: String, toCityId: String, distanceUnit: String? = nil, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: DistanceResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return getCityDistanceUsingGETWithRequestBuilder(cityId: cityId, toCityId: toCityId, distanceUnit: distanceUnit).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func getCityDistanceUsingGET(cityId: String, toCityId: String, distanceUnit: String? = nil) async throws -> DistanceResponse {
+        return try await getCityDistanceUsingGETWithRequestBuilder(cityId: cityId, toCityId: toCityId, distanceUnit: distanceUnit).execute().body
     }
 
     /**
@@ -1881,19 +1721,11 @@ open class GeoAPI {
      - parameter cityId: (path) A city id (either native &#39;id&#39; or &#39;wikiDataId&#39;) 
      - parameter asciiMode: (query) Display results using ASCII characters (optional, default to false)
      - parameter languageCode: (query) Display results in this language (optional)
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: PopulatedPlaceResponse
      */
-    @discardableResult
-    open class func getCityLocatedInUsingGET(cityId: String, asciiMode: Bool? = nil, languageCode: String? = nil, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: PopulatedPlaceResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return getCityLocatedInUsingGETWithRequestBuilder(cityId: cityId, asciiMode: asciiMode, languageCode: languageCode).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func getCityLocatedInUsingGET(cityId: String, asciiMode: Bool? = nil, languageCode: String? = nil) async throws -> PopulatedPlaceResponse {
+        return try await getCityLocatedInUsingGETWithRequestBuilder(cityId: cityId, asciiMode: asciiMode, languageCode: languageCode).execute().body
     }
 
     /**
@@ -1937,19 +1769,11 @@ open class GeoAPI {
      Get city time
      
      - parameter cityId: (path) A city id (either native &#39;id&#39; or &#39;wikiDataId&#39;) 
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: TimeResponse
      */
-    @discardableResult
-    open class func getCityTimeUsingGET(cityId: String, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: TimeResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return getCityTimeUsingGETWithRequestBuilder(cityId: cityId).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func getCityTimeUsingGET(cityId: String) async throws -> TimeResponse {
+        return try await getCityTimeUsingGETWithRequestBuilder(cityId: cityId).execute().body
     }
 
     /**
@@ -1989,19 +1813,11 @@ open class GeoAPI {
      - parameter cityId: (path) A city id (either native &#39;id&#39; or &#39;wikiDataId&#39;) 
      - parameter asciiMode: (query) Display results using ASCII characters (optional, default to false)
      - parameter languageCode: (query) Display results in this language (optional)
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: PopulatedPlaceResponse
      */
-    @discardableResult
-    open class func getCityUsingGET(cityId: String, asciiMode: Bool? = nil, languageCode: String? = nil, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: PopulatedPlaceResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return getCityUsingGETWithRequestBuilder(cityId: cityId, asciiMode: asciiMode, languageCode: languageCode).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func getCityUsingGET(cityId: String, asciiMode: Bool? = nil, languageCode: String? = nil) async throws -> PopulatedPlaceResponse {
+        return try await getCityUsingGETWithRequestBuilder(cityId: cityId, asciiMode: asciiMode, languageCode: languageCode).execute().body
     }
 
     /**
@@ -2053,19 +1869,11 @@ open class GeoAPI {
      - parameter limit: (query) The maximum number of results to retrieve (optional, default to 10)
      - parameter offset: (query) The zero-ary offset index into the results (optional, default to 0)
      - parameter sort: (query) How to sort countries.  Format: ±SORT_FIELD  where SORT_FIELD &#x3D; code | name (optional)
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: CountriesResponse
      */
-    @discardableResult
-    open class func getCountriesUsingGET(currencyCode: String? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: CountriesResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return getCountriesUsingGETWithRequestBuilder(currencyCode: currencyCode, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func getCountriesUsingGET(currencyCode: String? = nil, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil) async throws -> CountriesResponse {
+        return try await getCountriesUsingGETWithRequestBuilder(currencyCode: currencyCode, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort).execute().body
     }
 
     /**
@@ -2121,19 +1929,11 @@ open class GeoAPI {
      - parameter countryId: (path) An ISO-3166 country code or WikiData id 
      - parameter asciiMode: (query) Display results using ASCII characters (optional, default to false)
      - parameter languageCode: (query) Display results in this language (optional)
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: CountryResponse
      */
-    @discardableResult
-    open class func getCountryUsingGET(countryId: String, asciiMode: Bool? = nil, languageCode: String? = nil, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: CountryResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return getCountryUsingGETWithRequestBuilder(countryId: countryId, asciiMode: asciiMode, languageCode: languageCode).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func getCountryUsingGET(countryId: String, asciiMode: Bool? = nil, languageCode: String? = nil) async throws -> CountryResponse {
+        return try await getCountryUsingGETWithRequestBuilder(countryId: countryId, asciiMode: asciiMode, languageCode: languageCode).execute().body
     }
 
     /**
@@ -2177,19 +1977,11 @@ open class GeoAPI {
      Get place date-time
      
      - parameter placeId: (path) A place id (either native &#39;id&#39; or &#39;wikiDataId&#39;) 
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: DateTimeResponse
      */
-    @discardableResult
-    open class func getPlaceDateTimeUsingGET(placeId: String, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: DateTimeResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return getPlaceDateTimeUsingGETWithRequestBuilder(placeId: placeId).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func getPlaceDateTimeUsingGET(placeId: String) async throws -> DateTimeResponse {
+        return try await getPlaceDateTimeUsingGETWithRequestBuilder(placeId: placeId).execute().body
     }
 
     /**
@@ -2229,19 +2021,11 @@ open class GeoAPI {
      - parameter placeId: (path) A place id (either native &#39;id&#39; or &#39;wikiDataId&#39;) 
      - parameter toPlaceId: (query) Distance to this place 
      - parameter distanceUnit: (query) The unit of distance: MI | KM (optional, default to "MI")
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: DistanceResponse
      */
-    @discardableResult
-    open class func getPlaceDistanceUsingGET(placeId: String, toPlaceId: String, distanceUnit: String? = nil, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: DistanceResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return getPlaceDistanceUsingGETWithRequestBuilder(placeId: placeId, toPlaceId: toPlaceId, distanceUnit: distanceUnit).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func getPlaceDistanceUsingGET(placeId: String, toPlaceId: String, distanceUnit: String? = nil) async throws -> DistanceResponse {
+        return try await getPlaceDistanceUsingGETWithRequestBuilder(placeId: placeId, toPlaceId: toPlaceId, distanceUnit: distanceUnit).execute().body
     }
 
     /**
@@ -2287,19 +2071,11 @@ open class GeoAPI {
      - parameter placeId: (path) A place id (either native &#39;id&#39; or &#39;wikiDataId&#39;) 
      - parameter asciiMode: (query) Display results using ASCII characters (optional, default to false)
      - parameter languageCode: (query) Display results in this language (optional)
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: PopulatedPlaceResponse
      */
-    @discardableResult
-    open class func getPlaceLocatedInUsingGET(placeId: String, asciiMode: Bool? = nil, languageCode: String? = nil, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: PopulatedPlaceResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return getPlaceLocatedInUsingGETWithRequestBuilder(placeId: placeId, asciiMode: asciiMode, languageCode: languageCode).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func getPlaceLocatedInUsingGET(placeId: String, asciiMode: Bool? = nil, languageCode: String? = nil) async throws -> PopulatedPlaceResponse {
+        return try await getPlaceLocatedInUsingGETWithRequestBuilder(placeId: placeId, asciiMode: asciiMode, languageCode: languageCode).execute().body
     }
 
     /**
@@ -2343,19 +2119,11 @@ open class GeoAPI {
      Get place time
      
      - parameter placeId: (path) A place id (either native &#39;id&#39; or &#39;wikiDataId&#39;) 
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: TimeResponse
      */
-    @discardableResult
-    open class func getPlaceTimeUsingGET(placeId: String, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: TimeResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return getPlaceTimeUsingGETWithRequestBuilder(placeId: placeId).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func getPlaceTimeUsingGET(placeId: String) async throws -> TimeResponse {
+        return try await getPlaceTimeUsingGETWithRequestBuilder(placeId: placeId).execute().body
     }
 
     /**
@@ -2395,19 +2163,11 @@ open class GeoAPI {
      - parameter placeId: (path) A place id (either native &#39;id&#39; or &#39;wikiDataId&#39;) 
      - parameter asciiMode: (query) Display results using ASCII characters (optional, default to false)
      - parameter languageCode: (query) Display results in this language (optional)
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: PopulatedPlaceResponse
      */
-    @discardableResult
-    open class func getPlaceUsingGET(placeId: String, asciiMode: Bool? = nil, languageCode: String? = nil, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: PopulatedPlaceResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return getPlaceUsingGETWithRequestBuilder(placeId: placeId, asciiMode: asciiMode, languageCode: languageCode).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func getPlaceUsingGET(placeId: String, asciiMode: Bool? = nil, languageCode: String? = nil) async throws -> PopulatedPlaceResponse {
+        return try await getPlaceUsingGETWithRequestBuilder(placeId: placeId, asciiMode: asciiMode, languageCode: languageCode).execute().body
     }
 
     /**
@@ -2454,19 +2214,11 @@ open class GeoAPI {
      - parameter regionCode: (path) An ISO-3166 or FIPS region code 
      - parameter asciiMode: (query) Display results using ASCII characters (optional, default to false)
      - parameter languageCode: (query) Display results in this language (optional)
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: RegionResponse
      */
-    @discardableResult
-    open class func getRegionUsingGET(countryId: String, regionCode: String, asciiMode: Bool? = nil, languageCode: String? = nil, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: RegionResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return getRegionUsingGETWithRequestBuilder(countryId: countryId, regionCode: regionCode, asciiMode: asciiMode, languageCode: languageCode).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func getRegionUsingGET(countryId: String, regionCode: String, asciiMode: Bool? = nil, languageCode: String? = nil) async throws -> RegionResponse {
+        return try await getRegionUsingGETWithRequestBuilder(countryId: countryId, regionCode: regionCode, asciiMode: asciiMode, languageCode: languageCode).execute().body
     }
 
     /**
@@ -2522,19 +2274,11 @@ open class GeoAPI {
      - parameter limit: (query) The maximum number of results to retrieve (optional, default to 10)
      - parameter offset: (query) The zero-ary offset index into the results (optional, default to 0)
      - parameter sort: (query) How to sort regions.  Format: ±SORT_FIELD  where SORT_FIELD &#x3D; fipsCode | isoCode | name (optional)
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: RegionsResponse
      */
-    @discardableResult
-    open class func getRegionsUsingGET(countryId: String, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: RegionsResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return getRegionsUsingGETWithRequestBuilder(countryId: countryId, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func getRegionsUsingGET(countryId: String, namePrefix: String? = nil, namePrefixDefaultLangResults: Bool? = nil, asciiMode: Bool? = nil, hateoasMode: Bool? = nil, languageCode: String? = nil, limit: Int? = nil, offset: Int? = nil, sort: String? = nil) async throws -> RegionsResponse {
+        return try await getRegionsUsingGETWithRequestBuilder(countryId: countryId, namePrefix: namePrefix, namePrefixDefaultLangResults: namePrefixDefaultLangResults, asciiMode: asciiMode, hateoasMode: hateoasMode, languageCode: languageCode, limit: limit, offset: offset, sort: sort).execute().body
     }
 
     /**

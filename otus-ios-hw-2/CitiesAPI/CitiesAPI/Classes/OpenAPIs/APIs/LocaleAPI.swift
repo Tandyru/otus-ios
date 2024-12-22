@@ -19,19 +19,11 @@ open class LocaleAPI {
      - parameter hateoasMode: (query) Include HATEOAS-style links in results (optional, default to true)
      - parameter limit: (query) The maximum number of results to retrieve (optional, default to 10)
      - parameter offset: (query) The zero-ary offset index into the results (optional, default to 0)
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: CurrenciesResponse
      */
-    @discardableResult
-    open class func getCurrenciesUsingGET(countryId: String, hateoasMode: Bool? = nil, limit: Int? = nil, offset: Int? = nil, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: CurrenciesResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return getCurrenciesUsingGETWithRequestBuilder(countryId: countryId, hateoasMode: hateoasMode, limit: limit, offset: offset).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func getCurrenciesUsingGET(countryId: String, hateoasMode: Bool? = nil, limit: Int? = nil, offset: Int? = nil) async throws -> CurrenciesResponse {
+        return try await getCurrenciesUsingGETWithRequestBuilder(countryId: countryId, hateoasMode: hateoasMode, limit: limit, offset: offset).execute().body
     }
 
     /**
@@ -77,19 +69,11 @@ open class LocaleAPI {
      - parameter hateoasMode: (query) Include HATEOAS-style links in results (optional, default to true)
      - parameter limit: (query) The maximum number of results to retrieve (optional, default to 10)
      - parameter offset: (query) The zero-ary offset index into the results (optional, default to 0)
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: LanguagesResponse
      */
-    @discardableResult
-    open class func getLanguagesUsingGET(hateoasMode: Bool? = nil, limit: Int? = nil, offset: Int? = nil, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: LanguagesResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return getLanguagesUsingGETWithRequestBuilder(hateoasMode: hateoasMode, limit: limit, offset: offset).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func getLanguagesUsingGET(hateoasMode: Bool? = nil, limit: Int? = nil, offset: Int? = nil) async throws -> LanguagesResponse {
+        return try await getLanguagesUsingGETWithRequestBuilder(hateoasMode: hateoasMode, limit: limit, offset: offset).execute().body
     }
 
     /**
@@ -133,19 +117,11 @@ open class LocaleAPI {
      - parameter hateoasMode: (query) Include HATEOAS-style links in results (optional, default to true)
      - parameter limit: (query) The maximum number of results to retrieve (optional, default to 10)
      - parameter offset: (query) The zero-ary offset index into the results (optional, default to 0)
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: LocalesResponse
      */
-    @discardableResult
-    open class func getLocalesUsingGET(hateoasMode: Bool? = nil, limit: Int? = nil, offset: Int? = nil, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: LocalesResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return getLocalesUsingGETWithRequestBuilder(hateoasMode: hateoasMode, limit: limit, offset: offset).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func getLocalesUsingGET(hateoasMode: Bool? = nil, limit: Int? = nil, offset: Int? = nil) async throws -> LocalesResponse {
+        return try await getLocalesUsingGETWithRequestBuilder(hateoasMode: hateoasMode, limit: limit, offset: offset).execute().body
     }
 
     /**
@@ -187,19 +163,11 @@ open class LocaleAPI {
      Get time-zone date-time
      
      - parameter zoneId: (path) A time-zone id 
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: DateTimeResponse
      */
-    @discardableResult
-    open class func getTimeZoneDateTimeUsingGET(zoneId: String, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: DateTimeResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return getTimeZoneDateTimeUsingGETWithRequestBuilder(zoneId: zoneId).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func getTimeZoneDateTimeUsingGET(zoneId: String) async throws -> DateTimeResponse {
+        return try await getTimeZoneDateTimeUsingGETWithRequestBuilder(zoneId: zoneId).execute().body
     }
 
     /**
@@ -237,19 +205,11 @@ open class LocaleAPI {
      Get time-zone time
      
      - parameter zoneId: (path) A time-zone id 
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: TimeResponse
      */
-    @discardableResult
-    open class func getTimeZoneTimeUsingGET(zoneId: String, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: TimeResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return getTimeZoneTimeUsingGETWithRequestBuilder(zoneId: zoneId).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func getTimeZoneTimeUsingGET(zoneId: String) async throws -> TimeResponse {
+        return try await getTimeZoneTimeUsingGETWithRequestBuilder(zoneId: zoneId).execute().body
     }
 
     /**
@@ -287,19 +247,11 @@ open class LocaleAPI {
      Get time-zone
      
      - parameter zoneId: (path) A time-zone id 
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: TimeZoneResponse
      */
-    @discardableResult
-    open class func getTimeZoneUsingGET(zoneId: String, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: TimeZoneResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return getTimeZoneUsingGETWithRequestBuilder(zoneId: zoneId).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func getTimeZoneUsingGET(zoneId: String) async throws -> TimeZoneResponse {
+        return try await getTimeZoneUsingGETWithRequestBuilder(zoneId: zoneId).execute().body
     }
 
     /**
@@ -339,19 +291,11 @@ open class LocaleAPI {
      - parameter hateoasMode: (query) Include HATEOAS-style links in results (optional, default to true)
      - parameter limit: (query) The maximum number of results to retrieve (optional, default to 10)
      - parameter offset: (query) The zero-ary offset index into the results (optional, default to 0)
-     - parameter apiResponseQueue: The queue on which api response is dispatched.
-     - parameter completion: completion handler to receive the data and the error objects
+     - returns: TimeZonesResponse
      */
-    @discardableResult
-    open class func getTimezonesUsingGET(hateoasMode: Bool? = nil, limit: Int? = nil, offset: Int? = nil, apiResponseQueue: DispatchQueue = CitiesAPIAPI.apiResponseQueue, completion: @escaping ((_ data: TimeZonesResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return getTimezonesUsingGETWithRequestBuilder(hateoasMode: hateoasMode, limit: limit, offset: offset).execute(apiResponseQueue) { result in
-            switch result {
-            case let .success(response):
-                completion(response.body, nil)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func getTimezonesUsingGET(hateoasMode: Bool? = nil, limit: Int? = nil, offset: Int? = nil) async throws -> TimeZonesResponse {
+        return try await getTimezonesUsingGETWithRequestBuilder(hateoasMode: hateoasMode, limit: limit, offset: offset).execute().body
     }
 
     /**

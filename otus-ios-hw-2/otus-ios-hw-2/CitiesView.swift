@@ -26,12 +26,16 @@ struct CitiesView: View {
                             Text (name).tag(name)
                         }
                     }.pickerStyle(.segmented)
-                    Text("List of \(viewModel.selectedCountry) cities")
                     if let cities = viewModel.countryCities[viewModel.selectedCountry] {
                         List {
                             if let cities = cities.cities {
                                 ForEach(cities) { city in
                                     Text(city.name)
+                                        .onAppear {
+                                            if viewModel.isNearLastLoaded(city: city) {
+                                                viewModel.fetchMoreCities()
+                                            }
+                                        }
                                 }
                             }
                             LoadStateItem(state: cities.loading, retry: viewModel.fetchMoreCities)
@@ -41,6 +45,8 @@ struct CitiesView: View {
                             viewModel.fetchMoreCities()
                         }
                     }
+                }.onChange(of: viewModel.selectedCountry) {
+                    viewModel.fetchMoreCities()
                 }
             }
             .padding()
@@ -67,12 +73,14 @@ struct LoadStateItem: View {
                 }
             case .loadError:
                 HStack(spacing: 20) {
+                    Spacer()
                     Text("Error")
                     Button {
                         retry()
                     } label: {
                         Text("Retry")
-                    }
+                    }.buttonStyle(.bordered)
+                    Spacer()
                 }
             case .loaded:
                 Spacer().frame(height: 1)
@@ -81,11 +89,6 @@ struct LoadStateItem: View {
     }
 }
 
-extension CitiesViewModel.City: Identifiable {
-    var id: String {
-        name
-    }
-}
 
 #Preview {
     CitiesView()

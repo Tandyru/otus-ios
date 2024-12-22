@@ -6,8 +6,6 @@
 //
 
 import Foundation
-import CitiesAPI
-//import OpenWeatherAPI
 
 class CitiesViewModel: ObservableObject {
 
@@ -25,11 +23,7 @@ class CitiesViewModel: ObservableObject {
     var countryNames: [String] {
         countries.map { $0.name }
     }
-    
-    struct City {
-        let name: String
-    }
-     
+         
     enum LoadingState {
         case canLoadMore
         case loading
@@ -38,7 +32,7 @@ class CitiesViewModel: ObservableObject {
     }
     
     struct CityList {
-        let cities: [City]?
+        var cities: [City]?
         var loading: LoadingState
     }
 
@@ -47,26 +41,14 @@ class CitiesViewModel: ObservableObject {
     @Published var selectedCountry = "Russia"
     @Published var countryCities: CountryCities = [:]
     
+    private let cityListProvider = CityListProvider()
+    
     init() {
         
         for country in countries {
             countryCities[country.name] = .init(cities: nil, loading: .canLoadMore)
         }
         selectedCountry = countries.first!.name
-
-        CitiesAPIAPI.customHeaders = ["x-rapidapi-key": "94963b3682msh07639511c5fbd67p194a89jsncb95fadf69f6"]
-//        GeoAPI.getCountriesUsingGET(namePrefix: "United") { response, error in
-//            print("error: \(error)")
-//            print("response: \(response)")
-//        }
-        GeoAPI.findCitiesUsingGET(countryIds: "SE", limit: 10, offset: 0) { response, error in
-            print("error: \(error)")
-            print("response: \(response)")
-        }
-//        CurrentWeatherDataAPI.currentWeatherData(lat:"33.44", lon:"-94.04", appid:  "8224cbd7ae0994b6331da300746c5a67") { model, error in
-//            print("error: \(error)")
-//            print("model: \(model)")
-//        }
     }
     
     func fetchMoreCities() {
@@ -77,16 +59,55 @@ class CitiesViewModel: ObservableObject {
         guard cityList.loading == .canLoadMore || cityList.loading == .loadError else {
             return
         }
+        let loadedCount = cityList.cities?.count ?? 0
         let country = selectedCountry
         setLoadingState(to: .loading, for: country)
-        // TODO
+        Task { @MainActor [country] in
+            do {
+                let countryId = self.getCountryCode(for: country)
+                let cities = try await cityListProvider.fetch(countryId: countryId, offset: loadedCount, limit: 10)
+                self.appendLoaded(cities: cities, for: country, newLoadingState: cities.count == 0 ? .loaded : .canLoadMore)
+            } catch {
+                print("load error: \(error)")
+                self.setLoadingState(to: .loadError, for: country)
+            }
+        }
+    }
+    
+    func isNearLastLoaded(city: City) -> Bool {
+        guard let cityList = countryCities[selectedCountry] else {
+            assertionFailure()
+            return false
+        }
+        guard let cities = cityList.cities else {
+            assertionFailure()
+            return false
+        }
+        return cities.isNearLast(item: city)
     }
     
     private func setLoadingState(to state: LoadingState, for country: String) {
-        var countryCities = countryCities
         var cityList = countryCities[selectedCountry]
         cityList?.loading = state
         countryCities[selectedCountry] = cityList
-        self.countryCities = countryCities
+    }
+    
+    private func appendLoaded(cities: [City], for country: String, newLoadingState: LoadingState) {
+        var cityList = countryCities[selectedCountry]
+        var new = (cityList?.cities ?? [])
+        new.append(contentsOf: cities)
+        new = new.reduce(into: [City]()) { result, city in
+            if !result.contains(where: { $0.id == city.id } ) {
+                result.append(city)
+            }
+        }
+        cityList?.cities = new
+        cityList?.loading = newLoadingState
+        countryCities[selectedCountry] = cityList
+    }
+    
+    private func getCountryCode(for country: String) -> String {
+        countries.first(where: { $0.name == country })?.code ?? ""
     }
 }
+
