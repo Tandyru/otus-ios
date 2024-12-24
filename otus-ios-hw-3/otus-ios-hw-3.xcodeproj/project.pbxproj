@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6493925D2D1A953A002C68B0 /* CoreGeoInfoProvider in Frameworks */ = {isa = PBXBuildFile; productRef = 6493925C2D1A953A002C68B0 /* CoreGeoInfoProvider */; };
+		649392602D1A9DF3002C68B0 /* CoreGeoInfoProvider in Frameworks */ = {isa = PBXBuildFile; productRef = 6493925F2D1A9DF3002C68B0 /* CoreGeoInfoProvider */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,7 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6493925D2D1A953A002C68B0 /* CoreGeoInfoProvider in Frameworks */,
+				649392602D1A9DF3002C68B0 /* CoreGeoInfoProvider in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -70,7 +70,7 @@
 			);
 			name = "otus-ios-hw-3";
 			packageProductDependencies = (
-				6493925C2D1A953A002C68B0 /* CoreGeoInfoProvider */,
+				6493925F2D1A9DF3002C68B0 /* CoreGeoInfoProvider */,
 			);
 			productName = "otus-ios-hw-3";
 			productReference = 649392062D1A7D03002C68B0 /* otus-ios-hw-3.app */;
@@ -101,7 +101,7 @@
 			mainGroup = 649391FD2D1A7D03002C68B0;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				6493925B2D1A953A002C68B0 /* XCLocalSwiftPackageReference "../CoreGeoInfoProvider" */,
+				6493925E2D1A9DF3002C68B0 /* XCRemoteSwiftPackageReference "CoreGeoInfoProvider" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 649392072D1A7D03002C68B0 /* Products */;
@@ -334,16 +334,21 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		6493925B2D1A953A002C68B0 /* XCLocalSwiftPackageReference "../CoreGeoInfoProvider" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../CoreGeoInfoProvider;
+/* Begin XCRemoteSwiftPackageReference section */
+		6493925E2D1A9DF3002C68B0 /* XCRemoteSwiftPackageReference "CoreGeoInfoProvider" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Tandyru/CoreGeoInfoProvider.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.0;
+			};
 		};
-/* End XCLocalSwiftPackageReference section */
+/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		6493925C2D1A953A002C68B0 /* CoreGeoInfoProvider */ = {
+		6493925F2D1A9DF3002C68B0 /* CoreGeoInfoProvider */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = 6493925E2D1A9DF3002C68B0 /* XCRemoteSwiftPackageReference "CoreGeoInfoProvider" */;
 			productName = CoreGeoInfoProvider;
 		};
 /* End XCSwiftPackageProductDependency section */
