@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		64EC98512D2452A3003A0392 /* CoreGeoInfoProvider in Frameworks */ = {isa = PBXBuildFile; productRef = 64EC98502D2452A3003A0392 /* CoreGeoInfoProvider */; };
+		64EC989A2D2673E0003A0392 /* CoreUI in Frameworks */ = {isa = PBXBuildFile; productRef = 64EC98992D2673E0003A0392 /* CoreUI */; };
+		64EC98CA2D267F4E003A0392 /* CoreRedux in Frameworks */ = {isa = PBXBuildFile; productRef = 64EC98C92D267F4E003A0392 /* CoreRedux */; };
+		64EC98CD2D267F69003A0392 /* CoreRedux in Frameworks */ = {isa = PBXBuildFile; productRef = 64EC98CC2D267F69003A0392 /* CoreRedux */; };
+		64EC98D32D2681F7003A0392 /* ServiceCityListProvider in Frameworks */ = {isa = PBXBuildFile; productRef = 64EC98D22D2681F7003A0392 /* ServiceCityListProvider */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,7 +30,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				64EC98512D2452A3003A0392 /* CoreGeoInfoProvider in Frameworks */,
+				64EC98CA2D267F4E003A0392 /* CoreRedux in Frameworks */,
+				64EC98CD2D267F69003A0392 /* CoreRedux in Frameworks */,
+				64EC989A2D2673E0003A0392 /* CoreUI in Frameworks */,
+				64EC98D32D2681F7003A0392 /* ServiceCityListProvider in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -70,7 +76,10 @@
 			);
 			name = "otus-ios-hw-4";
 			packageProductDependencies = (
-				64EC98502D2452A3003A0392 /* CoreGeoInfoProvider */,
+				64EC98992D2673E0003A0392 /* CoreUI */,
+				64EC98C92D267F4E003A0392 /* CoreRedux */,
+				64EC98CC2D267F69003A0392 /* CoreRedux */,
+				64EC98D22D2681F7003A0392 /* ServiceCityListProvider */,
 			);
 			productName = "otus-ios-hw-4";
 			productReference = 64EC983E2D244B63003A0392 /* otus-ios-hw-4.app */;
@@ -101,7 +110,9 @@
 			mainGroup = 64EC98352D244B63003A0392;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				64EC984F2D2452A3003A0392 /* XCRemoteSwiftPackageReference "CoreGeoInfoProvider" */,
+				64EC98982D2673E0003A0392 /* XCLocalSwiftPackageReference "CoreUI" */,
+				64EC98CB2D267F69003A0392 /* XCLocalSwiftPackageReference "CoreRedux" */,
+				64EC98D12D2681F7003A0392 /* XCLocalSwiftPackageReference "ServiceCityListProvider" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 64EC983F2D244B63003A0392 /* Products */;
@@ -334,22 +345,37 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		64EC984F2D2452A3003A0392 /* XCRemoteSwiftPackageReference "CoreGeoInfoProvider" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Tandyru/CoreGeoInfoProvider.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.1.0;
-			};
+/* Begin XCLocalSwiftPackageReference section */
+		64EC98982D2673E0003A0392 /* XCLocalSwiftPackageReference "CoreUI" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = CoreUI;
 		};
-/* End XCRemoteSwiftPackageReference section */
+		64EC98CB2D267F69003A0392 /* XCLocalSwiftPackageReference "CoreRedux" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = CoreRedux;
+		};
+		64EC98D12D2681F7003A0392 /* XCLocalSwiftPackageReference "ServiceCityListProvider" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ServiceCityListProvider;
+		};
+/* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		64EC98502D2452A3003A0392 /* CoreGeoInfoProvider */ = {
+		64EC98992D2673E0003A0392 /* CoreUI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 64EC984F2D2452A3003A0392 /* XCRemoteSwiftPackageReference "CoreGeoInfoProvider" */;
-			productName = CoreGeoInfoProvider;
+			productName = CoreUI;
+		};
+		64EC98C92D267F4E003A0392 /* CoreRedux */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoreRedux;
+		};
+		64EC98CC2D267F69003A0392 /* CoreRedux */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoreRedux;
+		};
+		64EC98D22D2681F7003A0392 /* ServiceCityListProvider */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ServiceCityListProvider;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

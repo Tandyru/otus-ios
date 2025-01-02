@@ -18,12 +18,12 @@ struct CityList {
     var loading: LoadingState
 }
 
-struct State {
+struct AppState {
     var currentCountry: Country
     var countryCities: [CityList]
 }
 
-extension State {
+extension AppState {
     var currentCountryCityList: CityList? {
         countryCities.first { $0.country == currentCountry }
     }

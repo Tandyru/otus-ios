@@ -1,0 +1,15 @@
+{
+  "originHash" : "5f14b19e46c37a3de991b25b359af01bdc41320671e6611ca633a5573c4bf2d5",
+  "pins" : [
+    {
+      "identity" : "coregeoinfoprovider",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Tandyru/CoreGeoInfoProvider.git",
+      "state" : {
+        "revision" : "34acfc0087f6e602a9b7dff17d49e7601f899bec",
+        "version" : "0.1.0"
+      }
+    }
+  ],
+  "version" : 3
+}

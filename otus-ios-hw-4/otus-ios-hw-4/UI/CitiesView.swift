@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreUI
 
 struct CitiesView: View {
     @StateObject var viewModel: CitiesViewModel
@@ -36,7 +37,9 @@ struct CitiesView: View {
                                     }
                                 }
                         }
-                        LoadStateItem(state: viewModel.loadingState, retry: viewModel.fetchMoreCities)
+                        if let state = viewModel.loadingState.asLoadStateItemState {
+                            LoadStateItem(state: state, retry: viewModel.fetchMoreCities)
+                        }
                     }
                     .scrollContentBackground(.hidden)
                     .onAppear {
@@ -53,6 +56,15 @@ struct CitiesView: View {
     }
 }
 
-//#Preview {
-//    CitiesView()
-//}
+extension LoadingState {
+    var asLoadStateItemState: LoadStateItem.State? {
+        switch self {
+        case .canLoadMore, .loading:
+            return .loading
+        case .loadError:
+            return .loadError
+        case .allLoaded:
+            return nil
+        }
+    }
+}

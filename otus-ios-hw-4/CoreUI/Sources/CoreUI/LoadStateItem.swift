@@ -1,20 +1,31 @@
 //
 //  LoadStateItem.swift
-//  otus-ios-hw-4
+//  CoreUI
 //
-//  Created by Andrey Tanakov on 31.12.2024.
+//  Created by Andrey Tanakov on 02.01.2025.
 //
 
 import SwiftUI
 
-struct LoadStateItem: View {
-    let state: LoadingState
+public struct LoadStateItem: View {
+    
+    public enum State {
+        case loading
+        case loadError
+    }
+    
+    let state: State
     let retry: () -> Void
     
-    var body: some View {
+    public init(state: LoadStateItem.State, retry: @escaping () -> Void) {
+        self.state = state
+        self.retry = retry
+    }
+
+    public var body: some View {
         VStack {
             switch state {
-            case .canLoadMore, .loading:
+            case .loading:
                 HStack {
                     Spacer()
                     ProgressView()
@@ -33,8 +44,6 @@ struct LoadStateItem: View {
                     }.buttonStyle(.bordered)
                     Spacer()
                 }
-            case .allLoaded:
-                Spacer().frame(height: 1)
             }
         }
     }

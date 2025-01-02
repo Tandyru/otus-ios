@@ -5,12 +5,12 @@
 //  Created by Andrey Tanakov on 01.01.2025.
 //
 
+import ServiceCityListProvider
+
 final class LoadMoreCitiesMiddleware {
     @Inject var service: CityListService
-}
 
-extension LoadMoreCitiesMiddleware: Middleware {
-    func execute(actoin: Action, state: State, dispatch: @escaping (Action) -> State?) {
+    func execute(actoin: Action, state: AppState, dispatch: @escaping (Action) -> AppState?) {
         guard case .loadMoreCities = actoin else {
             return
         }
@@ -30,7 +30,7 @@ extension LoadMoreCitiesMiddleware: Middleware {
             do {
                 let result = try await service.fetch(countryId: country.code, offset: loadedCityCount, limit: 10)
                 await MainActor.run {
-                    _ = dispatch(.addLoaded(country, result))
+                    _ = dispatch(.addLoaded(country, result.map { .init(name: $0.name) }))
                 }
             } catch {
                 await MainActor.run {

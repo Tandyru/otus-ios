@@ -5,8 +5,8 @@
 //  Created by Andrey Tanakov on 31.12.2024.
 //
 
-final class Reducer {
-    func reduce(state: State, action: Action) -> State {
+final class AppReducer {
+    func reduce(state: AppState, action: Action) -> AppState {
         switch action {
         case let .setCurrentCountry(country):
             return state.replacingCurrentCountry(country)
@@ -23,7 +23,7 @@ final class Reducer {
     }
 }
 
-extension State {
+extension AppState {
     var currentCountryCityListIndex: Int {
         countryCities.firstIndex(where: { $0.country == currentCountry }) ?? 0
     }
@@ -32,7 +32,7 @@ extension State {
         countryCities.map { $0.country }
     }
     
-    func replacingCurrentCountry(_ country: String) -> State {
+    func replacingCurrentCountry(_ country: String) -> AppState {
         guard let country = countries.first(where: { $0.name == country }) else {
             return self
         }
@@ -41,21 +41,21 @@ extension State {
         return state
     }
     
-    func replacingLoadingState(_ loadingState: LoadingState) -> State {
+    func replacingLoadingState(_ loadingState: LoadingState) -> AppState {
         var state = self
         let index = state.currentCountryCityListIndex
         state.countryCities[index].loading = loadingState
         return state
     }
     
-    func replacingLoadingState(_ loadingState: LoadingState, country: Country) -> State {
+    func replacingLoadingState(_ loadingState: LoadingState, country: Country) -> AppState {
         var state = self
         let index = countryCities.firstIndex(where: { $0.country == country }) ?? 0
         state.countryCities[index].loading = loadingState
         return state
     }
     
-    func addingLoaded(cities: [City], country: Country) -> State {
+    func addingLoaded(cities: [City], country: Country) -> AppState {
         var state = self
         let index = countryCities.firstIndex(where: { $0.country == country }) ?? 0
         if cities.isEmpty {

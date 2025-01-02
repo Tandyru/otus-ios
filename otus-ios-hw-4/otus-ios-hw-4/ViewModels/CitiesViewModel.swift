@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import CoreRedux
 
 class CitiesViewModel: ObservableObject {
     @Published var countries: [String] = []
@@ -17,9 +18,9 @@ class CitiesViewModel: ObservableObject {
     private var subscriptions = Set<AnyCancellable>()
     private var countrySelecting = false
     
-    let store: Store
+    let store: AppStore
     
-    init(store: Store) {
+    init(store: AppStore) {
         self.store = store
         store.state.sink { [weak self] state in
             self?.setState(state)
@@ -39,7 +40,7 @@ class CitiesViewModel: ObservableObject {
         return countryCities.isNearLast(item: city)
     }
     
-    private func setState(_ state: State) {
+    private func setState(_ state: AppState) {
         countries = state.countryCities.map { $0.country.name }
         guard let cityList = state.currentCountryCityList else {
             return
