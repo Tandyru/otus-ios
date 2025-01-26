@@ -5,6 +5,7 @@
 //  Created by Andrey Tanakov on 25.01.2025.
 //
 
+import Foundation
 import Combine
 
 final class ViewModel: ObservableObject {
@@ -38,10 +39,12 @@ final class ViewModel: ObservableObject {
             guard let self = self else { return }
             self.processText(sortBy: sortBy, searchString: self.searchString)
         }.store(in: &subscriptions)
-        $searchString.sink { [weak self] searchString in
-            guard let self = self else { return }
-            self.processText(sortBy: self.sortBy, searchString: searchString)
-        }.store(in: &subscriptions)
+        $searchString
+            .debounce(for: .milliseconds(500), scheduler: RunLoop.main)
+            .sink { [weak self] searchString in
+                guard let self = self else { return }
+                self.processText(sortBy: self.sortBy, searchString: searchString)
+            }.store(in: &subscriptions)
     }
     
     private func processText(sortBy: SortBy, searchString: String) {
