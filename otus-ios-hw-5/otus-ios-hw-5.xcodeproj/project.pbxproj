@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		643697A72D460B4A00FE5041 /* otus_ios_hw_5_share_ext.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 6436979D2D460B4A00FE5041 /* otus_ios_hw_5_share_ext.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		643697912D45177200FE5041 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -14,17 +18,57 @@
 			remoteGlobalIDString = 648396462D44EE1E00ACB859;
 			remoteInfo = otus_ios_hw_5;
 		};
+		643697A52D460B4A00FE5041 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6483963F2D44EE1E00ACB859 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6436979C2D460B4A00FE5041;
+			remoteInfo = otus_ios_hw_5_share_ext;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		643697AC2D460B4A00FE5041 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				643697A72D460B4A00FE5041 /* otus_ios_hw_5_share_ext.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		6436978D2D45177200FE5041 /* otus_ios_hw_5Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = otus_ios_hw_5Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6436979D2D460B4A00FE5041 /* otus_ios_hw_5_share_ext.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = otus_ios_hw_5_share_ext.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		648396472D44EE1E00ACB859 /* otus_ios_hw_5.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = otus_ios_hw_5.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		643697CC2D461F9500FE5041 /* Exceptions for "otus_ios_hw_5_share_ext" folder in "otus_ios_hw_5_share_ext" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 6436979C2D460B4A00FE5041 /* otus_ios_hw_5_share_ext */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		6436978E2D45177200FE5041 /* otus_ios_hw_5Tests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = otus_ios_hw_5Tests;
+			sourceTree = "<group>";
+		};
+		6436979E2D460B4A00FE5041 /* otus_ios_hw_5_share_ext */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				643697CC2D461F9500FE5041 /* Exceptions for "otus_ios_hw_5_share_ext" folder in "otus_ios_hw_5_share_ext" target */,
+			);
+			path = otus_ios_hw_5_share_ext;
 			sourceTree = "<group>";
 		};
 		648396492D44EE1E00ACB859 /* otus_ios_hw_5 */ = {
@@ -36,6 +80,13 @@
 
 /* Begin PBXFrameworksBuildPhase section */
 		6436978A2D45177200FE5041 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6436979A2D460B4A00FE5041 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -57,6 +108,7 @@
 			children = (
 				648396492D44EE1E00ACB859 /* otus_ios_hw_5 */,
 				6436978E2D45177200FE5041 /* otus_ios_hw_5Tests */,
+				6436979E2D460B4A00FE5041 /* otus_ios_hw_5_share_ext */,
 				648396482D44EE1E00ACB859 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -66,6 +118,7 @@
 			children = (
 				648396472D44EE1E00ACB859 /* otus_ios_hw_5.app */,
 				6436978D2D45177200FE5041 /* otus_ios_hw_5Tests.xctest */,
+				6436979D2D460B4A00FE5041 /* otus_ios_hw_5_share_ext.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -96,6 +149,28 @@
 			productReference = 6436978D2D45177200FE5041 /* otus_ios_hw_5Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		6436979C2D460B4A00FE5041 /* otus_ios_hw_5_share_ext */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 643697A92D460B4A00FE5041 /* Build configuration list for PBXNativeTarget "otus_ios_hw_5_share_ext" */;
+			buildPhases = (
+				643697992D460B4A00FE5041 /* Sources */,
+				6436979A2D460B4A00FE5041 /* Frameworks */,
+				6436979B2D460B4A00FE5041 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				6436979E2D460B4A00FE5041 /* otus_ios_hw_5_share_ext */,
+			);
+			name = otus_ios_hw_5_share_ext;
+			packageProductDependencies = (
+			);
+			productName = otus_ios_hw_5_share_ext;
+			productReference = 6436979D2D460B4A00FE5041 /* otus_ios_hw_5_share_ext.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		648396462D44EE1E00ACB859 /* otus_ios_hw_5 */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 648396552D44EE2100ACB859 /* Build configuration list for PBXNativeTarget "otus_ios_hw_5" */;
@@ -103,10 +178,12 @@
 				648396432D44EE1E00ACB859 /* Sources */,
 				648396442D44EE1E00ACB859 /* Frameworks */,
 				648396452D44EE1E00ACB859 /* Resources */,
+				643697AC2D460B4A00FE5041 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				643697A62D460B4A00FE5041 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				648396492D44EE1E00ACB859 /* otus_ios_hw_5 */,
@@ -132,6 +209,9 @@
 						CreatedOnToolsVersion = 16.2;
 						TestTargetID = 648396462D44EE1E00ACB859;
 					};
+					6436979C2D460B4A00FE5041 = {
+						CreatedOnToolsVersion = 16.2;
+					};
 					648396462D44EE1E00ACB859 = {
 						CreatedOnToolsVersion = 16.2;
 					};
@@ -153,12 +233,20 @@
 			targets = (
 				648396462D44EE1E00ACB859 /* otus_ios_hw_5 */,
 				6436978C2D45177200FE5041 /* otus_ios_hw_5Tests */,
+				6436979C2D460B4A00FE5041 /* otus_ios_hw_5_share_ext */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		6436978B2D45177200FE5041 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6436979B2D460B4A00FE5041 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -182,6 +270,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		643697992D460B4A00FE5041 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		648396432D44EE1E00ACB859 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -196,6 +291,11 @@
 			isa = PBXTargetDependency;
 			target = 648396462D44EE1E00ACB859 /* otus_ios_hw_5 */;
 			targetProxy = 643697912D45177200FE5041 /* PBXContainerItemProxy */;
+		};
+		643697A62D460B4A00FE5041 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6436979C2D460B4A00FE5041 /* otus_ios_hw_5_share_ext */;
+			targetProxy = 643697A52D460B4A00FE5041 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -233,6 +333,58 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/otus_ios_hw_5.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/otus_ios_hw_5";
+			};
+			name = Release;
+		};
+		643697AA2D460B4A00FE5041 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = otus_ios_hw_5_share_ext/otus_ios_hw_5_share_ext.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = V7VHP43NQH;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = otus_ios_hw_5_share_ext/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = otus_ios_hw_5_share_ext;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.tandyru.otus-ios-hw-5.otus-ios-hw-5-share-ext";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		643697AB2D460B4A00FE5041 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = otus_ios_hw_5_share_ext/otus_ios_hw_5_share_ext.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = V7VHP43NQH;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = otus_ios_hw_5_share_ext/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = otus_ios_hw_5_share_ext;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.tandyru.otus-ios-hw-5.otus-ios-hw-5-share-ext";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -360,12 +512,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = otus_ios_hw_5/otus_ios_hw_5.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"otus_ios_hw_5/Preview Content\"";
 				DEVELOPMENT_TEAM = V7VHP43NQH;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "otus-ios-hw-5-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -389,12 +543,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = otus_ios_hw_5/otus_ios_hw_5.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"otus_ios_hw_5/Preview Content\"";
 				DEVELOPMENT_TEAM = V7VHP43NQH;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "otus-ios-hw-5-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -421,6 +577,15 @@
 			buildConfigurations = (
 				643697942D45177200FE5041 /* Debug */,
 				643697952D45177200FE5041 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		643697A92D460B4A00FE5041 /* Build configuration list for PBXNativeTarget "otus_ios_hw_5_share_ext" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				643697AA2D460B4A00FE5041 /* Debug */,
+				643697AB2D460B4A00FE5041 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
