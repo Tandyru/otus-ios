@@ -12,8 +12,6 @@ final class JobQueueImpl {
     private var jobs: [any Job] = []
     private let lock = NSLock()
     private let executedJobSubject = PassthroughSubject<any Job, Never>()
-    
-//    private let semaphore = Semaphore(capacity: 1)
 }
 
 extension JobQueueImpl: JobQueue {
@@ -37,12 +35,10 @@ extension JobQueueImpl: JobQueue {
         guard let job = job else {
             return false
         }
-        //await semaphore.withCriticalSection {
         await job.execute()
         lock.withLock {
             self.executedJobSubject.send(job)
         }
-        //}
         return true
     }
     

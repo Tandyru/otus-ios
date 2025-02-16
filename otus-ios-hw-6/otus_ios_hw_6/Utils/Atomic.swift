@@ -5,19 +5,35 @@
 //  Created by Andrey Tanakov on 09.02.2025.
 //
 
-import os.lock
+import Foundation
 
-@propertyWrapper
-public struct Atomic<Value>: Sendable where Value: Sendable {
+final class Atomic<Value> {
+    private var value: Value
+    private let lock = NSLock()
 
-    private let lock: OSAllocatedUnfairLock<Value>
-
-    public init(wrappedValue value: Value) {
-        self.lock = OSAllocatedUnfairLock(initialState: value)
+    init(_ value: Value) {
+        self.value = value
     }
 
-    public var wrappedValue: Value {
-        get { lock.withLock { $0 } }
-        set { lock.withLock { $0 = newValue } }
+    func access<T>(_ keyPath: KeyPath<Value, T>) -> T {
+        lock.lock()
+        defer { lock.unlock() }
+        return value[keyPath: keyPath]
+    }
+
+    func access<T>(_ accessing: (Value) throws -> T) rethrows -> T {
+        lock.lock()
+        defer { lock.unlock() }
+        return try accessing(value)
+    }
+
+    func mutate(_ newValue: Value) {
+        value = newValue
+    }
+
+    func mutate(_ mutation: (inout Value) throws -> Void) rethrows {
+        lock.lock()
+        defer { lock.unlock() }
+        try mutation(&value)
     }
 }

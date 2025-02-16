@@ -22,15 +22,10 @@ struct ContentView: View {
                 .tabItem {
                     Label("History", systemImage: "clock.fill")
                 }
-            JobQueueSummaryView()
-                .tabItem {
-                    Label("Job Queue", systemImage: "list.bullet")
-                }
+//            JobQueueSummaryView()
+//                .tabItem {
+//                    Label("Job Queue", systemImage: "list.bullet")
+//                }
         }
     }
 }
-
-//
-//#Preview {
-//    ContentView(viewModel: ViewModel())
-//}
