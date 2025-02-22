@@ -229,31 +229,4 @@ func resizeImageWithPadding(_ image: CIImage, toSize targetSize: CGSize) -> CIIm
     
     return finalImage
 }
-/*
-fileprivate func saveImageToTemporaryFile(image: UIImage) {
-    let tempDir = NSTemporaryDirectory()
-    let fileName = "image_from_camera.png" // "resized_image_\(Date().timeIntervalSince1970).png"
-    let filePath = "\(tempDir)/\(fileName)"
-    
-    if FileManager.default.fileExists(atPath: filePath) {
-        do {
-            try FileManager.default.removeItem(atPath: filePath)
-            //print("Старый файл удален: \(filePath)")
-        } catch {
-            print("Ошибка при удалении старого файла: \(error)")
-        }
-    }
-    
-    guard let data = image.pngData() else {
-        print("Failed to convert image to PNG data")
-        return
-    }
-    
-    do {
-        try data.write(to: URL(fileURLWithPath: filePath))
-        //print("Resized image saved to: \(filePath)")
-    } catch {
-        print("Failed to save image: \(error)")
-    }
-}
-*/
+
