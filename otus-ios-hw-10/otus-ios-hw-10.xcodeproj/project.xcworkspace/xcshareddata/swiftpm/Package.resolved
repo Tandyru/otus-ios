@@ -1,0 +1,33 @@
+{
+  "originHash" : "bb77c976563b7fe13083e10e6132aa8ea236cc895900ad51f6e167e07b090d12",
+  "pins" : [
+    {
+      "identity" : "coregeoinfoprovider",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Tandyru/CoreGeoInfoProvider.git",
+      "state" : {
+        "revision" : "34acfc0087f6e602a9b7dff17d49e7601f899bec",
+        "version" : "0.1.0"
+      }
+    },
+    {
+      "identity" : "realm-core",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/realm/realm-core.git",
+      "state" : {
+        "revision" : "cccb3ca9e26ec452a29f2f0d4050d1e38b8a3d43",
+        "version" : "14.14.0"
+      }
+    },
+    {
+      "identity" : "realm-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/realm/realm-swift.git",
+      "state" : {
+        "revision" : "8cb364a6a63695df296f05b53f7c3f3b1dda6af3",
+        "version" : "10.54.3"
+      }
+    }
+  ],
+  "version" : 3
+}
