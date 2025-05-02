@@ -1,0 +1,2782 @@
+
+
+--- ./AIProfilesUITests/AIProfilesUITestsLaunchTests.swift ---
+
+//
+//  AIProfilesUITestsLaunchTests.swift
+//  AIProfilesUITests
+//
+//  Created by Andrey Tanakov on 24.04.2025.
+//
+
+import XCTest
+
+final class AIProfilesUITestsLaunchTests: XCTestCase {
+
+    override class var runsForEachTargetApplicationUIConfiguration: Bool {
+        true
+    }
+
+    override func setUpWithError() throws {
+        continueAfterFailure = false
+    }
+
+    @MainActor
+    func testLaunch() throws {
+        let app = XCUIApplication()
+        app.launch()
+
+        // Insert steps here to perform after app launch but before taking a screenshot,
+        // such as logging into a test account or navigating somewhere in the app
+
+        let attachment = XCTAttachment(screenshot: app.screenshot())
+        attachment.name = "Launch Screen"
+        attachment.lifetime = .keepAlways
+        add(attachment)
+    }
+}
+
+
+--- ./AIProfilesUITests/AIProfilesUITests.swift ---
+
+//
+//  AIProfilesUITests.swift
+//  AIProfilesUITests
+//
+//  Created by Andrey Tanakov on 24.04.2025.
+//
+
+import XCTest
+
+final class AIProfilesUITests: XCTestCase {
+
+    override func setUpWithError() throws {
+        // Put setup code here. This method is called before the invocation of each test method in the class.
+
+        // In UI tests it is usually best to stop immediately when a failure occurs.
+        continueAfterFailure = false
+
+        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
+    }
+
+    override func tearDownWithError() throws {
+        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    }
+
+    @MainActor
+    func testExample() throws {
+        // UI tests must launch the application that they test.
+        let app = XCUIApplication()
+        app.launch()
+
+        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    }
+
+    @MainActor
+    func testLaunchPerformance() throws {
+        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
+            // This measures how long it takes to launch your application.
+            measure(metrics: [XCTApplicationLaunchMetric()]) {
+                XCUIApplication().launch()
+            }
+        }
+    }
+}
+
+
+--- ./AIProfiles/UI/Chat/ChatView.swift ---
+
+//
+//  ChatView.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 26.04.2025.
+//
+
+import SwiftUI
+
+struct ChatView: View {
+    @StateObject private var viewModel: ChatViewModel
+    
+    init(profile: Profile) {
+        _viewModel = StateObject(wrappedValue: ChatViewModel(profile: profile))
+    }
+    
+    var body: some View {
+        VStack {
+            ScrollViewReader { proxy in
+                ScrollView {
+                    LazyVStack(spacing: 12) {
+                        ForEach(viewModel.messages) { message in
+                            MessageView(message: message)
+                        }
+                    }
+                    .padding()
+                }
+                .onChange(of: viewModel.messages.count) { _ in
+                    scrollToBottom(proxy: proxy)
+                }
+            }
+            
+            HStack {
+                TextField("Type a message...", text: $viewModel.inputText)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .disableAutocorrection(true)
+                
+                Button {
+                    viewModel.sendMessage()
+                } label: {
+                    if viewModel.isLoading {
+                        ProgressView()
+                    } else {
+                        Image(systemName: "paperplane.fill")
+                    }
+                }
+                .disabled(viewModel.isLoading)
+            }
+            .padding()
+        }
+    }
+    
+    private func scrollToBottom(proxy: ScrollViewProxy) {
+        guard let lastMessage = viewModel.messages.last else { return }
+        proxy.scrollTo(lastMessage.id, anchor: .bottom)
+    }
+}
+
+// Представление сообщения
+struct MessageView: View {
+    let message: ChatMessage
+    
+    var body: some View {
+        HStack {
+            if message.isUser {
+                Spacer()
+            }
+            
+            Text(message.text)
+                .padding()
+                .background(message.isUser ? Color.blue : Color.gray.opacity(0.2))
+                .foregroundColor(message.isUser ? .white : .primary)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+            
+            if !message.isUser {
+                Spacer()
+            }
+        }
+    }
+}
+
+
+--- ./AIProfiles/UI/ProfileQuestionnaire/QuestionnaireView.swift ---
+
+//
+//  QuestionnaireView.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 27.04.2025.
+//
+
+import SwiftUI
+
+struct QuestionnaireView: View {
+    @ObservedObject var viewModel: ProfileQuestionnaireViewModel
+    @Environment(\.dismiss) private var dismiss
+    
+    @State private var selectedOption: String = ""
+    @State private var selectedOptions: [String] = []
+    @State private var booleanAnswer: Bool = false
+    @State private var showErrorAlert = false
+    
+    var body: some View {
+        NavigationStack {
+            VStack {
+                if viewModel.isLoading {
+                    ProgressView()
+                        .padding()
+                } else if let question = viewModel.currentQuestion {
+                    Text(question)
+                        .font(.title2)
+                        .padding()
+                    
+                    if viewModel.currentParamType == .singleChoice,
+                       let options = viewModel.currentParamOptions,
+                       !options.isEmpty
+                    {
+let _ = {
+print("singleChoice options: \(options)")
+}()
+                        VStack(alignment: .leading) {
+                            ForEach(options, id: \.self) { option in
+                                Button(action: {
+                                    if selectedOption == option {
+                                        selectedOption = ""
+                                    } else {
+                                        selectedOption = option
+                                    }
+                                }) {
+                                    HStack {
+                                        Text(option)
+                                        Spacer()
+                                        if selectedOption == option {
+                                            Image(systemName: "checkmark")
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        .onChange(of: selectedOption) { _ in
+                            viewModel.answer = selectedOption
+                        }
+                        .padding()
+                    } else if viewModel.currentParamType == .multipleChoice,
+                        let options = viewModel.currentParamOptions,
+                        !options.isEmpty
+                    {
+let _ = {
+print("multipleChoice options: \(options)")
+}()
+                        VStack(alignment: .leading) {
+                            ForEach(options, id: \.self) { option in
+                                MultipleSelectionRow(
+                                    title: option,
+                                    isSelected: selectedOptions.contains(option)
+                                ) {
+                                    if selectedOptions.contains(option) {
+                                        selectedOptions.removeAll { $0 == option }
+                                    } else {
+                                        selectedOptions.append(option)
+                                    }
+                                }
+                            }
+                        }
+                        .onChange(of: selectedOptions) { _ in
+                            viewModel.answer = selectedOptions.joined(separator: ", ")
+                        }
+                        .padding()
+                    } else if viewModel.currentParamType == .boolean {
+                        Toggle("Да/Нет", isOn: $booleanAnswer)
+                            .onChange(of: booleanAnswer) { _ in
+                                viewModel.answer = booleanAnswer ? "Yes" : "No"
+                            }
+                            .padding()
+                    } else {
+                        TextField("Your answer", text: $viewModel.answer)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .padding()
+                    }
+
+                    Button("Next") {
+                        viewModel.submitAnswer()
+                    }
+                    .disabled(viewModel.answer.isEmpty)
+                    
+                    Spacer().frame(height: 40)
+                    if viewModel.canFinishEarly {
+                        Button("Завершить опрос") {
+                            viewModel.finishEarly()
+                        }
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                    }
+                } else {
+                    Text("Profile setup complete!")
+                    Button("Finish") {
+                        dismiss()
+                    }
+                }
+            }
+            .navigationTitle("Profile Setup")
+            .onAppear {
+                viewModel.startQuestionnaire()
+            }
+            .alert(isPresented: $showErrorAlert) {
+                Alert(
+                    title: Text("Ошибка"),
+                    message: Text(viewModel.errorMessage ?? "Error"),
+                    dismissButton: .default(Text("OK"))
+                )
+            }
+            .onChange(of: viewModel.errorMessage) { newError in
+                if newError != nil {
+                    showErrorAlert = true
+                }
+            }
+        }
+    }
+}
+
+fileprivate struct MultipleSelectionRow: View {
+    let title: String
+    let isSelected: Bool
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            HStack {
+                Text(title)
+                Spacer()
+                if isSelected {
+                    Image(systemName: "checkmark")
+                }
+            }
+        }
+    }
+}
+
+
+--- ./AIProfiles/UI/ProfileList/ProfileListCell.swift ---
+
+//
+//  ProfileListCell.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 25.04.2025.
+//
+
+import SwiftUI
+
+struct ProfileCell: View {
+    let profile: Profile
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(profile.title)
+                .font(.headline)
+            Text(profile.purpose)
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+/*
+            HStack(spacing: 16) {
+                ParameterIcon(
+                    systemName: "text.bubble",
+                    label: profile.parameters.tone.rawValue.capitalized
+                )
+                ParameterIcon(
+                    systemName: "doc.plaintext",
+                    label: profile.parameters.examples ? "Примеры" : "Без примеров"
+                )
+                ParameterIcon(
+                    systemName: "ruler",
+                    label: profile.parameters.responseLength.rawValue.capitalized
+                )
+            }
+            .font(.caption)
+            .foregroundColor(.secondary)
+ */
+        }
+        .padding(.vertical, 8)
+    }
+}
+
+
+--- ./AIProfiles/UI/ProfileList/ProfileListView.swift ---
+
+//
+//  ProfileListView.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 24.04.2025.
+//
+
+import SwiftUI
+
+struct ProfileListView: View {
+    @StateObject private var viewModel: ProfileListViewModel
+    @State private var showErrorAlert = false
+    
+    @Environment(\.viewModelProvider) var viewModelProvider
+    
+    init(viewModel: ProfileListViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
+    
+    var body: some View {
+        NavigationStack {
+            VStack {
+                SearchBar(text: $viewModel.searchText)
+                    .padding(.horizontal)
+                List(viewModel.profiles) { profile in
+                    NavigationLink(destination: ProfileDetailView(profileId: profile.id)) {
+                        ProfileCell(profile: profile)
+                    }
+                    .swipeActions(edge: .trailing) {
+                        Button(role: .destructive) {
+                            viewModel.deleteProfile(profile)
+                        } label: {
+                            Label("Удалить", systemImage: "trash")
+                        }
+                    }
+                }
+                .listStyle(.plain)
+                .navigationTitle("Мои профили")
+            }
+            .background(Color(.systemGroupedBackground))
+            .alert(isPresented: $showErrorAlert) {
+                Alert(
+                    title: Text("Ошибка"),
+                    message: Text(viewModel.error ?? "Неизвестная ошибка"),
+                    dismissButton: .default(Text("OK"))
+                )
+            }
+            .safeAreaInset(edge: .bottom) {
+                // Empty spacer to ensure the FAB doesn't overlap content
+                Spacer().frame(height: 80)
+            }
+            .overlay(
+                NavigationLink(destination: ProfileSetupView(viewModelProvider: viewModelProvider)) {
+                    Image(systemName: "plus")
+                        .font(.system(size: 24, weight: .bold))
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(Circle().fill(Color.blue))
+                        .shadow(radius: 4)
+                }
+                .padding()
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+            )
+        }
+        .onAppear {
+            viewModel.fetchProfiles()
+        }
+        .onChange(of: viewModel.error) { error in
+            if error != nil {
+                showErrorAlert = true
+            }
+        }
+    }
+}
+
+
+--- ./AIProfiles/UI/ProfileList/SearchBar.swift ---
+
+//
+//  SearchBar.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 25.04.2025.
+//
+
+import SwiftUI
+
+struct SearchBar: View {
+    @Binding var text: String
+    
+    var body: some View {
+        HStack {
+            Image(systemName: "magnifyingglass")
+                .foregroundColor(.secondary)
+            TextField("Поиск профилей", text: $text)
+                .textFieldStyle(.plain)
+        }
+        .padding(8)
+        .background(Color(.systemGray6))
+        .cornerRadius(10)
+    }
+}
+
+
+--- ./AIProfiles/UI/ProfileSetup/ParameterDetailView.swift ---
+
+//
+//  ParameterDetailView.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 25.04.2025.
+//
+
+import SwiftUI
+
+struct ParameterDetailView: View {
+    @Binding var parameter: PreferenceParameterType
+    let onDelete: () -> Void
+    
+    var body: some View {
+        Form {
+            switch parameter {
+            case .boolean(let param):
+                BooleanParameterView(parameter: param) { updatedParam in
+                    parameter = .boolean(updatedParam)
+                }
+            case .singleChoice(let param):
+                SingleChoiceParameterView(parameter: param) { updatedParam in
+                    parameter = .singleChoice(updatedParam)
+                }
+            case .multipleChoice(let param):
+                MultipleChoiceParameterView(parameter: param) { updatedParam in
+                    parameter = .multipleChoice(updatedParam)
+                }
+            case .range(let param):
+                RangeParameterView(parameter: param) { updatedParam in
+                    parameter = .range(updatedParam)
+                }
+            case .text(let param):
+                TextParameterView(parameter: param) { updatedParam in
+                    parameter = .text(updatedParam)
+                }
+            }
+            
+            Section {
+                Button(role: .destructive, action: onDelete) {
+                    Label("Удалить параметр", systemImage: "trash")
+                }
+            }
+        }
+        .navigationTitle("Редактирование")
+    }
+}
+
+// BooleanParameterView.swift
+struct BooleanParameterView: View {
+    @State private var parameter: BooleanParameter
+    private let onUpdate: (BooleanParameter) -> Void
+    
+    init(parameter: BooleanParameter, onUpdate: @escaping (BooleanParameter) -> Void) {
+        _parameter = State(initialValue: parameter)
+        self.onUpdate = onUpdate
+    }
+    
+    var body: some View {
+        Section {
+            TextField("Название", text: $parameter.title)
+            Toggle("Значение", isOn: $parameter.value)
+        }
+        .onChange(of: parameter) { newValue in
+            onUpdate(newValue)
+        }
+    }
+}
+
+// SingleChoiceParameterView.swift
+struct SingleChoiceParameterView: View {
+    @State private var parameter: SingleChoiceParameter
+    private let onUpdate: (SingleChoiceParameter) -> Void
+    
+    init(parameter: SingleChoiceParameter, onUpdate: @escaping (SingleChoiceParameter) -> Void) {
+        _parameter = State(initialValue: parameter)
+        self.onUpdate = onUpdate
+    }
+    
+    var body: some View {
+        Section {
+            TextField("Название", text: $parameter.title)
+            TextField("Варианты (через запятую)", text: $parameter.optionsCSV)
+                .onChange(of: parameter.optionsCSV) { newValue in
+                    parameter.options = newValue.components(separatedBy: ",")
+                        .map { $0.trimmingCharacters(in: .whitespaces) }
+                }
+            Picker("Выбранный вариант", selection: $parameter.selectedOption) {
+                ForEach(parameter.options, id: \.self) { option in
+                    Text(option).tag(option)
+                }
+            }
+        }
+        .onChange(of: parameter) { newValue in
+            onUpdate(newValue)
+        }
+    }
+}
+
+// MultipleChoiceParameterView.swift
+struct MultipleChoiceParameterView: View {
+    @State private var parameter: MultipleChoiceParameter
+    private let onUpdate: (MultipleChoiceParameter) -> Void
+    
+    init(parameter: MultipleChoiceParameter, onUpdate: @escaping (MultipleChoiceParameter) -> Void) {
+        _parameter = State(initialValue: parameter)
+        self.onUpdate = onUpdate
+    }
+    
+    var body: some View {
+        Section {
+            TextField("Название", text: $parameter.title)
+            TextField("Варианты (через запятую)", text: $parameter.optionsCSV)
+                .onChange(of: parameter.optionsCSV) { newValue in
+                    parameter.options = newValue.components(separatedBy: ",")
+                        .map { $0.trimmingCharacters(in: .whitespaces) }
+                }
+            ForEach(parameter.options, id: \.self) { option in
+                MultipleSelectionRow(
+                    title: option,
+                    isSelected: parameter.selectedOptions.contains(option)
+                ) {
+                    if parameter.selectedOptions.contains(option) {
+                        parameter.selectedOptions.removeAll { $0 == option }
+                    } else {
+                        parameter.selectedOptions.append(option)
+                    }
+                }
+            }
+        }
+        .onChange(of: parameter) { newValue in
+            onUpdate(newValue)
+        }
+    }
+}
+
+// RangeParameterView.swift
+struct RangeParameterView: View {
+    @State private var parameter: RangeParameter
+    private let onUpdate: (RangeParameter) -> Void
+
+    init(parameter: RangeParameter, onUpdate: @escaping (RangeParameter) -> Void) {
+        _parameter = State(initialValue: parameter)
+        self.onUpdate = onUpdate
+    }
+
+    var body: some View {
+        Section {
+            TextField("Название", text: $parameter.title)
+            Stepper("Мин: \(parameter.min)", value: $parameter.min, in: 0...parameter.max)
+            Stepper("Макс: \(parameter.max)", value: $parameter.max, in: parameter.min...100)
+            Slider(value: Binding<Double>(
+                get: { Double(parameter.currentValue) },
+                set: { parameter.currentValue = Int($0.rounded()) }
+            ),
+            in: Double(parameter.min)...Double(parameter.max),
+            step: 1.0)
+                .onChange(of: parameter.currentValue) { newValue in
+                    parameter.currentValue = Int(newValue)
+                }
+        }
+        .onChange(of: parameter) { newValue in
+            onUpdate(newValue)
+        }
+    }
+}
+
+// TextParameterView.swift
+struct TextParameterView: View {
+    @State private var parameter: TextParameter
+    private let onUpdate: (TextParameter) -> Void
+    
+    init(parameter: TextParameter, onUpdate: @escaping (TextParameter) -> Void) {
+        _parameter = State(initialValue: parameter)
+        self.onUpdate = onUpdate
+    }
+    
+    var body: some View {
+        Section {
+            TextField("Название", text: $parameter.title)
+            TextEditor(text: $parameter.value)
+                .frame(height: 100)
+        }
+        .onChange(of: parameter) { newValue in
+            onUpdate(newValue)
+        }
+    }
+}
+
+// Вспомогательные расширения
+extension SingleChoiceParameter {
+    var optionsCSV: String {
+        get { options.joined(separator: ", ") }
+        set { options = newValue.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespaces) } }
+    }
+}
+
+extension MultipleChoiceParameter {
+    var optionsCSV: String {
+        get { options.joined(separator: ", ") }
+        set { options = newValue.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespaces) } }
+    }
+}
+
+fileprivate struct MultipleSelectionRow: View {
+    let title: String
+    let isSelected: Bool
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            HStack {
+                Text(title)
+                Spacer()
+                if isSelected {
+                    Image(systemName: "checkmark")
+                }
+            }
+        }
+    }
+}
+
+
+--- ./AIProfiles/UI/ProfileSetup/ParameterTypePicker.swift ---
+
+//
+//  ParameterTypePicker.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 25.04.2025.
+//
+
+import SwiftUI
+
+struct ParameterTypePicker: View {
+    @Binding var selectedType: PreferenceType?
+    private let types: [PreferenceType] = [
+        .boolean,
+        .singleChoice,
+        .multipleChoice,
+        .range,
+        .text
+    ]
+    
+    var body: some View {
+        List(types, id: \.self) { type in
+            Button(action: { selectedType = type }) {
+                HStack {
+                    Image(systemName: type.icon)
+                    Text(type.title)
+                }
+            }
+        }
+        .navigationTitle("Выберите тип")
+    }
+}
+
+
+--- ./AIProfiles/UI/ProfileSetup/ProfileSetupView.swift ---
+
+//
+//  ProfileSetupView.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 24.04.2025.
+//
+
+import SwiftUI
+
+struct ProfileSetupView: View {
+    @StateObject var viewModel: ProfileSetupViewModel
+    @Environment(\.dismiss) private var dismiss
+    @State private var title: String
+    @State private var purpose: String
+    @State private var parameters: [PreferenceParameterType]
+    @State private var showingTypeSelection = false
+    @State private var selectedParameterIndex: Int?
+    @State private var showingParameterDetails = false
+    @State private var showingQuestionnaire = false
+    @State private var selectedType: PreferenceType?
+    @State private var questionnaireViewModel: ProfileQuestionnaireViewModel?
+    
+    private let viewModelProvider: ViewModelProvider
+    private let existingProfile: Profile?
+    
+    init(viewModelProvider: ViewModelProvider, existingProfile: Profile? = nil) {
+        self.viewModelProvider = viewModelProvider
+        self.existingProfile = existingProfile
+        _viewModel = StateObject(wrappedValue: viewModelProvider.profileSetupViewModel.value)
+        _title = State(initialValue: existingProfile?.title ?? "")
+        _purpose = State(initialValue: existingProfile?.purpose ?? "")
+        _parameters = State(initialValue: existingProfile?.parameters ?? [])
+    }
+    
+    var body: some View {
+        Form {
+            Section {
+                TextField("Название профиля", text: $title)
+                    .font(.headline)
+                ZStack(alignment: .topLeading) {
+                    TextEditor(text: $purpose)
+                        .frame(minHeight: 60)
+                        .padding(4)
+                        .background(
+                            RoundedRectangle(cornerRadius: 8)
+                                .fill(Color(.systemGray6))
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color(.systemGray4), lineWidth: 1)
+                        )
+                    if purpose.isEmpty {
+                        Text("Введите цель профиля")
+                            .foregroundColor(.secondary)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 12)
+                            .allowsHitTesting(false)
+                    }
+                }
+            } header: {
+//                Text("Основные данные")
+//                    .font(.headline)
+//                    .foregroundColor(.accentColor)
+//                    .padding(.vertical, 8)
+            }
+            .listRowInsets(EdgeInsets())
+            .listRowBackground(Color(.systemGray6))
+            Section("Параметры") {
+                ForEach(parameters.indices, id: \.self) { index in
+                    Button(action: {
+                        selectedParameterIndex = index
+                        showingParameterDetails = true
+                    }) {
+                        ParameterRowView(parameter: parameters[index])
+                    }
+                }
+                .onDelete { indices in
+                    parameters.remove(atOffsets: indices)
+                }
+                
+                Button("Добавить параметр") {
+                    showingTypeSelection = true
+                }
+                Button("Use AI Assistant") {
+                    questionnaireViewModel = ProfileQuestionnaireViewModel(purpose: purpose)
+                    showingQuestionnaire = true
+                }
+                .sheet(isPresented: $showingQuestionnaire, onDismiss: {
+                    if let viewModel = questionnaireViewModel, viewModel.isCompleted {
+                        var existingIDs = Set(parameters.map { $0.id })
+                        let newParams = viewModel.parameters.filter { !existingIDs.contains($0.id) }
+                        parameters.append(contentsOf: newParams)
+                    }
+                    questionnaireViewModel = nil
+                }) {
+let _ = { print("questionnaireViewModel:\(questionnaireViewModel)") }()
+                    if let viewModel = questionnaireViewModel {
+                        QuestionnaireView(viewModel: viewModel)
+                    }
+                }
+            }
+        }
+        .sheet(isPresented: $showingTypeSelection) {
+            ParameterTypePicker(selectedType: $selectedType)
+        }
+        .navigationDestination(isPresented: $showingParameterDetails) {
+            if let index = selectedParameterIndex {
+                ParameterDetailView(
+                    parameter: $parameters[index],
+                    onDelete: {
+                        parameters.remove(at: index)
+                        selectedParameterIndex = nil
+                        showingParameterDetails = false
+                    }
+                )
+            }
+        }
+        .onChange(of: selectedType) { newType in
+            if let type = newType {
+                addParameter(of: type)
+                selectedType = nil
+                showingTypeSelection = false
+            }
+        }
+//        .navigationTitle(existingProfile != nil ? "Профиль" : "Новый профиль")
+        .onAppear {
+            viewModel.isSaved = false
+        }
+        .onChange(of: viewModel.isSaved) { isSaved in
+            if isSaved {
+                dismiss()
+            }
+        }
+        .onDisappear {
+            if !showingTypeSelection && !showingParameterDetails {
+                viewModelProvider.profileSetupViewModel.reset()
+            }
+        }
+        .safeAreaInset(edge: .bottom) {
+            Button {
+                if let existingProfile {
+                    viewModel.updateProfile(existingProfile, title: title, purpose: purpose, parameters: parameters)
+                } else {
+                    viewModel.createProfile(title: title, purpose: purpose, parameters: parameters)
+                }
+            } label: {
+                Text(existingProfile != nil ? "Сохранить" : "Создать")
+                    .font(.system(size: 18, weight: .semibold))
+                    .padding(.horizontal, 24)
+                    .padding(.vertical, 12)
+                    .background(
+                        Capsule()
+                            .fill(Color.accentColor)
+                            .shadow(color: Color.black.opacity(0.2), radius: 6, x: 0, y: 2)
+                    )
+                    .foregroundColor(.white)
+            }
+            .disabled(title.isEmpty || purpose.isEmpty/* || parameters.isEmpty*/)
+            .padding()
+            .frame(maxWidth: .infinity, alignment: .trailing)
+            .background {
+                Color.clear
+            }
+        }
+    }
+    
+    private func addParameter(of type: PreferenceType) {
+        switch type {
+        case .boolean:
+            parameters.append(.boolean(BooleanParameter(
+                id: UUID().uuidString,
+                title: "Новый параметр",
+                value: false
+            )))
+        case .singleChoice:
+            parameters.append(.singleChoice(SingleChoiceParameter(
+                id: UUID().uuidString,
+                title: "Новый параметр",
+                options: ["Вариант 1", "Вариант 2"],
+                selectedOption: "Вариант 1"
+            )))
+        case .multipleChoice:
+            parameters.append(.multipleChoice(MultipleChoiceParameter(
+                id: UUID().uuidString,
+                title: "Новый параметр",
+                options: ["Вариант 1", "Вариант 2"],
+                selectedOptions: []
+            )))
+        case .range:
+            parameters.append(.range(RangeParameter(
+                id: UUID().uuidString,
+                title: "Новый параметр",
+                min: 1,
+                max: 10,
+                currentValue: 5
+            )))
+        case .text:
+            parameters.append(.text(TextParameter(
+                id: UUID().uuidString,
+                title: "Новый параметр",
+                value: ""
+            )))
+        }
+    }
+
+    private func removeParameter(at indexSet: IndexSet) {
+        parameters.remove(atOffsets: indexSet)
+    }
+}
+
+
+
+--- ./AIProfiles/UI/ProfileSetup/PreferenceType+Extensions.swift ---
+
+//
+//  PreferenceType+Extensions.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 25.04.2025.
+//
+
+extension PreferenceType {
+    var title: String {
+        switch self {
+        case .boolean: return "Логический"
+        case .singleChoice: return "Одиночный выбор"
+        case .multipleChoice: return "Множественный выбор"
+        case .range: return "Диапазон"
+        case .text: return "Текст"
+        }
+    }
+    
+    var icon: String {
+        switch self {
+        case .boolean: return "checkmark.square"
+        case .singleChoice: return "list.bullet"
+        case .multipleChoice: return "checklist"
+        case .range: return "slider.horizontal.3"
+        case .text: return "text.cursor"
+        }
+    }
+}
+
+
+--- ./AIProfiles/UI/ProfileSetup/ParameterRowView.swift ---
+
+//
+//  ParameterRowView.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 25.04.2025.
+//
+
+import SwiftUI
+
+struct ParameterRowView: View {
+    let parameter: PreferenceParameterType
+    
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading) {
+                Text(parameter.title)
+                    .font(.headline)
+                    .foregroundColor(.primary)
+                Text(parameter.detailDescription)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
+            Spacer()
+            Image(systemName: parameter.type.icon)
+                .foregroundColor(.accentColor)
+        }
+        .padding(.vertical, 8)
+    }
+}
+
+extension PreferenceParameterType {
+    var title: String {
+        switch self {
+        case .boolean(let param): return param.title
+        case .singleChoice(let param): return param.title
+        case .multipleChoice(let param): return param.title
+        case .range(let param): return param.title
+        case .text(let param): return param.title
+        }
+    }
+    
+    var detailDescription: String {
+        switch self {
+        case .boolean(let param):
+            return param.value ? "Да" : "Нет"
+            
+        case .singleChoice(let param):
+            return param.selectedOption
+            
+        case .multipleChoice(let param):
+            return param.selectedOptions.joined(separator: ", ")
+            
+        case .range(let param):
+            return "\(param.currentValue)"
+            
+        case .text(let param):
+            return param.value
+        }
+    }
+}
+
+
+--- ./AIProfiles/UI/ProfileDetailView.swift ---
+
+//
+//  ProfileDetailView.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 25.04.2025.
+//
+
+import SwiftUI
+
+struct ProfileDetailView: View {
+    @StateObject private var viewModel: ProfileDetailViewModel
+    @Environment(\.viewModelProvider) var viewModelProvider
+    @State private var isEditing = false
+    @State private var isChating = false
+    
+    init(profileId: UUID) {
+        _viewModel = StateObject(wrappedValue: ProfileDetailViewModel(profileId: profileId))
+    }
+
+    var body: some View {
+        if let profile = viewModel.profile {
+            content(for: profile)
+                .padding()
+                //.navigationTitle("Детали профиля")
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button {
+                            isEditing = true
+                        } label: {
+                            Image(systemName: "pencil")
+                        }
+                    }
+                }
+                .navigationDestination(isPresented: $isEditing) {
+                    ProfileSetupView(viewModelProvider: viewModelProvider, existingProfile: profile)
+                }
+                .safeAreaInset(edge: .bottom) { // Добавлено
+                    Button {
+                        isChating = true
+                    } label: {
+                        Text("Чат")
+                            .font(.system(size: 18, weight: .semibold))
+                            .padding(.horizontal, 24)
+                            .padding(.vertical, 12)
+                            .background(
+                                Capsule()
+                                    .fill(Color.accentColor)
+                                    .shadow(color: Color.black.opacity(0.2), radius: 6, x: 0, y: 2)
+                            )
+                            .foregroundColor(.white)
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+                    .background(Color.clear)
+                }
+                .navigationDestination(isPresented: $isChating) {
+                    if let profile = viewModel.profile {
+                        ChatView(profile: profile)
+                    }
+                }
+        } else {
+            ProgressView()
+        }
+    }
+        
+    private func content(for profile: Profile) -> some View
+    {
+        VStack(alignment: .leading) {
+            Text(profile.title)
+                .font(.title)
+            Text(profile.purpose)
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Параметры")
+                    .font(.headline)
+
+                ForEach(profile.parameters, id: \.id) { parameter in
+                    ParameterRow(name: parameter.title, value: parameter.detailDescription)
+                }
+            }
+            .padding(.top, 16)
+
+            Spacer()
+        }
+    }
+}
+
+struct ParameterRow: View {
+    let name: String
+    let value: String
+    
+    var body: some View {
+        HStack {
+            Text(name)
+                .foregroundColor(.secondary)
+            Spacer()
+            Text(value)
+                .foregroundColor(.primary)
+        }
+    }
+}
+
+
+--- ./AIProfiles/ViewModels/ProfileQuestionnaireViewModel.swift ---
+
+//
+//  ProfileQuestionnaireViewModel.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 27.04.2025.
+//
+
+import Foundation
+import Combine
+
+class ProfileQuestionnaireViewModel: ObservableObject {
+    @Published var currentQuestion: String?
+    @Published var answer: String = ""
+    @Published var parameters: [PreferenceParameterType] = []
+    @Published var isCompleted: Bool = false
+    @Published var errorMessage: String?
+    @Published var isLoading = false
+    @Published var canFinishEarly: Bool = false
+    
+    @Inject private var llmService: LLMQuestionnaireService
+    
+    private(set) var currentParamType: PreferenceType?
+    private(set) var currentParamOptions: [String]?
+    private let profilePurpose: String
+    private var cancellables = Set<AnyCancellable>()
+    
+    init(purpose: String) {
+        self.profilePurpose = purpose
+    }
+    
+    func startQuestionnaire() {
+        askNextQuestion()
+    }
+    
+    func submitAnswer() {
+        guard !answer.isEmpty, let paramType = currentParamType else {
+            askNextQuestion()
+            return
+        }
+
+        Task {
+            do {
+                let param = try createParameter(from: answer, paramType: paramType, options: currentParamOptions)
+                await MainActor.run {
+                    parameters.append(param)
+                    answer = ""
+                    if parameters.count >= 3 { // Например, после 3 вопросов
+                        canFinishEarly = true
+                    }
+                    askNextQuestion()
+                }
+            } catch {
+                await MainActor.run {
+                    errorMessage = "Ошибка обработки ответа: \(error.localizedDescription)"
+                }
+            }
+        }
+    }
+    
+    func finishEarly() {
+        isCompleted = true
+        currentQuestion = nil
+        self.currentParamType = nil
+        self.currentParamOptions = nil
+    }
+    
+    private func askNextQuestion() {
+        isLoading = true
+        Task {
+            do {
+                let (question, paramType, options) = try await generateNextQuestion()
+                await MainActor.run {
+                    if let paramType {
+                        currentQuestion = question
+                        self.currentParamType = paramType
+                        self.currentParamOptions = options
+                    } else {
+                        isCompleted = true
+                        currentQuestion = nil
+                        self.currentParamType = nil
+                        self.currentParamOptions = nil
+                    }
+                    self.isLoading = false
+                }
+            } catch {
+                await MainActor.run {
+                    errorMessage = "Ошибка генерации вопроса: \(error.localizedDescription)"
+                    self.isLoading = false
+                }
+            }
+        }
+    }
+    
+    private func generateNextQuestion(retries: Int = 3) async throws -> (String, PreferenceType?, [String]?) {
+        do {
+            return try await llmService.generateNextQuestion(profilePurpose: profilePurpose,
+                                                             existingParams: parameters)
+        } catch {
+            print("llmService.generateNextQuestion thrown error: \(error)")
+            if retries > 0 {
+                return try await generateNextQuestion(retries: retries - 1)
+            } else {
+                throw error
+            }
+        }
+    }
+    
+    private func createParameter(from answer: String, paramType: PreferenceType, options: [String]?) throws -> PreferenceParameterType {
+        let id = UUID().uuidString
+        let title = currentQuestion ?? "Parameter"
+        
+        switch paramType {
+        case .boolean:
+            let value = answer.lowercased() == "yes" || answer.lowercased() == "true"
+            return .boolean(BooleanParameter(id: id, title: title, value: value))
+            
+        case .singleChoice:
+            let options = options ?? ["Yes", "No"]
+            return .singleChoice(SingleChoiceParameter(id: id,
+                                                       title: title,
+                                                       options: options,
+                                                       selectedOption: answer))
+            
+        case .multipleChoice:
+            let selectedOptions = answer.components(separatedBy: ",")
+                .map { $0.trimmingCharacters(in: .whitespaces) }
+            return .multipleChoice(MultipleChoiceParameter(id: id,
+                                                           title: title,
+                                                           options: options ?? ["Option 1", "Option 2"],
+                                                           selectedOptions: selectedOptions))
+            
+        case .range:
+            let value = Int(answer) ?? 5 // Default to 5 if invalid
+            return .range(RangeParameter(id: id, title: title, min: 1, max: 10, currentValue: value))
+            
+        case .text:
+            return .text(TextParameter(id: id, title: title, value: answer))
+            
+        default:
+            throw NSError(domain: "Unsupported parameter type", code: -1)
+        }
+    }
+    
+
+}
+
+
+--- ./AIProfiles/ViewModels/ProfileSetupViewModel.swift ---
+
+//
+//  ProfileSetupViewModel.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 25.04.2025.
+//
+
+import Foundation
+import Combine
+
+final class ProfileSetupViewModel: ObservableObject {
+    @Published var isSaved = false
+    var profileID: UUID?
+
+    @Inject private var store: AppStore
+    private var cancellables = Set<AnyCancellable>()
+    
+    init() {
+        store.state
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] state in
+                guard let self = self, let id = self.profileID else { return }
+                if state.profiles.contains(where: { $0.id == id }) {
+                    self.isSaved = true
+                }
+            }
+            .store(in: &cancellables)
+    }
+    
+    func createProfile(title: String, purpose: String, parameters: [PreferenceParameterType]) {
+        let profile = Profile(
+            id: UUID(),
+            title: title,
+            purpose: purpose,
+            parameters: parameters,
+            createdAt: Date()
+        )
+        profileID = profile.id
+        store.dispatch(action: ProfileAction.saveProfile(profile))
+    }
+    
+    func updateProfile(_ profile: Profile, title: String, purpose: String, parameters: [PreferenceParameterType]) {
+        var updatedProfile = profile
+        updatedProfile.title = title
+        updatedProfile.purpose = purpose
+        updatedProfile.parameters = parameters
+        profileID = profile.id
+        store.dispatch(action: ProfileAction.saveProfile(updatedProfile))
+    }
+
+}
+
+
+--- ./AIProfiles/ViewModels/ChatViewModel.swift ---
+
+//
+//  ChatViewModel.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 26.04.2025.
+//
+
+import Foundation
+import Combine
+
+class ChatViewModel: ObservableObject {
+    @Published var messages: [ChatMessage] = []
+    @Published var inputText = ""
+    @Published var isLoading = false
+    @Published var errorMessage: String?
+    @Inject private var chatService: LLMChatService
+    private let profile: Profile
+    
+    init(profile: Profile) {
+        self.profile = profile
+    }
+    
+    func sendMessage() {
+        guard !inputText.isEmpty else { return }
+                
+        let userMessage = ChatMessage(text: inputText, isUser: true, timestamp: Date())
+        messages.append(userMessage)
+        
+        inputText = ""
+
+        isLoading = true
+        Task {
+            do {
+                let response = try await chatService.getNextMessage(messages: messages)
+                await MainActor.run {
+                    let assistantMessage = ChatMessage(text: response, isUser: false, timestamp: Date())
+                    messages.append(assistantMessage)
+                    isLoading = false
+                }
+            } catch {
+                await MainActor.run {
+                    isLoading = false
+                    errorMessage = "Error: \(error.localizedDescription)"
+                }
+            }
+        }
+    }
+}
+
+
+--- ./AIProfiles/ViewModels/ProfileDetailViewModel.swift ---
+
+//
+//  ProfileDetailViewModel.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 25.04.2025.
+//
+
+import Foundation
+import Combine
+
+final class ProfileDetailViewModel: ObservableObject {
+    @Published var profile: Profile?
+    private let profileId: UUID
+    @Inject private var store: AppStore
+    private var cancellables = Set<AnyCancellable>()
+    
+    init(profileId: UUID) {
+        self.profileId = profileId
+        store.state
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] state in
+                self?.profile = state.profiles.first { $0.id == profileId }
+            }
+            .store(in: &cancellables)
+    }
+}
+
+
+--- ./AIProfiles/ViewModels/ProfileListViewModel.swift ---
+
+//
+//  ProfileListViewModel.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 24.04.2025.
+//
+
+import Foundation
+import Combine
+
+class ProfileListViewModel: ObservableObject {
+
+    @Published var profiles: [Profile] = []
+    @Published var searchText: String = ""
+    @Published var error: String? = nil
+    
+    @Inject private var store: AppStore
+    @Inject private var repository: ProfileRepositoryProtocol
+    private var cancellables = Set<AnyCancellable>()
+    private var allProfiles: [Profile] = []
+    
+    init() {
+        
+        store.state
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] state in
+                guard let self else { return }
+                self.allProfiles = state.profiles
+                self.filterProfiles(text: searchText)
+                if let error = state.error {
+                    self.error = error.localizedDescription
+                }
+            }.store(in: &cancellables)
+        
+        $searchText.sink { [weak self] text in
+            self?.filterProfiles(text: text)
+        }.store(in: &cancellables)
+        
+        fetchProfiles()
+    }
+    
+    func fetchProfiles() {
+        store.dispatch(action: ProfileAction.fetchProfiles)
+    }
+        
+    func deleteProfile(_ profile: Profile) {
+        store.dispatch(action: ProfileAction.deleteProfile(profile))
+    }
+    
+    private func filteredProfiles(_ profiles: [Profile], searchText: String) -> [Profile] {
+        if searchText.isEmpty {
+            return profiles
+        } else {
+            return profiles.filter {
+                $0.title.localizedCaseInsensitiveContains(searchText) ||
+                $0.purpose.localizedCaseInsensitiveContains(searchText)
+            }
+        }
+    }
+    
+    private func filterProfiles(text: String) {
+        self.profiles = self.filteredProfiles(allProfiles, searchText: text)
+    }
+}
+
+
+--- ./AIProfiles/DI/ViewModelProvider.swift ---
+
+//
+//  ViewModelProvider.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 25.04.2025.
+//
+
+final class ViewModelProvider {
+    @Inject private var store: AppStore
+        
+    var profileListViewModel: ProfileListViewModel {
+        .init()
+    }
+    
+    var profileSetupViewModel = ResettableLazy<ProfileSetupViewModel> {
+        .init()
+    }
+    
+    func chatViewModel(profile: Profile) -> ChatViewModel {
+        .init(profile: profile)
+    }
+}
+
+
+--- ./AIProfiles/DI/ServiceLocator.swift ---
+
+//
+//  ServiceLocator.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 24.04.2025.
+//
+
+final class ServiceLocator {
+    static let shared = ServiceLocator()
+    
+    private var services: [String: Any] = [:]
+    
+    private init() {}
+    
+    func register<Service>(_ service: Service) {
+        let key = String(describing: Service.self)
+        services[key] = service
+    }
+    
+    func resolve<Service>() -> Service? {
+        let key = String(describing: Service.self)
+        return services[key] as? Service
+    }
+    
+    func resolveOrFail<Service>() -> Service {
+        guard let service: Service = resolve() else {
+            fatalError("\(Service.self) has not registred")
+        }
+        return service
+    }
+}
+
+@propertyWrapper
+struct Inject<Service> {
+    private var service: Service
+    
+    init() {
+        self.service = ServiceLocator.shared.resolveOrFail()
+    }
+    
+    var wrappedValue: Service {
+        get { service }
+        mutating set { service = newValue }
+    }
+}
+
+
+--- ./AIProfiles/DI/AppInitializer.swift ---
+
+//
+//  AppInitializer.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 24.04.2025.
+//
+
+import SwiftUI
+
+final class AppInitializer {
+    init() {
+        ServiceLocator.shared.register(CoreDataService.shared as ProfileRepositoryProtocol)
+        ServiceLocator.shared.register(ProfileMiddleware())
+        ServiceLocator.shared.register(OpenRouterService() as LLMServiceProtocol)
+        ServiceLocator.shared.register(LLMChatService())
+        ServiceLocator.shared.register(LLMQuestionnaireService())
+        
+        //
+        let store = AppStore(initialState: .init(),
+                          reducer: AppReducer().reduce(state:action:),
+                          middleware: AppMiddleware().execute(action:state:dispatch:)
+        )
+        ServiceLocator.shared.register(store)
+    }
+}
+
+struct ViewModelProviderEnvironmentKey: EnvironmentKey {
+    static let defaultValue: ViewModelProvider = ViewModelProvider()
+}
+
+extension EnvironmentValues {
+    var viewModelProvider: ViewModelProvider {
+        get { self[ViewModelProviderEnvironmentKey.self] }
+        set { self[ViewModelProviderEnvironmentKey.self] = newValue }
+    }
+}
+
+
+--- ./AIProfiles/Persistence.swift ---
+
+//
+//  Persistence.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 24.04.2025.
+//
+/*
+import CoreData
+
+struct PersistenceController {
+    static let shared = PersistenceController()
+
+    @MainActor
+    static let preview: PersistenceController = {
+        let result = PersistenceController(inMemory: true)
+        let viewContext = result.container.viewContext
+        for _ in 0..<10 {
+            let newItem = Item(context: viewContext)
+            newItem.timestamp = Date()
+        }
+        do {
+            try viewContext.save()
+        } catch {
+            // Replace this implementation with code to handle the error appropriately.
+            // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+            let nsError = error as NSError
+            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+        }
+        return result
+    }()
+
+    let container: NSPersistentContainer
+
+    init(inMemory: Bool = false) {
+        container = NSPersistentContainer(name: "AIProfiles")
+        if inMemory {
+            container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
+        }
+        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+            if let error = error as NSError? {
+                // Replace this implementation with code to handle the error appropriately.
+                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+
+                /*
+                 Typical reasons for an error here include:
+                 * The parent directory does not exist, cannot be created, or disallows writing.
+                 * The persistent store is not accessible, due to permissions or data protection when the device is locked.
+                 * The device is out of space.
+                 * The store could not be migrated to the current model version.
+                 Check the error message to determine what the actual problem was.
+                 */
+                fatalError("Unresolved error \(error), \(error.userInfo)")
+            }
+        })
+        container.viewContext.automaticallyMergesChangesFromParent = true
+    }
+}
+*/
+
+
+--- ./AIProfiles/Utils/ResettableLazy.swift ---
+
+//
+//  ResettableLazy.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 25.04.2025.
+//
+
+struct ResettableLazy<Value> {
+    private var _value: Value?
+    private let create: () -> Value
+    
+    init(create: @escaping () -> Value) {
+        self.create = create
+    }
+    
+    var value: Value {
+        mutating get {
+            if let existingValue = _value {
+                return existingValue
+            }
+            let newValue = create()
+            _value = newValue
+            return newValue
+        }
+    }
+    
+    mutating func reset() {
+        _value = nil
+    }
+}
+
+
+--- ./AIProfiles/Utils/Locale+extension.swift ---
+
+//
+//  Locale+extension.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 27.04.2025.
+//
+
+import Foundation
+
+extension Locale {
+    static var interfaceLanguageCode: String {
+        let preferredLanguage = Locale.preferredLanguages.first ?? "en"
+        return Locale(identifier: preferredLanguage).language.languageCode?.identifier ?? "en"
+    }
+}
+
+
+--- ./AIProfiles/AIProfilesApp.swift ---
+
+//
+//  AIProfilesApp.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 24.04.2025.
+//
+
+import SwiftUI
+
+@main
+struct AIProfilesApp: App {
+    private let appInitializer = AppInitializer()
+
+    var body: some Scene {
+        WindowGroup {
+            ProfileListView(viewModel: ViewModelProvider().profileListViewModel)
+                .environment(\.viewModelProvider, ViewModelProvider())
+        }
+    }
+}
+
+
+--- ./AIProfiles/Domain/ChatMessage.swift ---
+
+//
+//  ChatMessage.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 26.04.2025.
+//
+
+import Foundation
+
+struct ChatMessage: Identifiable {
+    let id = UUID()
+    let text: String
+    let isUser: Bool
+    let timestamp: Date
+}
+
+
+--- ./AIProfiles/Domain/Profile.swift ---
+
+//
+//  Profile.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 24.04.2025.
+//
+
+import Foundation
+
+struct Profile: Identifiable, Codable {
+    let id: UUID
+    var title: String
+    var purpose: String
+    var parameters: [PreferenceParameterType]
+    let createdAt: Date
+}
+
+enum PreferenceParameterType: Codable {
+    case boolean(BooleanParameter)
+    case singleChoice(SingleChoiceParameter)
+    case multipleChoice(MultipleChoiceParameter)
+    case range(RangeParameter)
+    case text(TextParameter)
+    
+    enum CodingKeys: String, CodingKey {
+        case type
+        case data
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let type = try container.decode(PreferenceType.self, forKey: .type)
+        let data = try container.decode(Data.self, forKey: .data)
+        
+        switch type {
+        case .boolean:
+            self = .boolean(try JSONDecoder().decode(BooleanParameter.self, from: data))
+        case .singleChoice:
+            self = .singleChoice(try JSONDecoder().decode(SingleChoiceParameter.self, from: data))
+        case .multipleChoice:
+            self = .multipleChoice(try JSONDecoder().decode(MultipleChoiceParameter.self, from: data))
+        case .range:
+            self = .range(try JSONDecoder().decode(RangeParameter.self, from: data))
+        case .text:
+            self = .text(try JSONDecoder().decode(TextParameter.self, from: data))
+        }
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        let data: Data
+        
+        switch self {
+        case .boolean(let param):
+            try container.encode(PreferenceType.boolean, forKey: .type)
+            data = try JSONEncoder().encode(param)
+        case .singleChoice(let param):
+            try container.encode(PreferenceType.singleChoice, forKey: .type)
+            data = try JSONEncoder().encode(param)
+        case .multipleChoice(let param):
+            try container.encode(PreferenceType.multipleChoice, forKey: .type)
+            data = try JSONEncoder().encode(param)
+        case .range(let param):
+            try container.encode(PreferenceType.range, forKey: .type)
+            data = try JSONEncoder().encode(param)
+        case .text(let param):
+            try container.encode(PreferenceType.text, forKey: .type)
+            data = try JSONEncoder().encode(param)
+        }
+        
+        try container.encode(data, forKey: .data)
+    }
+}
+
+extension PreferenceParameterType {
+    var id: String {
+        switch self {
+        case .boolean(let parameter):
+            return parameter.id
+        case .singleChoice(let parameter):
+            return parameter.id
+        case .multipleChoice(let parameter):
+            return parameter.id
+        case .range(let parameter):
+            return parameter.id
+        case .text(let parameter):
+            return parameter.id
+        }
+    }
+    
+    var type: PreferenceType {
+        switch self {
+        case .boolean(let parameter):
+            return parameter.type
+        case .singleChoice(let parameter):
+            return parameter.type
+        case .multipleChoice(let parameter):
+            return parameter.type
+        case .range(let parameter):
+            return parameter.type
+        case .text(let parameter):
+            return parameter.type
+        }
+    }
+}
+
+protocol PreferenceParameter: Codable & Identifiable & Equatable {
+    var id: String { get }
+    var title: String { get }
+    var type: PreferenceType { get }
+}
+
+enum PreferenceType: String, Codable {
+    case boolean
+    case singleChoice
+    case multipleChoice
+    case range
+    case text
+}
+
+struct BooleanParameter: PreferenceParameter {
+    let id: String
+    var title: String
+    var type: PreferenceType = .boolean
+    var value: Bool
+}
+
+struct SingleChoiceParameter: PreferenceParameter {
+    let id: String
+    var title: String
+    var type: PreferenceType = .singleChoice
+    var options: [String]
+    var selectedOption: String
+}
+
+struct MultipleChoiceParameter: PreferenceParameter {
+    let id: String
+    var title: String
+    var type: PreferenceType = .multipleChoice
+    var options: [String]
+    var selectedOptions: [String]
+}
+
+struct RangeParameter: PreferenceParameter {
+    let id: String
+    var title: String
+    var type: PreferenceType = .range
+    var min: Int
+    var max: Int
+    var currentValue: Int
+}
+
+struct TextParameter: PreferenceParameter {
+    let id: String
+    var title: String
+    var type: PreferenceType = .text
+    var value: String
+}
+
+extension Profile {
+    func parameter<T>(ofType type: T.Type, withID id: String) -> T? where T: PreferenceParameter {
+        parameters.compactMap {
+            switch $0 {
+            case .boolean(let param as T): return param.id == id ? param : nil
+            case .singleChoice(let param as T): return param.id == id ? param : nil
+            case .multipleChoice(let param as T): return param.id == id ? param : nil
+            case .range(let param as T): return param.id == id ? param : nil
+            case .text(let param as T): return param.id == id ? param : nil
+            default: return nil
+            }
+        }.first
+    }
+}
+
+
+--- ./AIProfiles/Redux/AppState.swift ---
+
+//
+//  AppState.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 25.04.2025.
+//
+
+struct AppState {
+    var profiles: [Profile] = []
+    var error: Error? = nil
+    var isLoading: Bool = false
+}
+
+
+--- ./AIProfiles/Redux/Middleware/AppMiddleware.swift ---
+
+//
+//  AppMiddleware.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 25.04.2025.
+//
+
+final class AppMiddleware {
+    @Inject var profileMiddleware: ProfileMiddleware
+    
+    func execute(action: Action, state: AppState, dispatch: @escaping (Action) -> AppState?) {
+        profileMiddleware.execute(action: action, state: state, dispatch: dispatch)
+    }
+}
+
+
+--- ./AIProfiles/Redux/Middleware/ProfileMiddleware.swift ---
+
+//
+//  ProfileMiddleware.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 25.04.2025.
+//
+
+final class ProfileMiddleware {
+    @Inject private var repository: ProfileRepositoryProtocol
+    
+    func execute(action: Action, state: AppState, dispatch: @escaping (Action) -> AppState?) {
+        guard let profileAction = action as? ProfileAction else { return }
+
+        Task {
+            switch profileAction {
+            case .fetchProfiles:
+                await fetchProfiles(dispatch: dispatch)
+            case .saveProfile(let profile):
+                do {
+                    try await repository.saveProfile(profile)
+                } catch {
+                    await MainActor.run {
+                        // TODO _ = dispatch(ProfileAction.profilesLoaded(.failure(error)))
+                    }
+                }
+                await fetchProfiles(dispatch: dispatch)
+            case .deleteProfile(let profile):
+                do {
+                    try await self.repository.deleteProfile(profile)
+                } catch {
+                    await MainActor.run {
+                        // TODO _ = dispatch(ProfileAction.profilesLoaded(.failure(error)))
+                    }
+                }
+                await fetchProfiles(dispatch: dispatch)
+            default:
+                break
+            }
+        }
+    }
+    
+    private func fetchProfiles(dispatch: @escaping (Action) -> AppState?) async {
+        do {
+            let profiles = try await self.repository.fetchProfiles()
+            await MainActor.run {
+                _ = dispatch(ProfileAction.profilesLoaded(.success(profiles)))
+            }
+        } catch {
+            await MainActor.run {
+                _ = dispatch(ProfileAction.profilesLoaded(.failure(error)))
+            }
+        }
+    }
+}
+
+
+--- ./AIProfiles/Redux/ProfileAction.swift ---
+
+//
+//  ProfileAction.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 25.04.2025.
+//
+
+enum ProfileAction: Action {
+    case fetchProfiles
+    case saveProfile(Profile)
+    case deleteProfile(Profile)
+    case profilesLoaded(Result<[Profile], Error>)
+}
+
+
+--- ./AIProfiles/Redux/AppReducer.swift ---
+
+//
+//  AppReducer.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 25.04.2025.
+//
+
+final class AppReducer {
+    func reduce(state: AppState, action: Action) -> AppState {
+        var newState = state
+        if let action = action as? ProfileAction {
+            switch action {
+            case .fetchProfiles:
+                newState.isLoading = true
+                newState.error = nil
+            case .saveProfile:
+                newState.isLoading = true
+                newState.error = nil
+            case .profilesLoaded(.success(let profiles)):
+                newState.profiles = profiles
+                newState.isLoading = false
+            case .profilesLoaded(.failure(let error)):
+                newState.error = error
+                newState.isLoading = false
+            case .deleteProfile:
+                newState.isLoading = true
+            }
+        }
+        return newState
+    }
+}
+
+
+--- ./AIProfiles/Redux/Store.swift ---
+
+//
+//  Store.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 25.04.2025.
+//
+
+import Foundation
+import Combine
+
+public final class Store<State, Action> {
+
+    public var state: AnyPublisher<State, Never> {
+        stateSubject.eraseToAnyPublisher()
+    }
+    
+    public typealias Middleware = (_ action: Action, _ state: State, _ dispatch: @escaping (Action) -> State?) -> Void
+    public typealias Reducer = (_ state: State, _ action: Action) -> State
+    
+    private let stateSubject: CurrentValueSubject<State, Never>
+    private let reducer: Reducer
+    private let middleware: Middleware
+    private var stateValue: State {
+        stateSubject.value
+    }
+
+    public init(initialState: State, reducer: @escaping Reducer, middleware: @escaping Middleware) {
+        self.reducer = reducer
+        self.middleware = middleware
+        stateSubject = CurrentValueSubject<State, Never>(initialState)
+    }
+    
+    public func dispatch(action: Action) {
+        assert(Thread.isMainThread)
+        middleware(action, stateValue) { [weak self] newAction in
+            assert(Thread.isMainThread)
+            self?.dispatch(action: newAction)
+            return self?.stateValue
+        }
+        let newState = reducer(stateSubject.value, action)
+        stateSubject.send(newState)
+    }
+}
+
+
+--- ./AIProfiles/Redux/AppStore.swift ---
+
+//
+//  AppStore.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 25.04.2025.
+//
+
+typealias AppStore = Store<AppState, Action>
+
+
+--- ./AIProfiles/Redux/Action.swift ---
+
+//
+//  Action.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 25.04.2025.
+//
+
+protocol Action {
+}
+
+
+
+--- ./AIProfiles/Services/LLM/LLMServiceProtocol.swift ---
+
+//
+//  LLMService.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 26.04.2025.
+//
+
+import Foundation
+
+protocol LLMServiceProtocol {
+    func send(messages: [LLMAPIMessage]) async throws -> String
+}
+
+
+--- ./AIProfiles/Services/LLM/OpenRouterService.swift ---
+
+//
+//  OpenRouterService.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 26.04.2025.
+//
+
+import Foundation
+import Combine
+
+// OpenRouter key: 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
+
+class OpenRouterService: LLMServiceProtocol {
+    private let apiKey = "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"
+    private let baseURL = URL(string: "https://openrouter.ai/api/v1/chat/completions")!
+    private let model = "deepseek/deepseek-chat-v3-0324:free" // google/palm-2"
+    
+    func send(messages: [LLMAPIMessage]) async throws -> String {
+        var request = URLRequest(url: baseURL)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+        request.setValue("AIProfiles", forHTTPHeaderField: "HTTP-Referer")
+        
+        let requestBody = APIRequest(model: model, messages: messages)
+        request.httpBody = try JSONEncoder().encode(requestBody)
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse,
+              (200...299).contains(httpResponse.statusCode) else {
+            throw URLError(.badServerResponse)
+        }
+        
+        let apiResponse: APIResponse
+        do {
+            apiResponse = try JSONDecoder().decode(APIResponse.self, from: data)
+        } catch {
+            let responseString = String(data: data, encoding: .utf8)
+            print("Invalid LLM response. Error \(error). Response: \(responseString)")
+            throw error
+        }
+        guard let firstChoice = apiResponse.choices.first else {
+            throw URLError(.cannotParseResponse)
+        }
+        return firstChoice.message.content
+    }
+    
+    /*
+    private let languageSystemMessage = {
+        let language = Locale.interfaceLanguageCode
+        return APIMessage(role: "system",
+                          content: "Always respond in \(languageName(for: language)).")
+    }()
+    
+    func getNextMessage(messages: [ChatMessage]) async throws -> String {
+        var apiMessages = messages.map { message in
+            APIMessage(role: message.isUser ? "user" : "assistant", content: message.text)
+        }
+        
+        apiMessages = apiMessages.filter { $0.role != "system" }
+        apiMessages.insert(languageSystemMessage, at: 0)
+        
+        var request = URLRequest(url: baseURL)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+        request.setValue("AIProfiles", forHTTPHeaderField: "HTTP-Referer")
+        
+        let requestBody = APIRequest(model: model, messages: apiMessages)
+        request.httpBody = try JSONEncoder().encode(requestBody)
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse,
+              (200...299).contains(httpResponse.statusCode) else {
+            throw URLError(.badServerResponse)
+        }
+        
+        let apiResponse = try JSONDecoder().decode(APIResponse.self, from: data)
+        guard let firstChoice = apiResponse.choices.first else {
+            throw URLError(.cannotParseResponse)
+        }
+        
+        return firstChoice.message.content
+    }
+     */
+}
+
+fileprivate func languageName(for code: String) -> String {
+    Locale.current.localizedString(forLanguageCode: code)?.capitalized ?? "English"
+}
+
+fileprivate struct APIRequest: Codable {
+    let model: String
+    let messages: [LLMAPIMessage]
+}
+
+fileprivate struct APIResponse: Codable {
+    struct Choice: Codable {
+        let message: LLMAPIMessage
+    }
+    let choices: [Choice]
+}
+
+
+--- ./AIProfiles/Services/LLM/LLMChatService.swift ---
+
+//
+//  LLMChatService.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 27.04.2025.
+//
+
+import Foundation
+
+class LLMChatService {
+    @Inject private var llmService: LLMServiceProtocol
+    
+    func getNextMessage(messages: [ChatMessage]) async throws -> String {
+        var apiMessages = messages.map { LLMAPIMessage(role: $0.isUser ? "user" : "assistant", content: $0.text) }
+        
+        let language = Locale.interfaceLanguageCode
+        let systemMessage = LLMAPIMessage(role: "system", content: "Always respond in \(Locale.current.localizedString(forLanguageCode: language) ?? "English").")
+        apiMessages.insert(systemMessage, at: 0)
+        
+        return try await llmService.send(messages: apiMessages)
+    }
+}
+
+
+--- ./AIProfiles/Services/LLM/LLMQuestionnaireService.swift ---
+
+//
+//  LLMQuestionnaireService.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 27.04.2025.
+//
+
+// LLMQuestionnaireService.swift
+import Foundation
+
+class LLMQuestionnaireService {
+    @Inject private var llmService: LLMServiceProtocol
+    
+    func generateNextQuestion(profilePurpose: String, existingParams: [PreferenceParameterType]) async throws -> (question: String, paramType: PreferenceType?, [String]?) {
+        let context = """
+        Profile purpose: \(profilePurpose)
+        Existing parameters: \(existingParams.map { $0.title }.joined(separator: ", "))
+        """
+        
+        let prompt = """
+        You are a profile builder. Generate the next question to define user preferences for: \(context)
+        Respond **ONLY** with a valid JSON in the following format: {"question": "...", "param_type": "boolean|single_choice|range|text|none"}
+        Requirements:
+        1. Do NOT add any explanations or text outside the JSON object
+        2. If no more questions needed, set param_type to "none"
+        3. Do NOT use markdown formatting or any wrappers like ```
+        4. Keep the JSON syntax valid
+        5. No prefixes like "Response:" or "Example:"
+        Example response:
+        {"question": "Do you prefer morning or evening activities?", "param_type": "single_choice", "options": ["morning", "evening"]}
+        """
+        
+        let userMessage = LLMAPIMessage(role: "user", content: prompt)
+        
+        let language = Locale.interfaceLanguageCode
+        let languageMessage = LLMAPIMessage(role: "system", content: "Always respond in \(Locale.current.localizedString(forLanguageCode: language) ?? "English").")
+        
+        let response = try await llmService.send(messages: [languageMessage, userMessage])
+        
+        guard let jsonString = extractJSON(from: response) else {
+            throw NSError(domain: "Invalid response format", code: -1)
+        }
+        guard let data = jsonString.data(using: .utf8) else {
+            throw NSError(domain: "Invalid response format", code: -1)
+        }
+        do {
+            let result = try JSONDecoder().decode(QuestionResponse.self, from: data)
+            return (result.question, result.paramType.asPreferenceType, result.options)
+        } catch {
+            print("Question response decoding error: \(error)")
+            throw error
+        }
+    }
+    
+    private struct QuestionResponse: Codable {
+        let question: String
+        let paramType: String
+        let options: [String]?
+        
+        enum CodingKeys: String, CodingKey {
+            case question
+            case paramType = "param_type"
+            case options
+        }
+    }
+}
+
+fileprivate func extractJSON(from markdownString: String) -> String? {
+    let pattern = #"(?s)```json\n(.*?)\n```\s*$"#
+    guard let regex = try? NSRegularExpression(pattern: pattern) else { return markdownString }
+    
+    let nsString = markdownString as NSString
+    guard let match = regex.firstMatch(in: markdownString, range: NSRange(location: 0, length: nsString.length)) else {
+        return markdownString
+    }
+    
+    let jsonRange = match.range(at: 1)
+    return nsString.substring(with: jsonRange)
+}
+
+fileprivate extension String {
+    var asPreferenceType: PreferenceType? {
+        switch self {
+        case "boolean":
+            return .boolean
+        case "single_choice":
+            return .singleChoice
+        case "multiple_choice":
+            return .multipleChoice
+        case "range":
+            return .range
+        case "text":
+            return .text
+        default:
+            return nil
+        }
+    }
+}
+
+
+--- ./AIProfiles/Services/LLM/LLMAPIMessage.swift ---
+
+//
+//  LLMAPIMessage.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 27.04.2025.
+//
+
+struct LLMAPIMessage: Codable {
+    let role: String  // "system", "user" или "assistant"
+    let content: String
+}
+
+
+--- ./AIProfiles/Services/CoreDataService.swift ---
+
+//
+//  CoreDataService.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 25.04.2025.
+//
+
+import CoreData
+
+class CoreDataService: ProfileRepositoryProtocol {
+    static let shared = CoreDataService()
+    
+    private let container: NSPersistentContainer
+    private var viewContext: NSManagedObjectContext {
+        container.viewContext
+    }
+    
+    private init() {
+        container = NSPersistentContainer(name: "AIProfiles")
+        container.loadPersistentStores { (storeDescription, error) in
+            if let error = error as NSError? {
+                fatalError("Unresolved error \(error), \(error.userInfo)")
+            }
+        }
+    }
+    
+    func saveProfile(_ profile: Profile) async throws {
+        try await withCheckedThrowingContinuation { continuation in
+            container.performBackgroundTask { context in
+                do {
+                    let request: NSFetchRequest<ProfileEntity> = ProfileEntity.fetchRequest()
+                    request.predicate = NSPredicate(format: "uid == %@", profile.id as CVarArg)
+                    
+                    if let existingEntity = try? context.fetch(request).first {
+                        existingEntity.title = profile.title
+                        existingEntity.purpose = profile.purpose
+                        existingEntity.parameters = try JSONEncoder().encode(profile.parameters)
+                    } else {
+                        let entity = ProfileEntity(context: context)
+                        entity.uid = profile.id
+                        entity.title = profile.title
+                        entity.purpose = profile.purpose
+                        entity.parameters = try JSONEncoder().encode(profile.parameters)
+                        entity.createdAt = profile.createdAt
+                    }
+
+                    try context.save()
+                    continuation.resume()
+                } catch {
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+
+    func fetchProfiles() async throws -> [Profile] {
+        try await withCheckedThrowingContinuation { continuation in
+            container.performBackgroundTask { context in
+                do {
+                    let request: NSFetchRequest<ProfileEntity> = ProfileEntity.fetchRequest()
+                    request.sortDescriptors = [NSSortDescriptor(keyPath: \ProfileEntity.createdAt, ascending: false)]
+
+                    let entities = try context.fetch(request)
+                    let profiles = try entities.compactMap { entity -> Profile? in
+                        guard
+                            let id = entity.uid,
+                            let title = entity.title,
+                            let purpose = entity.purpose,
+                            let createdAt = entity.createdAt,
+                            let parametersData = entity.parameters
+                        else { return nil }
+
+                        let parameters = try JSONDecoder().decode([PreferenceParameterType].self, from: parametersData)
+                        return Profile(id: id, title: title, purpose: purpose, parameters: parameters, createdAt: createdAt)
+                    }
+                    continuation.resume(returning: profiles)
+                } catch {
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+
+    func deleteProfile(_ profile: Profile) async throws {
+        try await withCheckedThrowingContinuation { continuation in
+            container.performBackgroundTask { context in
+                do {
+                    let request: NSFetchRequest<ProfileEntity> = ProfileEntity.fetchRequest()
+                    request.predicate = NSPredicate(format: "uid == %@", profile.id as CVarArg)
+
+                    let entities = try context.fetch(request)
+                    entities.forEach { context.delete($0) }
+                    try context.save()
+                    continuation.resume()
+                } catch {
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+}
+
+
+--- ./AIProfiles/Services/ProfileRepositoryProtocol.swift ---
+
+//
+//  ProfileRepositoryProtocol.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 25.04.2025.
+//
+
+protocol ProfileRepositoryProtocol {
+    func saveProfile(_ profile: Profile) async throws
+    func fetchProfiles() async throws -> [Profile]
+    func deleteProfile(_ profile: Profile) async throws
+}
+
+
+
+
+--- ./AIProfilesTests/ProfileTests.swift ---
+
+//
+//  ProfileTests.swift
+//  AIProfiles
+//
+//  Created by Andrey Tanakov on 24.04.2025.
+//
+
+import XCTest
+@testable import AIProfiles
+
+class ProfileTests: XCTestCase {
+    
+    // MARK: - PreferenceParameterType Encoding/Decoding Tests
+    
+    func testBooleanParameter_EncodeDecode() {
+        let originalParam = BooleanParameter(id: "bool1", title: "Test Boolean", value: true)
+        let preferenceType: PreferenceParameterType = .boolean(originalParam)
+        
+        let encoder = JSONEncoder()
+        let data = try! encoder.encode(preferenceType)
+        
+        let decoder = JSONDecoder()
+        let decodedPreferenceType = try! decoder.decode(PreferenceParameterType.self, from: data)
+        
+        switch decodedPreferenceType {
+        case .boolean(let decodedParam):
+            XCTAssertEqual(decodedParam.id, originalParam.id)
+            XCTAssertEqual(decodedParam.title, originalParam.title)
+            XCTAssertEqual(decodedParam.value, originalParam.value)
+            XCTAssertEqual(decodedParam.type, .boolean)
+        default:
+            XCTFail("Decoded preference type is not boolean")
+        }
+    }
+    
+    func testSingleChoiceParameter_EncodeDecode() {
+        let originalParam = SingleChoiceParameter(id: "single1", title: "Test Single", options: ["A", "B"], selectedOption: "A")
+        let preferenceType: PreferenceParameterType = .singleChoice(originalParam)
+        
+        let encoder = JSONEncoder()
+        let data = try! encoder.encode(preferenceType)
+        
+        let decoder = JSONDecoder()
+        let decodedPreferenceType = try! decoder.decode(PreferenceParameterType.self, from: data)
+        
+        switch decodedPreferenceType {
+        case .singleChoice(let decodedParam):
+            XCTAssertEqual(decodedParam.id, originalParam.id)
+            XCTAssertEqual(decodedParam.title, originalParam.title)
+            XCTAssertEqual(decodedParam.options, originalParam.options)
+            XCTAssertEqual(decodedParam.selectedOption, originalParam.selectedOption)
+            XCTAssertEqual(decodedParam.type, .singleChoice)
+        default:
+            XCTFail("Decoded preference type is not singleChoice")
+        }
+    }
+    
+    func testMultipleChoiceParameter_EncodeDecode() {
+        let originalParam = MultipleChoiceParameter(id: "multi1", title: "Test Multiple", options: ["X", "Y"], selectedOptions: ["X"])
+        let preferenceType: PreferenceParameterType = .multipleChoice(originalParam)
+        
+        let encoder = JSONEncoder()
+        let data = try! encoder.encode(preferenceType)
+        
+        let decoder = JSONDecoder()
+        let decodedPreferenceType = try! decoder.decode(PreferenceParameterType.self, from: data)
+        
+        switch decodedPreferenceType {
+        case .multipleChoice(let decodedParam):
+            XCTAssertEqual(decodedParam.id, originalParam.id)
+            XCTAssertEqual(decodedParam.title, originalParam.title)
+            XCTAssertEqual(decodedParam.options, originalParam.options)
+            XCTAssertEqual(decodedParam.selectedOptions, originalParam.selectedOptions)
+            XCTAssertEqual(decodedParam.type, .multipleChoice)
+        default:
+            XCTFail("Decoded preference type is not multipleChoice")
+        }
+    }
+    
+    func testRangeParameter_EncodeDecode() {
+        let originalParam = RangeParameter(id: "range1", title: "Test Range", min: 1, max: 10, currentValue: 5)
+        let preferenceType: PreferenceParameterType = .range(originalParam)
+        
+        let encoder = JSONEncoder()
+        let data = try! encoder.encode(preferenceType)
+        
+        let decoder = JSONDecoder()
+        let decodedPreferenceType = try! decoder.decode(PreferenceParameterType.self, from: data)
+        
+        switch decodedPreferenceType {
+        case .range(let decodedParam):
+            XCTAssertEqual(decodedParam.id, originalParam.id)
+            XCTAssertEqual(decodedParam.title, originalParam.title)
+            XCTAssertEqual(decodedParam.min, originalParam.min)
+            XCTAssertEqual(decodedParam.max, originalParam.max)
+            XCTAssertEqual(decodedParam.currentValue, originalParam.currentValue)
+            XCTAssertEqual(decodedParam.type, .range)
+        default:
+            XCTFail("Decoded preference type is not range")
+        }
+    }
+    
+    func testTextParameter_EncodeDecode() {
+        let originalParam = TextParameter(id: "text1", title: "Test Text", value: "Hello")
+        let preferenceType: PreferenceParameterType = .text(originalParam)
+        
+        let encoder = JSONEncoder()
+        let data = try! encoder.encode(preferenceType)
+        
+        let decoder = JSONDecoder()
+        let decodedPreferenceType = try! decoder.decode(PreferenceParameterType.self, from: data)
+        
+        switch decodedPreferenceType {
+        case .text(let decodedParam):
+            XCTAssertEqual(decodedParam.id, originalParam.id)
+            XCTAssertEqual(decodedParam.title, originalParam.title)
+            XCTAssertEqual(decodedParam.value, originalParam.value)
+            XCTAssertEqual(decodedParam.type, .text)
+        default:
+            XCTFail("Decoded preference type is not text")
+        }
+    }
+    
+    // MARK: - Profile Encoding/Decoding Test
+    
+    func testProfile_EncodeDecode() {
+        let boolParam = BooleanParameter(id: "bool1", title: "Bool", value: true)
+        let singleParam = SingleChoiceParameter(id: "single1", title: "Single", options: ["A", "B"], selectedOption: "A")
+        let profileID = UUID()
+        let createdAt = Date()
+        let originalProfile = Profile(id: profileID, title: "Test Profile", purpose: "Testing", parameters: [.boolean(boolParam), .singleChoice(singleParam)], createdAt: createdAt)
+        
+        let encoder = JSONEncoder()
+        let data = try! encoder.encode(originalProfile)
+        
+        let decoder = JSONDecoder()
+        let decodedProfile = try! decoder.decode(Profile.self, from: data)
+        
+        XCTAssertEqual(decodedProfile.id, profileID)
+        XCTAssertEqual(decodedProfile.title, originalProfile.title)
+        XCTAssertEqual(decodedProfile.purpose, originalProfile.purpose)
+        XCTAssertEqual(decodedProfile.createdAt, createdAt)
+        
+        XCTAssertEqual(decodedProfile.parameters.count, 2)
+        
+        for (original, decoded) in zip(originalProfile.parameters, decodedProfile.parameters) {
+            switch (original, decoded) {
+            case (.boolean(let o), .boolean(let d)):
+                XCTAssertEqual(o.id, d.id)
+                XCTAssertEqual(o.title, d.title)
+                XCTAssertEqual(o.value, d.value)
+            case (.singleChoice(let o), .singleChoice(let d)):
+                XCTAssertEqual(o.id, d.id)
+                XCTAssertEqual(o.title, d.title)
+                XCTAssertEqual(o.options, d.options)
+                XCTAssertEqual(o.selectedOption, d.selectedOption)
+            default:
+                XCTFail("Parameter types do not match")
+            }
+        }
+    }
+    
+    // MARK: - Profile Parameter Retrieval Tests
+    
+    func testProfile_ParameterRetrieval() {
+        let boolParam = BooleanParameter(id: "param1", title: "Bool", value: true)
+        let textParam = TextParameter(id: "param1", title: "Text", value: "Hello")
+        let profile = Profile(id: UUID(), title: "Test", purpose: "Test", parameters: [.boolean(boolParam), .text(textParam)], createdAt: Date())
+        
+        let retrievedBool: BooleanParameter? = profile.parameter(ofType: BooleanParameter.self, withID: "param1")
+        XCTAssertNotNil(retrievedBool)
+        XCTAssertEqual(retrievedBool?.value, true)
+        
+        let retrievedText: TextParameter? = profile.parameter(ofType: TextParameter.self, withID: "param1")
+        XCTAssertNotNil(retrievedText)
+        XCTAssertEqual(retrievedText?.value, "Hello")
+        
+        let wrongType: TextParameter? = profile.parameter(ofType: TextParameter.self, withID: "param2")
+        XCTAssertNil(wrongType)
+        
+        let nonExistent: BooleanParameter? = profile.parameter(ofType: BooleanParameter.self, withID: "invalid")
+        XCTAssertNil(nonExistent)
+    }
+    
+    func testProfile_MultipleSameIDAndType() {
+        let param1 = BooleanParameter(id: "sameID", title: "First", value: true)
+        let param2 = BooleanParameter(id: "sameID", title: "Second", value: false)
+        let profile = Profile(id: UUID(), title: "Test", purpose: "Test", parameters: [.boolean(param1), .boolean(param2)], createdAt: Date())
+        
+        let retrieved: BooleanParameter? = profile.parameter(ofType: BooleanParameter.self, withID: "sameID")
+        XCTAssertEqual(retrieved?.title, "First")
+    }
+}
+
+
+--- ./AIProfilesTests/AIProfilesTests.swift ---
+
+//
+//  AIProfilesTests.swift
+//  AIProfilesTests
+//
+//  Created by Andrey Tanakov on 24.04.2025.
+//
+
+import Testing
+@testable import AIProfiles
+
+struct AIProfilesTests {
+
+    @Test func example() async throws {
+        // Write your test here and use APIs like `#expect(...)` to check expected conditions.
+    }
+
+}
