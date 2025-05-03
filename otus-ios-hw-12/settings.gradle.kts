@@ -17,3 +17,4 @@ dependencyResolutionManagement {
 rootProject.name = "KMPTest"
 include(":androidApp")
 include(":shared")
+include(":NetworkLayer")

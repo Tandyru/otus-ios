@@ -25,11 +25,17 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(libs.kotlinx.coroutines.core)  //"1.10.2"
-            //put your multiplatform dependencies here
+            implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.logging)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+        }
+        val iosSimulatorArm64Main by getting {
+            dependencies {
+                implementation(project(":NetworkLayer"))
+            }
         }
     }
 }
@@ -44,4 +50,9 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+}
+
+dependencies {
+    implementation(project(":NetworkLayer"))
+    //implementation("io.github.microutils:kotlin-logging:3.0.5")
 }
