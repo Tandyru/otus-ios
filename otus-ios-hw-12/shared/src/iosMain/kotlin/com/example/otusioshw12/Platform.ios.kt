@@ -1,5 +1,6 @@
 package com.example.otusioshw12
 
+import platform.Foundation.NSLog
 import platform.UIKit.UIDevice
 
 class IOSPlatform: Platform {
@@ -7,3 +8,7 @@ class IOSPlatform: Platform {
 }
 
 actual fun getPlatform(): Platform = IOSPlatform()
+
+actual fun debugLog(message: String) {
+    NSLog(message)
+}

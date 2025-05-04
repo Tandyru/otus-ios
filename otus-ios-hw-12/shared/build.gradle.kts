@@ -20,6 +20,7 @@ kotlin {
         it.binaries.framework {
             baseName = "shared"
             isStatic = true
+            debuggable = true
         }
     }
 
@@ -28,6 +29,8 @@ kotlin {
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.logging)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -54,5 +57,4 @@ android {
 
 dependencies {
     implementation(project(":NetworkLayer"))
-    //implementation("io.github.microutils:kotlin-logging:3.0.5")
 }

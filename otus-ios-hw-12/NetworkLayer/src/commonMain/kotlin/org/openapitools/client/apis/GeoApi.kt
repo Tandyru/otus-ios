@@ -15,11 +15,13 @@
 
 package org.openapitools.client.apis
 
-import org.openapitools.client.models.BaseResponse
+import org.openapitools.client.models.BadRequestResponse
 import org.openapitools.client.models.CountriesResponse
 import org.openapitools.client.models.CountryResponse
 import org.openapitools.client.models.DateTimeResponse
 import org.openapitools.client.models.DistanceResponse
+import org.openapitools.client.models.ForbiddenResponse
+import org.openapitools.client.models.NotFoundResponse
 import org.openapitools.client.models.PopulatedPlaceResponse
 import org.openapitools.client.models.PopulatedPlacesResponse
 import org.openapitools.client.models.RegionResponse

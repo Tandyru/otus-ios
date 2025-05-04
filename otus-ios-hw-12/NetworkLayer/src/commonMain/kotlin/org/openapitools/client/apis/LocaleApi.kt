@@ -15,11 +15,13 @@
 
 package org.openapitools.client.apis
 
-import org.openapitools.client.models.BaseResponse
+import org.openapitools.client.models.BadRequestResponse
 import org.openapitools.client.models.CurrenciesResponse
 import org.openapitools.client.models.DateTimeResponse
+import org.openapitools.client.models.ForbiddenResponse
 import org.openapitools.client.models.LanguagesResponse
 import org.openapitools.client.models.LocalesResponse
+import org.openapitools.client.models.NotFoundResponse
 import org.openapitools.client.models.TimeResponse
 import org.openapitools.client.models.TimeZoneResponse
 import org.openapitools.client.models.TimeZonesResponse
