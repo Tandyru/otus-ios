@@ -2,10 +2,12 @@ import SwiftUI
 import shared
 
 struct ContentView: View {
-	let greet = Greeting().greet()
+    let cities = Array(Set(Cities().cities().toSwiftArray()))
 
 	var body: some View {
-		Text(greet)
+        List(cities, id: \.self) { city in
+            Text(city)
+        }
 	}
 }
 

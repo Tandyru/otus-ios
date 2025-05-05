@@ -40,6 +40,11 @@ kotlin {
                 implementation(project(":NetworkLayer"))
             }
         }
+        val iosArm64Main by getting {
+            dependencies {
+                implementation(project(":NetworkLayer"))
+            }
+        }
     }
 }
 
