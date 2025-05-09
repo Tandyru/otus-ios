@@ -13,6 +13,9 @@ class ChatViewModel: ObservableObject {
     @Published var inputText = ""
     @Published var isLoading = false
     @Published var errorMessage: String?
+    var profileTitle: String {
+        profile.title
+    }
     @Inject private var chatService: LLMChatService
     private let profile: Profile
     
@@ -31,7 +34,7 @@ class ChatViewModel: ObservableObject {
         isLoading = true
         Task {
             do {
-                let response = try await chatService.getNextMessage(messages: messages)
+                let response = try await chatService.getNextMessage(messages: messages, profile: profile)
                 await MainActor.run {
                     let assistantMessage = ChatMessage(text: response, isUser: false, timestamp: Date())
                     messages.append(assistantMessage)

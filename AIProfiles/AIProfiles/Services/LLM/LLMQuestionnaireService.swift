@@ -19,6 +19,7 @@ class LLMQuestionnaireService {
         
         let prompt = """
         You are a profile builder. Generate the next question to define user preferences for: \(context)
+        The building profile will be used in subsequent LLM interactions to adapt to user preferences and is not tied to any specific problem or scenario.
         Respond **ONLY** with a valid JSON in the following format: {"question": "...", "param_type": "boolean|single_choice|range|text|none"}
         Requirements:
         1. Do NOT add any explanations or text outside the JSON object

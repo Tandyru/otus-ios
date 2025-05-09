@@ -16,6 +16,13 @@ struct ChatView: View {
     
     var body: some View {
         VStack {
+            HStack(spacing: 0) {
+                Text("Профиль: \(viewModel.profileTitle)")
+                    .font(.headline)
+                    .foregroundStyle(Color.secondary)
+                Spacer()
+            }
+            .padding()
             ScrollViewReader { proxy in
                 ScrollView {
                     LazyVStack(spacing: 12) {
