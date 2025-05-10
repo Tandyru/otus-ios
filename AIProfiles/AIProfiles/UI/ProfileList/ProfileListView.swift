@@ -10,6 +10,8 @@ import SwiftUI
 struct ProfileListView: View {
     @StateObject private var viewModel: ProfileListViewModel
     @State private var showErrorAlert = false
+    @State private var selectedProfile: Profile? = nil
+    @State private var selectedChatProfile: Profile? = nil
     
     @Environment(\.viewModelProvider) var viewModelProvider
     
@@ -22,20 +24,32 @@ struct ProfileListView: View {
             VStack {
                 SearchBar(text: $viewModel.searchText)
                     .padding(.horizontal)
-                List(viewModel.profiles) { profile in
-                    NavigationLink(destination: ProfileDetailView(profileId: profile.id)) {
-                        ProfileCell(profile: profile)
-                    }
-                    .swipeActions(edge: .trailing) {
-                        Button(role: .destructive) {
-                            viewModel.deleteProfile(profile)
-                        } label: {
-                            Label("Удалить", systemImage: "trash")
+                ScrollView {
+                    LazyVStack {
+                        ForEach(viewModel.profiles, id: \.id) { profile in
+                            ProfileCell(profile: profile, onProfileTapped: {
+                                selectedProfile = profile
+                            }, onChatTapped: {
+                                selectedChatProfile = profile
+                            })
+                            .swipeActions(edge: .trailing) {
+                                Button(role: .destructive) {
+                                    viewModel.deleteProfile(profile)
+                                } label: {
+                                    Label("Удалить", systemImage: "trash")
+                                }
+                            }
                         }
                     }
+                    .listStyle(.plain)
+                    .navigationTitle("Мои профили")
+                    .navigationDestination(item: $selectedProfile) { profile in
+                        ProfileDetailView(profileId: profile.id)
+                    }
+                    .navigationDestination(item: $selectedChatProfile) { profile in
+                        ChatView(profile: profile)
+                    }
                 }
-                .listStyle(.plain)
-                .navigationTitle("Мои профили")
             }
             .background(Color(.systemGroupedBackground))
             .alert(isPresented: $showErrorAlert) {
@@ -65,7 +79,7 @@ struct ProfileListView: View {
         .onAppear {
             viewModel.fetchProfiles()
         }
-        .onChange(of: viewModel.error) { error in
+        .onChange(of: viewModel.error) { _, error in
             if error != nil {
                 showErrorAlert = true
             }

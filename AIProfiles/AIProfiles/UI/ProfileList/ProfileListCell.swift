@@ -9,33 +9,34 @@ import SwiftUI
 
 struct ProfileCell: View {
     let profile: Profile
+    var onProfileTapped: () -> Void
+    var onChatTapped: () -> Void
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(profile.title)
-                .font(.headline)
-            Text(profile.purpose)
-                .font(.subheadline)
-                .foregroundColor(.secondary)
-/*
-            HStack(spacing: 16) {
-                ParameterIcon(
-                    systemName: "text.bubble",
-                    label: profile.parameters.tone.rawValue.capitalized
-                )
-                ParameterIcon(
-                    systemName: "doc.plaintext",
-                    label: profile.parameters.examples ? "Примеры" : "Без примеров"
-                )
-                ParameterIcon(
-                    systemName: "ruler",
-                    label: profile.parameters.responseLength.rawValue.capitalized
-                )
+        HStack {
+            Button(action: onProfileTapped) {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(profile.title)
+                        .font(.headline)
+                        .multilineTextAlignment(.leading)
+                        .foregroundColor(.primary)
+                    Text(profile.purpose)
+                        .font(.subheadline)
+                        .multilineTextAlignment(.leading)
+                        .foregroundColor(.secondary)
+                }
             }
-            .font(.caption)
-            .foregroundColor(.secondary)
- */
+            .contentShape(Rectangle())
+            Spacer()
+            Button(action: onChatTapped) {
+                Image(systemName: "message")
+                    .foregroundColor(.blue)
+                    .padding(.leading, 8)
+            }
         }
-        .padding(.vertical, 8)
+        .padding(.vertical, 12)
+        .padding(.horizontal, 16)
+        .background(Color.listCellBackground)
     }
 }
+

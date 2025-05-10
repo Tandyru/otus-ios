@@ -15,7 +15,13 @@ struct Profile: Identifiable, Codable {
     let createdAt: Date
 }
 
-enum PreferenceParameterType: Codable {
+extension Profile: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+}
+
+enum PreferenceParameterType: Codable, Equatable {
     case boolean(BooleanParameter)
     case singleChoice(SingleChoiceParameter)
     case multipleChoice(MultipleChoiceParameter)

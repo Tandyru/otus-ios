@@ -12,10 +12,21 @@ final class ViewModelProvider {
         .init()
     }
     
-    var profileSetupViewModel = ResettableLazy<ProfileSetupViewModel> {
-        .init()
+    private var profileSetupViewModelStorage: ProfileSetupViewModel? = nil
+    
+    func profileSetupViewModel(profile: Profile?) -> ProfileSetupViewModel {
+        if let viewModel = profileSetupViewModelStorage, viewModel.profileID == profile?.id {
+            return viewModel
+        }
+        let viewModel = ProfileSetupViewModel(profile: profile)
+        profileSetupViewModelStorage = viewModel
+        return viewModel
     }
     
+    func resetProfileSetupViewModel() {
+        profileSetupViewModelStorage = nil
+    }
+
     func chatViewModel(profile: Profile) -> ChatViewModel {
         .init(profile: profile)
     }

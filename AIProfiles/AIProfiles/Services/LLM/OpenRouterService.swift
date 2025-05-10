@@ -35,7 +35,7 @@ class OpenRouterService: LLMServiceProtocol {
             apiResponse = try JSONDecoder().decode(APIResponse.self, from: data)
         } catch {
             let responseString = String(data: data, encoding: .utf8)
-            print("Invalid LLM response. Error \(error). Response: \(responseString)")
+            print("Invalid LLM response. Error \(error). Response: \(String(describing: responseString))")
             throw error
         }
         guard let firstChoice = apiResponse.choices.first else {

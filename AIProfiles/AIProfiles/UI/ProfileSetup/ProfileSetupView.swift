@@ -19,14 +19,14 @@ struct ProfileSetupView: View {
     @State private var showingQuestionnaire = false
     @State private var selectedType: PreferenceType?
     @State private var questionnaireViewModel: ProfileQuestionnaireViewModel?
-    
+    @State private var debounceTask: Task<Void, Never>?
+
     private let viewModelProvider: ViewModelProvider
-    private let existingProfile: Profile?
-    
+    private let debounceDuration: UInt64 = 500_000_000 // 0.5 секунды
+
     init(viewModelProvider: ViewModelProvider, existingProfile: Profile? = nil) {
         self.viewModelProvider = viewModelProvider
-        self.existingProfile = existingProfile
-        _viewModel = StateObject(wrappedValue: viewModelProvider.profileSetupViewModel.value)
+        _viewModel = StateObject(wrappedValue: viewModelProvider.profileSetupViewModel(profile: existingProfile))
         _title = State(initialValue: existingProfile?.title ?? "")
         _purpose = State(initialValue: existingProfile?.purpose ?? "")
         _parameters = State(initialValue: existingProfile?.parameters ?? [])
@@ -81,21 +81,6 @@ struct ProfileSetupView: View {
                 Button("Добавить параметр") {
                     showingTypeSelection = true
                 }
-                Button("Use AI Assistant") {
-                    questionnaireViewModel = ProfileQuestionnaireViewModel(purpose: purpose)
-                }
-                .sheet(isPresented: $showingQuestionnaire, onDismiss: {
-                    if let viewModel = questionnaireViewModel, viewModel.isCompleted {
-                        var existingIDs = Set(parameters.map { $0.id })
-                        let newParams = viewModel.parameters.filter { !existingIDs.contains($0.id) }
-                        parameters.append(contentsOf: newParams)
-                    }
-                    questionnaireViewModel = nil
-                }) {
-                    if let viewModel = questionnaireViewModel {
-                        QuestionnaireView(viewModel: viewModel)
-                    }
-                }
                 .onChange(of: questionnaireViewModel) { newValue in
                     if newValue != nil {
                         showingQuestionnaire = true
@@ -105,6 +90,18 @@ struct ProfileSetupView: View {
         }
         .sheet(isPresented: $showingTypeSelection) {
             ParameterTypePicker(selectedType: $selectedType)
+        }
+        .sheet(isPresented: $showingQuestionnaire, onDismiss: {
+            if let viewModel = questionnaireViewModel, viewModel.isCompleted {
+                let existingIDs = Set(parameters.map { $0.id })
+                let newParams = viewModel.parameters.filter { !existingIDs.contains($0.id) }
+                parameters.append(contentsOf: newParams)
+            }
+            questionnaireViewModel = nil
+        }) {
+            if let viewModel = questionnaireViewModel {
+                QuestionnaireView(viewModel: viewModel)
+            }
         }
         .navigationDestination(isPresented: $showingParameterDetails) {
             if let index = selectedParameterIndex {
@@ -126,39 +123,36 @@ struct ProfileSetupView: View {
             }
         }
 //        .navigationTitle(existingProfile != nil ? "Профиль" : "Новый профиль")
-        .onAppear {
-            viewModel.isSaved = false
-        }
-        .onChange(of: viewModel.isSaved) { isSaved in
-            if isSaved {
-                dismiss()
-            }
-        }
         .onDisappear {
             if !showingTypeSelection && !showingParameterDetails {
-                viewModelProvider.profileSetupViewModel.reset()
+                viewModelProvider.resetProfileSetupViewModel()
             }
+        }
+        .onChange(of: title) { _ in
+            triggerAutoSave()
+        }
+        .onChange(of: purpose) { _ in
+            triggerAutoSave()
+        }
+        .onChange(of: parameters) { _ in
+            triggerAutoSave()
         }
         .safeAreaInset(edge: .bottom) {
             Button {
-                if let existingProfile {
-                    viewModel.updateProfile(existingProfile, title: title, purpose: purpose, parameters: parameters)
-                } else {
-                    viewModel.createProfile(title: title, purpose: purpose, parameters: parameters)
-                }
+                questionnaireViewModel = ProfileQuestionnaireViewModel(purpose: purpose)
             } label: {
-                Text(existingProfile != nil ? "Сохранить" : "Создать")
-                    .font(.system(size: 18, weight: .semibold))
-                    .padding(.horizontal, 24)
-                    .padding(.vertical, 12)
+                Image("AIIcon")
+                    .resizable()
+                    .frame(width: 24, height: 24)
+                    .padding(12)
                     .background(
-                        Capsule()
+                        Circle()
                             .fill(Color.accentColor)
                             .shadow(color: Color.black.opacity(0.2), radius: 6, x: 0, y: 2)
                     )
                     .foregroundColor(.white)
             }
-            .disabled(title.isEmpty || purpose.isEmpty/* || parameters.isEmpty*/)
+            .disabled(title.isEmpty || purpose.isEmpty)
             .padding()
             .frame(maxWidth: .infinity, alignment: .trailing)
             .background {
@@ -204,10 +198,29 @@ struct ProfileSetupView: View {
                 value: ""
             )))
         }
+        selectedParameterIndex = parameters.count - 1
+        showingParameterDetails = true
     }
 
     private func removeParameter(at indexSet: IndexSet) {
         parameters.remove(atOffsets: indexSet)
+    }
+    
+    private func triggerAutoSave() {
+        debounceTask?.cancel()
+        debounceTask = Task {
+            try? await Task.sleep(nanoseconds: debounceDuration)
+            await MainActor.run {
+                saveProfile()
+            }
+        }
+    }
+    
+    private func saveProfile() {
+        guard !title.isEmpty && !purpose.isEmpty else {
+            return
+        }
+        viewModel.saveProfile(title: title, purpose: purpose, parameters: parameters)
     }
 }
 

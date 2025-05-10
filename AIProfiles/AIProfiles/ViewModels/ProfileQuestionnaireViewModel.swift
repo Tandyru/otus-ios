@@ -141,8 +141,8 @@ class ProfileQuestionnaireViewModel: ObservableObject, Equatable {
         case .text:
             return .text(TextParameter(id: id, title: title, value: answer))
             
-        default:
-            throw NSError(domain: "Unsupported parameter type", code: -1)
+//        default:
+//            throw NSError(domain: "Unsupported parameter type", code: -1)
         }
     }
     

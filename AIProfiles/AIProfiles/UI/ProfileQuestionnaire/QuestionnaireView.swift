@@ -116,7 +116,7 @@ print("multipleChoice options: \(options)")
                     }
                 }
             }
-            .navigationTitle("Profile Setup")
+            .navigationTitle("Настройка профиля")
             .onAppear {
                 viewModel.startQuestionnaire()
             }

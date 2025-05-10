@@ -71,22 +71,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "ACB7948B-43FC-404C-A691-CACB87D270DB"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "AIProfiles/Services/LLM/OpenRouterService.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "44"
-            endingLineNumber = "44"
-            landmarkName = "send(messages:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "9A59B7D2-9CB4-4125-9680-41314CF782AF"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -98,36 +82,6 @@
             endingLineNumber = "30"
             landmarkName = "send(messages:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "9A59B7D2-9CB4-4125-9680-41314CF782AF - 914558b16713b0dd"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(3) suspend resume partial function for AIProfiles.OpenRouterService.send(messages: Swift.Array&lt;AIProfiles.LLMAPIMessage&gt;) async throws -&gt; Swift.String"
-                  moduleName = "AIProfiles.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/andrey.tanakov/Projects/otus-ios/AIProfiles/AIProfiles/Services/LLM/OpenRouterService.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "30"
-                  endingLineNumber = "30">
-               </Location>
-               <Location
-                  uuid = "9A59B7D2-9CB4-4125-9680-41314CF782AF - 914558b16713b0dd"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(3) suspend resume partial function for AIProfiles.OpenRouterService.send(messages: Swift.Array&lt;AIProfiles.LLMAPIMessage&gt;) async throws -&gt; Swift.String"
-                  moduleName = "AIProfiles.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/andrey.tanakov/Projects/otus-ios/AIProfiles/AIProfiles/Services/LLM/OpenRouterService.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "30"
-                  endingLineNumber = "30">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
