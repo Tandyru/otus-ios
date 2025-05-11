@@ -53,7 +53,7 @@ print("singleChoice options: \(options)")
                                 }
                             }
                         }
-                        .onChange(of: selectedOption) { _ in
+                        .onChange(of: selectedOption) {
                             viewModel.answer = selectedOption
                         }
                         .padding()

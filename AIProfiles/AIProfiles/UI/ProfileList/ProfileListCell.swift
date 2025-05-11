@@ -13,21 +13,23 @@ struct ProfileCell: View {
     var onChatTapped: () -> Void
     
     var body: some View {
-        HStack {
+        HStack(spacing: 0) {
             Button(action: onProfileTapped) {
-                VStack(alignment: .leading, spacing: 8) {
-                    Text(profile.title)
-                        .font(.headline)
-                        .multilineTextAlignment(.leading)
-                        .foregroundColor(.primary)
-                    Text(profile.purpose)
-                        .font(.subheadline)
-                        .multilineTextAlignment(.leading)
-                        .foregroundColor(.secondary)
+                HStack(spacing: 0) {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text(profile.title)
+                            .font(.headline)
+                            .multilineTextAlignment(.leading)
+                            .foregroundColor(.primary)
+                        Text(profile.purpose)
+                            .font(.subheadline)
+                            .multilineTextAlignment(.leading)
+                            .foregroundColor(.secondary)
+                    }
+                    Spacer()
                 }
             }
             .contentShape(Rectangle())
-            Spacer()
             Button(action: onChatTapped) {
                 Image(systemName: "message")
                     .foregroundColor(.blue)

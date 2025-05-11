@@ -9,6 +9,11 @@ import SwiftUI
 
 final class AppInitializer {
     init() {
+        ServiceLocator.shared.register(KeychainService() as KeychainServiceProtocol)
+        ServiceLocator.shared.register(
+            OpenRouterAPIKeyStorage(
+                keychainService: ServiceLocator.shared.resolveOrFail()
+            ) as OpenRouterAPIKeyStorageProtocol)
         ServiceLocator.shared.register(CoreDataService.shared as ProfileRepositoryProtocol)
         ServiceLocator.shared.register(ProfileMiddleware())
         ServiceLocator.shared.register(OpenRouterService() as LLMServiceProtocol)

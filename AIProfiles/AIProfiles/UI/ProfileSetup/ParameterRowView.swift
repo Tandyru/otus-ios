@@ -14,10 +14,10 @@ struct ParameterRowView: View {
         HStack {
             VStack(alignment: .leading) {
                 Text(parameter.title)
-                    .font(.headline)
+                    .font(.body)
                     .foregroundColor(.primary)
                 Text(parameter.detailDescription)
-                    .font(.subheadline)
+                    .font(.body)
                     .foregroundColor(.secondary)
             }
             Spacer()

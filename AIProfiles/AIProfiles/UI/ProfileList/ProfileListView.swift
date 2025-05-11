@@ -12,7 +12,7 @@ struct ProfileListView: View {
     @State private var showErrorAlert = false
     @State private var selectedProfile: Profile? = nil
     @State private var selectedChatProfile: Profile? = nil
-    
+    @State private var selectedSettings = false
     @Environment(\.viewModelProvider) var viewModelProvider
     
     init(viewModel: ProfileListViewModel) {
@@ -41,10 +41,9 @@ struct ProfileListView: View {
                             }
                         }
                     }
-                    .listStyle(.plain)
                     .navigationTitle("Мои профили")
                     .navigationDestination(item: $selectedProfile) { profile in
-                        ProfileDetailView(profileId: profile.id)
+                        ProfileSetupView(viewModelProvider: viewModelProvider, existingProfile: profile)
                     }
                     .navigationDestination(item: $selectedChatProfile) { profile in
                         ChatView(profile: profile)
@@ -75,6 +74,18 @@ struct ProfileListView: View {
                 .padding()
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
             )
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        selectedSettings = true
+                    } label: {
+                        Image(systemName: "gearshape")
+                    }
+                }
+            }
+            .navigationDestination(isPresented: $selectedSettings) {
+                SettingsView()
+            }
         }
         .onAppear {
             viewModel.fetchProfiles()

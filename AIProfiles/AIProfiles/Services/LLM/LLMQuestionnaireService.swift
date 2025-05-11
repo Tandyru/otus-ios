@@ -5,7 +5,6 @@
 //  Created by Andrey Tanakov on 27.04.2025.
 //
 
-// LLMQuestionnaireService.swift
 import Foundation
 
 class LLMQuestionnaireService {

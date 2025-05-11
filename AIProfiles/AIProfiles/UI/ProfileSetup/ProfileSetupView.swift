@@ -20,9 +20,12 @@ struct ProfileSetupView: View {
     @State private var selectedType: PreferenceType?
     @State private var questionnaireViewModel: ProfileQuestionnaireViewModel?
     @State private var debounceTask: Task<Void, Never>?
-
+    @State private var isChatting = false
     private let viewModelProvider: ViewModelProvider
     private let debounceDuration: UInt64 = 500_000_000 // 0.5 секунды
+    private var isChattingAvailable: Bool {
+        viewModel.profile != nil
+    }
 
     init(viewModelProvider: ViewModelProvider, existingProfile: Profile? = nil) {
         self.viewModelProvider = viewModelProvider
@@ -36,7 +39,7 @@ struct ProfileSetupView: View {
         Form {
             Section {
                 TextField("Название профиля", text: $title)
-                    .font(.headline)
+                    .font(.title)
                 ZStack(alignment: .topLeading) {
                     TextEditor(text: $purpose)
                         .frame(minHeight: 60)
@@ -50,18 +53,13 @@ struct ProfileSetupView: View {
                                 .stroke(Color(.systemGray4), lineWidth: 1)
                         )
                     if purpose.isEmpty {
-                        Text("Введите цель профиля")
+                        Text("Цель профиля")
                             .foregroundColor(.secondary)
                             .padding(.horizontal, 8)
                             .padding(.vertical, 12)
                             .allowsHitTesting(false)
                     }
                 }
-            } header: {
-//                Text("Основные данные")
-//                    .font(.headline)
-//                    .foregroundColor(.accentColor)
-//                    .padding(.vertical, 8)
             }
             .listRowInsets(EdgeInsets())
             .listRowBackground(Color(.systemGray6))
@@ -81,13 +79,22 @@ struct ProfileSetupView: View {
                 Button("Добавить параметр") {
                     showingTypeSelection = true
                 }
-                .onChange(of: questionnaireViewModel) { newValue in
+                .onChange(of: questionnaireViewModel) { _, newValue in
                     if newValue != nil {
                         showingQuestionnaire = true
                     }
                 }
             }
+            if viewModel.profile != nil {
+                Section {
+                    Button("Удалить профиль", role: .destructive) {
+                        viewModel.deleteProfile()
+                        dismiss()
+                    }
+                }
+            }
         }
+        .padding(.top, -30)
         .sheet(isPresented: $showingTypeSelection) {
             ParameterTypePicker(selectedType: $selectedType)
         }
@@ -115,50 +122,70 @@ struct ProfileSetupView: View {
                 )
             }
         }
-        .onChange(of: selectedType) { newType in
+        .onChange(of: selectedType) { _, newType in
             if let type = newType {
                 addParameter(of: type)
                 selectedType = nil
                 showingTypeSelection = false
             }
         }
-//        .navigationTitle(existingProfile != nil ? "Профиль" : "Новый профиль")
         .onDisappear {
-            if !showingTypeSelection && !showingParameterDetails {
+            if !showingTypeSelection && !showingParameterDetails && !isChatting {
                 viewModelProvider.resetProfileSetupViewModel()
             }
         }
-        .onChange(of: title) { _ in
+        .onChange(of: title) {
             triggerAutoSave()
         }
-        .onChange(of: purpose) { _ in
+        .onChange(of: purpose) {
             triggerAutoSave()
         }
-        .onChange(of: parameters) { _ in
+        .onChange(of: parameters) {
             triggerAutoSave()
+        }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                if isChattingAvailable {
+                    Button {
+                        isChatting = true
+                    } label: {
+                        Image(systemName: "message")
+                            .symbolRenderingMode(.monochrome)
+                    }
+                }
+            }
+        }
+        .navigationDestination(isPresented: $isChatting) {
+            if let profile = viewModel.profile {
+                ChatView(profile: profile)
+            }
         }
         .safeAreaInset(edge: .bottom) {
-            Button {
-                questionnaireViewModel = ProfileQuestionnaireViewModel(purpose: purpose)
-            } label: {
-                Image("AIIcon")
-                    .resizable()
-                    .frame(width: 24, height: 24)
-                    .padding(12)
-                    .background(
-                        Circle()
-                            .fill(Color.accentColor)
-                            .shadow(color: Color.black.opacity(0.2), radius: 6, x: 0, y: 2)
-                    )
-                    .foregroundColor(.white)
-            }
-            .disabled(title.isEmpty || purpose.isEmpty)
-            .padding()
+            aiButton
             .frame(maxWidth: .infinity, alignment: .trailing)
             .background {
                 Color.clear
             }
         }
+    }
+    
+    var aiButton: some View {
+        Button {
+            questionnaireViewModel = ProfileQuestionnaireViewModel(purpose: purpose)
+        } label: {
+            Image("AIIcon")
+                .resizable()
+                .frame(width: 24, height: 24)
+                .padding(12)
+                .background(
+                    Circle()
+                        .fill(Color.accentColor)
+                        .shadow(color: Color.black.opacity(0.2), radius: 6, x: 0, y: 2)
+                )
+                .foregroundColor(.white)
+        }
+        .disabled(title.isEmpty || purpose.isEmpty)
+        .padding()
     }
     
     private func addParameter(of type: PreferenceType) {
@@ -218,6 +245,7 @@ struct ProfileSetupView: View {
     
     private func saveProfile() {
         guard !title.isEmpty && !purpose.isEmpty else {
+            viewModel.deleteProfile()
             return
         }
         viewModel.saveProfile(title: title, purpose: purpose, parameters: parameters)

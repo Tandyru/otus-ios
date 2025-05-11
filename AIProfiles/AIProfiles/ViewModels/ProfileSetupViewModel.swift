@@ -9,19 +9,17 @@ import Foundation
 import Combine
 
 final class ProfileSetupViewModel: ObservableObject {
-    private(set) var profileID: UUID?
-    private var profileCreationDate: Date?
+    var profile: Profile?
 
     @Inject private var store: AppStore
     private var cancellables = Set<AnyCancellable>()
     
     init(profile: Profile?) {
-        profileID = profile?.id
-        profileCreationDate = profile?.createdAt
+        self.profile = profile
         store.state
             .receive(on: DispatchQueue.main)
             .sink { [weak self] state in
-                guard let self = self, let id = self.profileID else { return }
+                guard let self = self, let id = self.profile?.id else { return }
                 if state.profiles.contains(where: { $0.id == id }) {
                 }
             }
@@ -29,19 +27,20 @@ final class ProfileSetupViewModel: ObservableObject {
     }
     
     func saveProfile(title: String, purpose: String, parameters: [PreferenceParameterType]) {
-        profileID = profileID ?? UUID()
-        profileCreationDate = profileCreationDate ?? Date()
-        guard let profileID, let profileCreationDate else {
-            return
-        }
-        let profile = Profile(
-            id: profileID,
+        self.profile = Profile(
+            id: profile?.id ?? UUID(),
             title: title,
             purpose: purpose,
             parameters: parameters,
-            createdAt: profileCreationDate
+            createdAt: profile?.createdAt ?? Date()
         )
-        store.dispatch(action: ProfileAction.saveProfile(profile))
+        store.dispatch(action: ProfileAction.saveProfile(profile!))
     }
 
+    func deleteProfile() {
+        if let profile = profile {
+            store.dispatch(action: ProfileAction.deleteProfile(profile))
+            self.profile = nil
+        }
+    }
 }

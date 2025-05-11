@@ -15,7 +15,7 @@ final class ViewModelProvider {
     private var profileSetupViewModelStorage: ProfileSetupViewModel? = nil
     
     func profileSetupViewModel(profile: Profile?) -> ProfileSetupViewModel {
-        if let viewModel = profileSetupViewModelStorage, viewModel.profileID == profile?.id {
+        if let viewModel = profileSetupViewModelStorage, viewModel.profile?.id == profile?.id {
             return viewModel
         }
         let viewModel = ProfileSetupViewModel(profile: profile)
