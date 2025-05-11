@@ -15,7 +15,6 @@ class ProfileListViewModel: ObservableObject {
     @Published var error: String? = nil
     
     @Inject private var store: AppStore
-    @Inject private var repository: ProfileRepositoryProtocol
     private var cancellables = Set<AnyCancellable>()
     private var allProfiles: [Profile] = []
     

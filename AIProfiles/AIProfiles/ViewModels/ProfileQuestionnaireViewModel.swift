@@ -37,6 +37,11 @@ class ProfileQuestionnaireViewModel: ObservableObject, Equatable {
         askNextQuestion()
     }
     
+    func skipQuestion() {
+        answer = ""
+        askNextQuestion()
+    }
+    
     func submitAnswer() {
         guard !answer.isEmpty, let paramType = currentParamType else {
             askNextQuestion()

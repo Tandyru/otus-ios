@@ -46,7 +46,6 @@ struct ParameterDetailView: View {
     }
 }
 
-// BooleanParameterView.swift
 struct BooleanParameterView: View {
     @State private var parameter: BooleanParameter
     private let onUpdate: (BooleanParameter) -> Void
@@ -61,13 +60,12 @@ struct BooleanParameterView: View {
             TextField("Название", text: $parameter.title)
             Toggle("Значение", isOn: $parameter.value)
         }
-        .onChange(of: parameter) { newValue in
+        .onChange(of: parameter) { _, newValue in
             onUpdate(newValue)
         }
     }
 }
 
-// SingleChoiceParameterView.swift
 struct SingleChoiceParameterView: View {
     @State private var parameter: SingleChoiceParameter
     private let onUpdate: (SingleChoiceParameter) -> Void
@@ -81,23 +79,22 @@ struct SingleChoiceParameterView: View {
         Section {
             TextField("Название", text: $parameter.title)
             TextField("Варианты (через запятую)", text: $parameter.optionsCSV)
-                .onChange(of: parameter.optionsCSV) { newValue in
+                .onChange(of: parameter.optionsCSV) { _, newValue in
                     parameter.options = newValue.components(separatedBy: ",")
                         .map { $0.trimmingCharacters(in: .whitespaces) }
                 }
-            Picker("Выбранный вариант", selection: $parameter.selectedOption) {
+            Picker("Выбранный вариант:", selection: $parameter.selectedOption) {
                 ForEach(parameter.options, id: \.self) { option in
                     Text(option).tag(option)
                 }
             }
         }
-        .onChange(of: parameter) { newValue in
+        .onChange(of: parameter) { _, newValue in
             onUpdate(newValue)
         }
     }
 }
 
-// MultipleChoiceParameterView.swift
 struct MultipleChoiceParameterView: View {
     @State private var parameter: MultipleChoiceParameter
     private let onUpdate: (MultipleChoiceParameter) -> Void
@@ -111,7 +108,7 @@ struct MultipleChoiceParameterView: View {
         Section {
             TextField("Название", text: $parameter.title)
             TextField("Варианты (через запятую)", text: $parameter.optionsCSV)
-                .onChange(of: parameter.optionsCSV) { newValue in
+                .onChange(of: parameter.optionsCSV) { _, newValue in
                     parameter.options = newValue.components(separatedBy: ",")
                         .map { $0.trimmingCharacters(in: .whitespaces) }
                 }
@@ -128,13 +125,12 @@ struct MultipleChoiceParameterView: View {
                 }
             }
         }
-        .onChange(of: parameter) { newValue in
+        .onChange(of: parameter) { _, newValue in
             onUpdate(newValue)
         }
     }
 }
 
-// RangeParameterView.swift
 struct RangeParameterView: View {
     @State private var parameter: RangeParameter
     private let onUpdate: (RangeParameter) -> Void
@@ -155,17 +151,16 @@ struct RangeParameterView: View {
             ),
             in: Double(parameter.min)...Double(parameter.max),
             step: 1.0)
-                .onChange(of: parameter.currentValue) { newValue in
+                .onChange(of: parameter.currentValue) { _, newValue in
                     parameter.currentValue = Int(newValue)
                 }
         }
-        .onChange(of: parameter) { newValue in
+        .onChange(of: parameter) { _, newValue in
             onUpdate(newValue)
         }
     }
 }
 
-// TextParameterView.swift
 struct TextParameterView: View {
     @State private var parameter: TextParameter
     private let onUpdate: (TextParameter) -> Void
@@ -181,13 +176,12 @@ struct TextParameterView: View {
             TextEditor(text: $parameter.value)
                 .frame(height: 100)
         }
-        .onChange(of: parameter) { newValue in
+        .onChange(of: parameter) { _, newValue in
             onUpdate(newValue)
         }
     }
 }
 
-// Вспомогательные расширения
 extension SingleChoiceParameter {
     var optionsCSV: String {
         get { options.joined(separator: ", ") }

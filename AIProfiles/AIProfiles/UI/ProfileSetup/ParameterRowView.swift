@@ -12,7 +12,7 @@ struct ParameterRowView: View {
     
     var body: some View {
         HStack {
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 8) {
                 Text(parameter.title)
                     .font(.body)
                     .foregroundColor(.primary)

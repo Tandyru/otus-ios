@@ -63,25 +63,3 @@ struct ChatView: View {
     }
 }
 
-// Представление сообщения
-struct MessageView: View {
-    let message: ChatMessage
-    
-    var body: some View {
-        HStack {
-            if message.isUser {
-                Spacer()
-            }
-            
-            Text(message.text)
-                .padding()
-                .background(message.isUser ? Color.blue : Color.gray.opacity(0.2))
-                .foregroundColor(message.isUser ? .white : .primary)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-            
-            if !message.isUser {
-                Spacer()
-            }
-        }
-    }
-}

@@ -251,4 +251,3 @@ struct ProfileSetupView: View {
         viewModel.saveProfile(title: title, purpose: purpose, parameters: parameters)
     }
 }
-

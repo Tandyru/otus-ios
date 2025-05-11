@@ -14,8 +14,6 @@ class LLMChatService {
 
         var apiMessages = messages.map { LLMAPIMessage(role: $0.isUser ? "user" : "assistant", content: $0.text) }
 
-        // Вы - ассистент, следующий инструкциям профиля:
-        // Отвечайте на вопросы, строго следуя этим параметрам.
         let systemPrompt = """
         You are an assistant following the instructions of the profile:
         \(profile.profileDescription)

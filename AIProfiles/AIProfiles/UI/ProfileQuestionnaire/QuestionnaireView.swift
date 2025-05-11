@@ -16,6 +16,8 @@ struct QuestionnaireView: View {
     @State private var booleanAnswer: Bool = false
     @State private var showErrorAlert = false
     
+    private let choiceItemSpacing: CGFloat = 20
+    
     var body: some View {
         NavigationStack {
             VStack {
@@ -31,10 +33,7 @@ struct QuestionnaireView: View {
                        let options = viewModel.currentParamOptions,
                        !options.isEmpty
                     {
-let _ = {
-print("singleChoice options: \(options)")
-}()
-                        VStack(alignment: .leading) {
+                        VStack(alignment: .leading, spacing: choiceItemSpacing) {
                             ForEach(options, id: \.self) { option in
                                 Button(action: {
                                     if selectedOption == option {
@@ -61,10 +60,7 @@ print("singleChoice options: \(options)")
                         let options = viewModel.currentParamOptions,
                         !options.isEmpty
                     {
-let _ = {
-print("multipleChoice options: \(options)")
-}()
-                        VStack(alignment: .leading) {
+                        VStack(alignment: .leading, spacing: choiceItemSpacing) {
                             ForEach(options, id: \.self) { option in
                                 MultipleSelectionRow(
                                     title: option,
@@ -78,13 +74,13 @@ print("multipleChoice options: \(options)")
                                 }
                             }
                         }
-                        .onChange(of: selectedOptions) { _ in
+                        .onChange(of: selectedOptions) {
                             viewModel.answer = selectedOptions.joined(separator: ", ")
                         }
                         .padding()
                     } else if viewModel.currentParamType == .boolean {
                         Toggle("Да/Нет", isOn: $booleanAnswer)
-                            .onChange(of: booleanAnswer) { _ in
+                            .onChange(of: booleanAnswer) {
                                 viewModel.answer = booleanAnswer ? "Yes" : "No"
                             }
                             .padding()
@@ -93,16 +89,26 @@ print("multipleChoice options: \(options)")
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .padding()
                     }
-
-                    Button("Next") {
-                        viewModel.submitAnswer()
+                    HStack(spacing: 20) {
+                        Button("Пропустить") {
+                            viewModel.skipQuestion()
+                        }
+                        .buttonStyle(.bordered)
+                        .tint(.secondary)
+                        //.foregroundColor(.secondary)
+                        
+                        Button("Следующий") {
+                            viewModel.submitAnswer()
+                        }
+                        .disabled(viewModel.answer.isEmpty)
+                        .buttonStyle(.borderedProminent)
                     }
-                    .disabled(viewModel.answer.isEmpty)
                     
-                    Spacer().frame(height: 40)
+                    Spacer().frame(height: 60)
                     if viewModel.canFinishEarly {
                         Button("Завершить опрос") {
                             viewModel.finishEarly()
+                            dismiss()
                         }
                         .padding()
                         .background(Color.blue)
@@ -117,6 +123,7 @@ print("multipleChoice options: \(options)")
                 }
             }
             .navigationTitle("Настройка профиля")
+            .navigationBarTitleDisplayMode(.inline)
             .onAppear {
                 viewModel.startQuestionnaire()
             }
@@ -127,7 +134,7 @@ print("multipleChoice options: \(options)")
                     dismissButton: .default(Text("OK"))
                 )
             }
-            .onChange(of: viewModel.errorMessage) { newError in
+            .onChange(of: viewModel.errorMessage) { _, newError in
                 if newError != nil {
                     showErrorAlert = true
                 }
