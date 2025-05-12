@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreProfile
 
 class LLMChatService {
     @Inject private var llmService: LLMServiceProtocol

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreProfile
 
 struct ChatView: View {
     @StateObject private var viewModel: ChatViewModel

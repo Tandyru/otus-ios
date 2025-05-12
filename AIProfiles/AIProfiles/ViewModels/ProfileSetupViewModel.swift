@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import CoreProfile
 
 final class ProfileSetupViewModel: ObservableObject {
     var profile: Profile?

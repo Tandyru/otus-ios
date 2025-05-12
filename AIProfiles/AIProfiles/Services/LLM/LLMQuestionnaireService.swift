@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreProfile
 
 class LLMQuestionnaireService {
     @Inject private var llmService: LLMServiceProtocol

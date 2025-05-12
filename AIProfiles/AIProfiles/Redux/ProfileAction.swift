@@ -5,6 +5,8 @@
 //  Created by Andrey Tanakov on 25.04.2025.
 //
 
+import CoreProfile
+
 enum ProfileAction: Action {
     case fetchProfiles
     case saveProfile(Profile)

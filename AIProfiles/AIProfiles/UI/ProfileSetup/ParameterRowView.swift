@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreProfile
 
 struct ParameterRowView: View {
     let parameter: PreferenceParameterType

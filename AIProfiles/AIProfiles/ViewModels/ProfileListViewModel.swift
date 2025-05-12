@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import CoreProfile
 
 class ProfileListViewModel: ObservableObject {
 

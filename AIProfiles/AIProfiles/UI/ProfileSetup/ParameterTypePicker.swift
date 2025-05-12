@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreProfile
 
 struct ParameterTypePicker: View {
     @Binding var selectedType: PreferenceType?

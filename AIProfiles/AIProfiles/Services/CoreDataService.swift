@@ -6,6 +6,7 @@
 //
 
 import CoreData
+import CoreProfile
 
 class CoreDataService: ProfileRepositoryProtocol {
     static let shared = CoreDataService()

@@ -7,21 +7,29 @@
 
 import Foundation
 
-struct Profile: Identifiable, Codable {
-    let id: UUID
-    var title: String
-    var purpose: String
-    var parameters: [PreferenceParameterType]
-    let createdAt: Date
+public struct Profile: Identifiable, Codable, Sendable {
+    public let id: UUID
+    public var title: String
+    public var purpose: String
+    public var parameters: [PreferenceParameterType]
+    public let createdAt: Date
+    
+    public init(id: UUID, title: String, purpose: String, parameters: [PreferenceParameterType], createdAt: Date) {
+        self.id = id
+        self.title = title
+        self.purpose = purpose
+        self.parameters = parameters
+        self.createdAt = createdAt
+    }
 }
 
 extension Profile: Hashable {
-    func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
 }
 
-enum PreferenceParameterType: Codable, Equatable {
+public enum PreferenceParameterType: Codable, Equatable, Sendable {
     case boolean(BooleanParameter)
     case singleChoice(SingleChoiceParameter)
     case multipleChoice(MultipleChoiceParameter)
@@ -33,7 +41,7 @@ enum PreferenceParameterType: Codable, Equatable {
         case data
     }
     
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let type = try container.decode(PreferenceType.self, forKey: .type)
         let data = try container.decode(Data.self, forKey: .data)
@@ -52,7 +60,7 @@ enum PreferenceParameterType: Codable, Equatable {
         }
     }
     
-    func encode(to encoder: Encoder) throws {
+    public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         let data: Data
         
@@ -79,7 +87,7 @@ enum PreferenceParameterType: Codable, Equatable {
 }
 
 extension PreferenceParameterType {
-    var id: String {
+    public var id: String {
         switch self {
         case .boolean(let parameter):
             return parameter.id
@@ -94,7 +102,7 @@ extension PreferenceParameterType {
         }
     }
     
-    var type: PreferenceType {
+    public var type: PreferenceType {
         switch self {
         case .boolean(let parameter):
             return parameter.type
@@ -110,13 +118,13 @@ extension PreferenceParameterType {
     }
 }
 
-protocol PreferenceParameter: Codable & Identifiable & Equatable {
+public protocol PreferenceParameter: Codable & Identifiable & Equatable {
     var id: String { get }
     var title: String { get }
     var type: PreferenceType { get }
 }
 
-enum PreferenceType: String, Codable {
+public enum PreferenceType: String, Codable, Sendable {
     case boolean
     case singleChoice
     case multipleChoice
@@ -124,46 +132,80 @@ enum PreferenceType: String, Codable {
     case text
 }
 
-struct BooleanParameter: PreferenceParameter {
-    let id: String
-    var title: String
-    var type: PreferenceType = .boolean
-    var value: Bool
+public struct BooleanParameter: PreferenceParameter, Sendable {
+    public let id: String
+    public var title: String
+    public var type: PreferenceType = .boolean
+    public var value: Bool
+    public init(id: String, title: String, type: PreferenceType = .boolean, value: Bool) {
+        self.id = id
+        self.title = title
+        self.type = type
+        self.value = value
+    }
 }
 
-struct SingleChoiceParameter: PreferenceParameter {
-    let id: String
-    var title: String
-    var type: PreferenceType = .singleChoice
-    var options: [String]
-    var selectedOption: String
+public struct SingleChoiceParameter: PreferenceParameter, Sendable {
+    public let id: String
+    public var title: String
+    public var type: PreferenceType = .singleChoice
+    public var options: [String]
+    public var selectedOption: String
+    public init(id: String, title: String, type: PreferenceType = .singleChoice, options: [String], selectedOption: String) {
+        self.id = id
+        self.title = title
+        self.type = type
+        self.options = options
+        self.selectedOption = selectedOption
+    }
 }
 
-struct MultipleChoiceParameter: PreferenceParameter {
-    let id: String
-    var title: String
-    var type: PreferenceType = .multipleChoice
-    var options: [String]
-    var selectedOptions: [String]
+public struct MultipleChoiceParameter: PreferenceParameter, Sendable {
+    public let id: String
+    public var title: String
+    public var type: PreferenceType = .multipleChoice
+    public var options: [String]
+    public var selectedOptions: [String]
+    public init(id: String, title: String, type: PreferenceType = .multipleChoice, options: [String], selectedOptions: [String]) {
+        self.id = id
+        self.title = title
+        self.type = type
+        self.options = options
+        self.selectedOptions = selectedOptions
+    }
 }
 
-struct RangeParameter: PreferenceParameter {
-    let id: String
-    var title: String
-    var type: PreferenceType = .range
-    var min: Int
-    var max: Int
-    var currentValue: Int
+public struct RangeParameter: PreferenceParameter, Sendable {
+    public let id: String
+    public var title: String
+    public var type: PreferenceType = .range
+    public var min: Int
+    public var max: Int
+    public var currentValue: Int
+    public init(id: String, title: String, type: PreferenceType = .range, min: Int, max: Int, currentValue: Int) {
+        self.id = id
+        self.title = title
+        self.type = type
+        self.min = min
+        self.max = max
+        self.currentValue = currentValue
+    }
 }
 
-struct TextParameter: PreferenceParameter {
-    let id: String
-    var title: String
-    var type: PreferenceType = .text
-    var value: String
+public struct TextParameter: PreferenceParameter, Sendable {
+    public let id: String
+    public var title: String
+    public var type: PreferenceType = .text
+    public var value: String
+    public init(id: String, title: String, type: PreferenceType = .text, value: String) {
+        self.id = id
+        self.title = title
+        self.type = type
+        self.value = value
+    }
 }
 
-extension Profile {
+public extension Profile {
     func parameter<T>(ofType type: T.Type, withID id: String) -> T? where T: PreferenceParameter {
         parameters.compactMap {
             switch $0 {

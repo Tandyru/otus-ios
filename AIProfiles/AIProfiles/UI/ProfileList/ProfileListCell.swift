@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreProfile
 
 struct ProfileCell: View {
     let profile: Profile

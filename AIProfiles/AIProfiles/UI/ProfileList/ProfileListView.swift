@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreProfile
 
 struct ProfileListView: View {
     @StateObject private var viewModel: ProfileListViewModel

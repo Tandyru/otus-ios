@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreProfile
 
 struct ParameterDetailView: View {
     @Binding var parameter: PreferenceParameterType

@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		641A3F772DD25CBC00E5FF57 /* CoreProfile in Frameworks */ = {isa = PBXBuildFile; productRef = 641A3F762DD25CBC00E5FF57 /* CoreProfile */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		645DAB0D2DBA792F004FE868 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -24,6 +28,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		641A3F5E2DD25B1D00E5FF57 /* CoreProfile */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = CoreProfile; sourceTree = "<group>"; };
 		645DAAF72DBA792C004FE868 /* AIProfiles.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AIProfiles.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		645DAB0C2DBA792F004FE868 /* AIProfilesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AIProfilesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		645DAB162DBA792F004FE868 /* AIProfilesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AIProfilesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -52,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				641A3F772DD25CBC00E5FF57 /* CoreProfile in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -75,6 +81,7 @@
 		645DAAEE2DBA792C004FE868 = {
 			isa = PBXGroup;
 			children = (
+				641A3F5E2DD25B1D00E5FF57 /* CoreProfile */,
 				645DAAF92DBA792C004FE868 /* AIProfiles */,
 				645DAB0F2DBA792F004FE868 /* AIProfilesTests */,
 				645DAB192DBA792F004FE868 /* AIProfilesUITests */,
@@ -112,6 +119,7 @@
 			);
 			name = AIProfiles;
 			packageProductDependencies = (
+				641A3F762DD25CBC00E5FF57 /* CoreProfile */,
 			);
 			productName = AIProfiles;
 			productReference = 645DAAF72DBA792C004FE868 /* AIProfiles.app */;
@@ -195,6 +203,9 @@
 			);
 			mainGroup = 645DAAEE2DBA792C004FE868;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				641A3F752DD25CBC00E5FF57 /* XCLocalSwiftPackageReference "CoreProfile" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 645DAAF82DBA792C004FE868 /* Products */;
 			projectDirPath = "";
@@ -560,6 +571,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		641A3F752DD25CBC00E5FF57 /* XCLocalSwiftPackageReference "CoreProfile" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = CoreProfile;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		641A3F762DD25CBC00E5FF57 /* CoreProfile */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoreProfile;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 645DAAEF2DBA792C004FE868 /* Project object */;
 }
