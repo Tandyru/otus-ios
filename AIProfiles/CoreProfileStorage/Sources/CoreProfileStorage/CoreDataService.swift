@@ -8,8 +8,9 @@
 import CoreData
 import CoreProfile
 
-class CoreDataService: ProfileRepositoryProtocol {
-    static let shared = CoreDataService()
+@preconcurrency
+public class CoreDataService: ProfileRepositoryProtocol {
+    public static let shared = CoreDataService()
     
     private let container: NSPersistentContainer
     private var viewContext: NSManagedObjectContext {
@@ -17,7 +18,13 @@ class CoreDataService: ProfileRepositoryProtocol {
     }
     
     private init() {
-        container = NSPersistentContainer(name: "AIProfiles")
+        let modelName = "AIProfiles"
+        guard let modelURL = Bundle.module.url(forResource: modelName, withExtension: "momd"),
+                  let model = NSManagedObjectModel(contentsOf: modelURL)
+        else {
+            fatalError("Failed to load Core Data model")
+        }
+        container = NSPersistentContainer(name: modelName, managedObjectModel: model)
         container.loadPersistentStores { (storeDescription, error) in
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
@@ -25,7 +32,7 @@ class CoreDataService: ProfileRepositoryProtocol {
         }
     }
     
-    func saveProfile(_ profile: Profile) async throws {
+    public func saveProfile(_ profile: Profile) async throws {
         try await withCheckedThrowingContinuation { continuation in
             container.performBackgroundTask { context in
                 do {
@@ -54,7 +61,7 @@ class CoreDataService: ProfileRepositoryProtocol {
         }
     }
 
-    func fetchProfiles() async throws -> [Profile] {
+    public func fetchProfiles() async throws -> [Profile] {
         try await withCheckedThrowingContinuation { continuation in
             container.performBackgroundTask { context in
                 do {
@@ -82,7 +89,7 @@ class CoreDataService: ProfileRepositoryProtocol {
         }
     }
 
-    func deleteProfile(_ profile: Profile) async throws {
+    public func deleteProfile(_ profile: Profile) async throws {
         try await withCheckedThrowingContinuation { continuation in
             container.performBackgroundTask { context in
                 do {

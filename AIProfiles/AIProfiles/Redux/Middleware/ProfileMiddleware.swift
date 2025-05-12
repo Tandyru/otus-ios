@@ -5,6 +5,8 @@
 //  Created by Andrey Tanakov on 25.04.2025.
 //
 
+import CoreProfileStorage
+
 final class ProfileMiddleware {
     @Inject private var repository: ProfileRepositoryProtocol
     

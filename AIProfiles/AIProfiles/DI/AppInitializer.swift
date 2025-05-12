@@ -8,6 +8,7 @@
 import SwiftUI
 import CoreKeychain
 import CoreLLM
+import CoreProfileStorage
 
 final class AppInitializer {
     init() {

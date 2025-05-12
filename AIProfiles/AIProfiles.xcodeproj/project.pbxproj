@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		641A3F772DD25CBC00E5FF57 /* CoreProfile in Frameworks */ = {isa = PBXBuildFile; productRef = 641A3F762DD25CBC00E5FF57 /* CoreProfile */; };
 		641A3F7B2DD2799700E5FF57 /* CoreLLM in Frameworks */ = {isa = PBXBuildFile; productRef = 641A3F7A2DD2799700E5FF57 /* CoreLLM */; };
+		641A3F802DD282A400E5FF57 /* CoreProfileStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 641A3F7F2DD282A400E5FF57 /* CoreProfileStorage */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +33,7 @@
 		641A3F5E2DD25B1D00E5FF57 /* CoreProfile */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = CoreProfile; sourceTree = "<group>"; };
 		641A3F782DD278D000E5FF57 /* CoreLLM */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = CoreLLM; sourceTree = "<group>"; };
 		641A3F7C2DD27A9F00E5FF57 /* CoreKeychain */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = CoreKeychain; sourceTree = "<group>"; };
+		641A3F7D2DD27FF800E5FF57 /* CoreProfileStorage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = CoreProfileStorage; sourceTree = "<group>"; };
 		645DAAF72DBA792C004FE868 /* AIProfiles.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AIProfiles.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		645DAB0C2DBA792F004FE868 /* AIProfilesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AIProfilesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		645DAB162DBA792F004FE868 /* AIProfilesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AIProfilesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -60,6 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				641A3F802DD282A400E5FF57 /* CoreProfileStorage in Frameworks */,
 				641A3F772DD25CBC00E5FF57 /* CoreProfile in Frameworks */,
 				641A3F7B2DD2799700E5FF57 /* CoreLLM in Frameworks */,
 			);
@@ -85,6 +88,7 @@
 		645DAAEE2DBA792C004FE868 = {
 			isa = PBXGroup;
 			children = (
+				641A3F7D2DD27FF800E5FF57 /* CoreProfileStorage */,
 				641A3F7C2DD27A9F00E5FF57 /* CoreKeychain */,
 				641A3F782DD278D000E5FF57 /* CoreLLM */,
 				641A3F5E2DD25B1D00E5FF57 /* CoreProfile */,
@@ -127,6 +131,7 @@
 			packageProductDependencies = (
 				641A3F762DD25CBC00E5FF57 /* CoreProfile */,
 				641A3F7A2DD2799700E5FF57 /* CoreLLM */,
+				641A3F7F2DD282A400E5FF57 /* CoreProfileStorage */,
 			);
 			productName = AIProfiles;
 			productReference = 645DAAF72DBA792C004FE868 /* AIProfiles.app */;
@@ -213,6 +218,7 @@
 			packageReferences = (
 				641A3F752DD25CBC00E5FF57 /* XCLocalSwiftPackageReference "CoreProfile" */,
 				641A3F792DD2799700E5FF57 /* XCLocalSwiftPackageReference "CoreLLM" */,
+				641A3F7E2DD282A400E5FF57 /* XCLocalSwiftPackageReference "CoreProfileStorage" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 645DAAF82DBA792C004FE868 /* Products */;
@@ -589,6 +595,10 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = CoreLLM;
 		};
+		641A3F7E2DD282A400E5FF57 /* XCLocalSwiftPackageReference "CoreProfileStorage" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = CoreProfileStorage;
+		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -599,6 +609,10 @@
 		641A3F7A2DD2799700E5FF57 /* CoreLLM */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CoreLLM;
+		};
+		641A3F7F2DD282A400E5FF57 /* CoreProfileStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoreProfileStorage;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
