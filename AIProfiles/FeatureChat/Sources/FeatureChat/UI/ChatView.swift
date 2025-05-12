@@ -8,14 +8,14 @@
 import SwiftUI
 import CoreProfile
 
-struct ChatView: View {
+public struct ChatView: View {
     @StateObject private var viewModel: ChatViewModel
-    
-    init(profile: Profile) {
-        _viewModel = StateObject(wrappedValue: ChatViewModel(profile: profile))
+
+    public init(chatViewModel: ChatViewModel) {
+        _viewModel = StateObject(wrappedValue: chatViewModel)
     }
     
-    var body: some View {
+    public var body: some View {
         VStack {
             HStack(spacing: 0) {
                 Text("Профиль: \(viewModel.profileTitle)")

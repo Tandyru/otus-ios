@@ -8,9 +8,14 @@
 import Foundation
 import CoreProfile
 import CoreLLM
+import CoreUtils
 
 class LLMChatService {
-    @Inject private var llmService: LLMServiceProtocol
+    private var llmService: LLMServiceProtocol
+    
+    init(llmService: LLMServiceProtocol) {
+        self.llmService = llmService
+    }
     
     func getNextMessage(messages: [ChatMessage], profile: Profile) async throws -> String {
 

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreProfile
+import FeatureChat
 
 struct ProfileListView: View {
     @StateObject private var viewModel: ProfileListViewModel
@@ -47,7 +48,7 @@ struct ProfileListView: View {
                         ProfileSetupView(viewModelProvider: viewModelProvider, existingProfile: profile)
                     }
                     .navigationDestination(item: $selectedChatProfile) { profile in
-                        ChatView(profile: profile)
+                        ChatView(chatViewModel: viewModelProvider.chatViewModel(profile: profile))
                     }
                 }
             }

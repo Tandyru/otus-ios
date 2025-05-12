@@ -9,7 +9,8 @@ import Foundation
 import Combine
 import CoreProfile
 
-class ChatViewModel: ObservableObject {
+@preconcurrency
+public class ChatViewModel: ObservableObject {
     @Published var messages: [ChatMessage] = []
     @Published var inputText = ""
     @Published var isLoading = false
@@ -17,10 +18,11 @@ class ChatViewModel: ObservableObject {
     var profileTitle: String {
         profile.title
     }
-    @Inject private var chatService: LLMChatService
+    private let chatService: LLMChatService
     private let profile: Profile
     
-    init(profile: Profile) {
+    init(chatService: LLMChatService, profile: Profile) {
+        self.chatService = chatService
         self.profile = profile
     }
     
@@ -38,12 +40,12 @@ class ChatViewModel: ObservableObject {
                 let response = try await chatService.getNextMessage(messages: messages, profile: profile)
                 await MainActor.run {
                     let assistantMessage = ChatMessage(text: response, isUser: false, timestamp: Date())
-                    messages.append(assistantMessage)
-                    isLoading = false
+                    self.messages.append(assistantMessage)
+                    self.isLoading = false
                 }
             } catch {
                 await MainActor.run {
-                    isLoading = false
+                    self.isLoading = false
                     errorMessage = "Error: \(error.localizedDescription)"
                 }
             }

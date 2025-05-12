@@ -6,6 +6,7 @@
 //
 
 import CoreProfile
+import FeatureChat
 
 final class ViewModelProvider {
     @Inject private var store: AppStore
@@ -15,6 +16,7 @@ final class ViewModelProvider {
     }
     
     private var profileSetupViewModelStorage: ProfileSetupViewModel? = nil
+    private let chatViewModelFactory = ChatViewModelFactory(llmService: ServiceLocator.shared.resolveOrFail())
     
     func profileSetupViewModel(profile: Profile?) -> ProfileSetupViewModel {
         if let viewModel = profileSetupViewModelStorage, viewModel.profile?.id == profile?.id {
@@ -30,6 +32,6 @@ final class ViewModelProvider {
     }
 
     func chatViewModel(profile: Profile) -> ChatViewModel {
-        .init(profile: profile)
+        chatViewModelFactory.chatViewModel(profile: profile)
     }
 }

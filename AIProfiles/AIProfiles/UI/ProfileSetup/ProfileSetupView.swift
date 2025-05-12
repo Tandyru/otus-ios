@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreProfile
+import FeatureChat
 
 struct ProfileSetupView: View {
     @StateObject var viewModel: ProfileSetupViewModel
@@ -158,7 +159,7 @@ struct ProfileSetupView: View {
         }
         .navigationDestination(isPresented: $isChatting) {
             if let profile = viewModel.profile {
-                ChatView(profile: profile)
+                ChatView(chatViewModel: viewModelProvider.chatViewModel(profile: profile))
             }
         }
         .safeAreaInset(edge: .bottom) {

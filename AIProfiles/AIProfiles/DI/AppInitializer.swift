@@ -9,6 +9,7 @@ import SwiftUI
 import CoreKeychain
 import CoreLLM
 import CoreProfileStorage
+import FeatureChat
 
 final class AppInitializer {
     init() {
@@ -23,7 +24,6 @@ final class AppInitializer {
             OpenRouterService(
                 keyStorage: ServiceLocator.shared.resolveOrFail()
             ) as LLMServiceProtocol)
-        ServiceLocator.shared.register(LLMChatService())
         ServiceLocator.shared.register(LLMQuestionnaireService())
         
         //
