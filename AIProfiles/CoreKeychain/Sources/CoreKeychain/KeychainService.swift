@@ -8,10 +8,13 @@
 import Foundation
 import Security
 
-final class KeychainService: KeychainServiceProtocol {
+public final class KeychainService: KeychainServiceProtocol {
     private let serviceName = "com.tandyru.AIProfiles"
     
-    func save(key: String, value: String) throws {
+    public init() {
+    }
+    
+    public func save(key: String, value: String) throws {
         guard let data = value.data(using: .utf8) else {
             throw KeychainError.invalidData
         }
@@ -31,7 +34,7 @@ final class KeychainService: KeychainServiceProtocol {
         }
     }
     
-    func get(key: String) throws -> String? {
+    public func get(key: String) throws -> String? {
         var query = baseQuery(for: key)
         query[kSecReturnData as String] = kCFBooleanTrue
         query[kSecMatchLimit as String] = kSecMatchLimitOne
@@ -50,7 +53,7 @@ final class KeychainService: KeychainServiceProtocol {
         }
     }
     
-    func delete(key: String) throws {
+    public func delete(key: String) throws {
         let query = baseQuery(for: key)
         let status = SecItemDelete(query as CFDictionary)
         guard status == errSecSuccess || status == errSecItemNotFound else {

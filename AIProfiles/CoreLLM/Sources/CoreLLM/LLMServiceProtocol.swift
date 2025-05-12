@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol LLMServiceProtocol {
+public protocol LLMServiceProtocol {
     func send(messages: [LLMAPIMessage]) async throws -> String
 }

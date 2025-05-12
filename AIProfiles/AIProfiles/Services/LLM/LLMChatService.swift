@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreProfile
+import CoreLLM
 
 class LLMChatService {
     @Inject private var llmService: LLMServiceProtocol

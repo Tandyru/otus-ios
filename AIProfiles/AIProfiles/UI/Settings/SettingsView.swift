@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreLLM
 
 struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
@@ -60,7 +61,7 @@ struct SettingsView: View {
         do {
             apiKeyInput = try keyStorage.getKey()
         } catch {
-            if case KeyError.keyNotFound = error {
+            if case KeyStorageError.keyNotFound = error {
                 apiKeyInput = ""
             }
         }

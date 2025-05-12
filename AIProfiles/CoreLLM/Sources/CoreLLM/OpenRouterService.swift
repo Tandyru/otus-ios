@@ -8,13 +8,17 @@
 import Foundation
 import Combine
 
-class OpenRouterService: LLMServiceProtocol {
-    @Inject private var keyStorage: OpenRouterAPIKeyStorageProtocol
+public final class OpenRouterService: LLMServiceProtocol {
+    private let keyStorage: OpenRouterAPIKeyStorageProtocol
     //private let apiKey = "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"
     private let baseURL = URL(string: "https://openrouter.ai/api/v1/chat/completions")!
     private let model = "deepseek/deepseek-chat-v3-0324:free" // google/palm-2"
     
-    func send(messages: [LLMAPIMessage]) async throws -> String {
+    public init(keyStorage: OpenRouterAPIKeyStorageProtocol) {
+        self.keyStorage = keyStorage
+    }
+    
+    public func send(messages: [LLMAPIMessage]) async throws -> String {
         let apiKey = try keyStorage.getKey()
         var request = URLRequest(url: baseURL)
         request.httpMethod = "POST"
