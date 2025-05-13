@@ -17,7 +17,6 @@ public struct ProfileListView: View {
     @State private var selectedProfile: Profile? = nil
     @State private var selectedChatProfile: Profile? = nil
     @State private var selectedSettings = false
-    @Environment(\.profileSetupViewModelProvider) var profileSetupViewModelProvider: FeatureProfileSetup.ViewModelProvider
 
     public init(viewModel: ProfileListViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -47,7 +46,7 @@ public struct ProfileListView: View {
                     }
                     .navigationTitle("Мои профили")
                     .navigationDestination(item: $selectedProfile) { profile in
-                        ProfileSetupView(viewModelProvider: profileSetupViewModelProvider, existingProfile: profile)
+                        ProfileSetupView(existingProfile: profile)
                     }
                     .navigationDestination(item: $selectedChatProfile) { profile in
                         ChatView(profile: profile)
@@ -67,7 +66,7 @@ public struct ProfileListView: View {
                 Spacer().frame(height: 80)
             }
             .overlay(
-                NavigationLink(destination: ProfileSetupView(viewModelProvider: profileSetupViewModelProvider)) {
+                NavigationLink(destination: ProfileSetupView()) {
                     Image(systemName: "plus")
                         .font(.system(size: 24, weight: .bold))
                         .foregroundColor(.white)

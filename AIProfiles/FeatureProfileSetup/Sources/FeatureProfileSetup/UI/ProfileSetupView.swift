@@ -23,15 +23,13 @@ public struct ProfileSetupView: View {
     @State private var questionnaireViewModel: ProfileQuestionnaireViewModel?
     @State private var debounceTask: Task<Void, Never>?
     @State private var isChatting = false
-    private let viewModelProvider: ViewModelProvider
     private let debounceDuration: UInt64 = 500_000_000 // 0.5 секунды
     private var isChattingAvailable: Bool {
         viewModel.profile != nil
     }
 
-    public init(viewModelProvider: ViewModelProvider, existingProfile: Profile? = nil) {
-        self.viewModelProvider = viewModelProvider
-        _viewModel = StateObject(wrappedValue: viewModelProvider.profileSetupViewModel(profile: existingProfile))
+    public init(existingProfile: Profile? = nil) {
+        _viewModel = StateObject(wrappedValue: ProfileSetupViewModel(profile: existingProfile))
         _title = State(initialValue: existingProfile?.title ?? "")
         _purpose = State(initialValue: existingProfile?.purpose ?? "")
         _parameters = State(initialValue: existingProfile?.parameters ?? [])
@@ -129,11 +127,6 @@ public struct ProfileSetupView: View {
                 addParameter(of: type)
                 selectedType = nil
                 showingTypeSelection = false
-            }
-        }
-        .onDisappear {
-            if !showingTypeSelection && !showingParameterDetails && !isChatting {
-                viewModelProvider.resetProfileSetupViewModel()
             }
         }
         .onChange(of: title) {
