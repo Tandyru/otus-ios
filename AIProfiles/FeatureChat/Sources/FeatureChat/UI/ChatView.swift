@@ -11,8 +11,8 @@ import CoreProfile
 public struct ChatView: View {
     @StateObject private var viewModel: ChatViewModel
 
-    public init(chatViewModel: ChatViewModel) {
-        _viewModel = StateObject(wrappedValue: chatViewModel)
+    public init(profile: Profile) {
+        _viewModel = StateObject(wrappedValue: ChatViewModel(profile: profile))
     }
     
     public var body: some View {

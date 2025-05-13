@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "FeatureProfileSetup",
+    name: "FeatureSettings",
     platforms: [
         .iOS(.v17),
         .macOS(.v10_13),
@@ -14,28 +14,23 @@ let package = Package(
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "FeatureProfileSetup",
-            targets: ["FeatureProfileSetup"]),
+            name: "FeatureSettings",
+            targets: ["FeatureSettings"]),
     ],
     dependencies: [
-        .package(path: "../CoreProfile"),
-        .package(path: "../CoreProfiles"),
         .package(path: "../CoreLLM"),
-        .package(path: "../FeatureChat")
+        .package(path: "../CoreUtils")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "FeatureProfileSetup",
-            dependencies: ["CoreProfile", "CoreProfiles", "CoreLLM", "FeatureChat"],
-            swiftSettings: [
-                .unsafeFlags(["-Xfrontend", "-strict-concurrency=none"])
-            ]
+            name: "FeatureSettings",
+            dependencies: ["CoreLLM", "CoreUtils"]
         ),
         .testTarget(
-            name: "FeatureProfileSetupTests",
-            dependencies: ["FeatureProfileSetup"]
+            name: "FeatureSettingsTests",
+            dependencies: ["FeatureSettings"]
         ),
     ]
 )

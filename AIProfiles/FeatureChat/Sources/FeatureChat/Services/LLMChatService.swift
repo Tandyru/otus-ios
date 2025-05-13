@@ -11,11 +11,7 @@ import CoreLLM
 import CoreUtils
 
 class LLMChatService {
-    private var llmService: LLMServiceProtocol
-    
-    init(llmService: LLMServiceProtocol) {
-        self.llmService = llmService
-    }
+    @Inject private var llmService: LLMServiceProtocol
     
     func getNextMessage(messages: [ChatMessage], profile: Profile) async throws -> String {
 

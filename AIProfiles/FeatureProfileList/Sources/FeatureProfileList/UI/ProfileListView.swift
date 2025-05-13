@@ -9,21 +9,21 @@ import SwiftUI
 import CoreProfile
 import FeatureChat
 import FeatureProfileSetup
+import FeatureSettings
 
-struct ProfileListView: View {
+public struct ProfileListView: View {
     @StateObject private var viewModel: ProfileListViewModel
     @State private var showErrorAlert = false
     @State private var selectedProfile: Profile? = nil
     @State private var selectedChatProfile: Profile? = nil
     @State private var selectedSettings = false
-    @Environment(\.viewModelProvider) var viewModelProvider
-    @Environment(\.profileSetupViewModelProvider) var profileSetupViewModelProvider
+    @Environment(\.profileSetupViewModelProvider) var profileSetupViewModelProvider: FeatureProfileSetup.ViewModelProvider
 
-    init(viewModel: ProfileListViewModel) {
+    public init(viewModel: ProfileListViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel)
     }
     
-    var body: some View {
+    public var body: some View {
         NavigationStack {
             VStack {
                 SearchBar(text: $viewModel.searchText)
@@ -50,7 +50,7 @@ struct ProfileListView: View {
                         ProfileSetupView(viewModelProvider: profileSetupViewModelProvider, existingProfile: profile)
                     }
                     .navigationDestination(item: $selectedChatProfile) { profile in
-                        ChatView(chatViewModel: viewModelProvider.chatViewModel(profile: profile))
+                        ChatView(profile: profile)
                     }
                 }
             }

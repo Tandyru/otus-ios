@@ -12,6 +12,8 @@ import CoreProfileStorage
 import CoreProfiles
 import FeatureChat
 import FeatureProfileSetup
+import FeatureProfileList
+import FeatureSettings
 
 final class AppInitializer {
     init() {
@@ -27,32 +29,15 @@ final class AppInitializer {
             ) as LLMServiceProtocol)
         
         ServiceLocator.shared.register(ProfilesStoreFactory.makeStore(repository: ServiceLocator.shared.resolveOrFail()))
+        
+        FeatureProfileList.ServiceLocator.shared.register(ServiceLocator.shared.resolveOrFail() as ProfilesStore)
+        FeatureProfileList.ServiceLocator.shared.register(ServiceLocator.shared.resolveOrFail() as LLMServiceProtocol)
+        FeatureProfileSetup.ServiceLocator.shared.register(ServiceLocator.shared.resolveOrFail() as ProfilesStore)
+        FeatureProfileSetup.ServiceLocator.shared.register(ServiceLocator.shared.resolveOrFail() as LLMServiceProtocol)
+        FeatureProfileSetup.ServiceLocator.initProfileSetupServices()
+        FeatureChat.ServiceLocator.shared.register(ServiceLocator.shared.resolveOrFail() as LLMServiceProtocol)
+        FeatureChat.ServiceLocator.initChatServices()
+        FeatureSettings.ServiceLocator.shared.register(ServiceLocator.shared.resolveOrFail() as OpenRouterAPIKeyStorageProtocol)
     }
 }
 
-struct ViewModelProviderEnvironmentKey: EnvironmentKey {
-    static let defaultValue: ViewModelProvider = ViewModelProvider()
-}
-
-extension EnvironmentValues {
-    var viewModelProvider: ViewModelProvider {
-        get { self[ViewModelProviderEnvironmentKey.self] }
-        set { self[ViewModelProviderEnvironmentKey.self] = newValue }
-    }
-}
-
-struct ProfileSetupViewModelProviderEnvironmentKey: EnvironmentKey {
-    static let defaultValue: FeatureProfileSetup.ViewModelProvider =
-        .init(store: ServiceLocator.shared.resolveOrFail(),
-              llmService: ServiceLocator.shared.resolveOrFail(),
-              chatViewModelFactory: { profile in
-                  ChatViewModelFactory(llmService: ServiceLocator.shared.resolveOrFail()).chatViewModel(profile: profile)
-              })
-}
-
-extension EnvironmentValues {
-    var profileSetupViewModelProvider: FeatureProfileSetup.ViewModelProvider {
-        get { self[ProfileSetupViewModelProviderEnvironmentKey.self] }
-        set { self[ProfileSetupViewModelProviderEnvironmentKey.self] = newValue }
-    }
-}

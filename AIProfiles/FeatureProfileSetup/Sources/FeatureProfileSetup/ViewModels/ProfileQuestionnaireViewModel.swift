@@ -19,16 +19,15 @@ final class ProfileQuestionnaireViewModel: ObservableObject, Equatable {
     @Published var isLoading = false
     @Published var canFinishEarly: Bool = false
     
-    private let llmService: LLMQuestionnaireService
+    @Inject private var llmService: LLMQuestionnaireService
     private(set) var currentParamType: PreferenceType?
     private(set) var currentParamOptions: [String]?
     private let profilePurpose: String
     private var cancellables = Set<AnyCancellable>()
     private let id = UUID()
     
-    init(purpose: String, llmService: LLMQuestionnaireService) {
+    init(purpose: String) {
         self.profilePurpose = purpose
-        self.llmService = llmService
     }
     
     static func == (lhs: ProfileQuestionnaireViewModel, rhs: ProfileQuestionnaireViewModel) -> Bool {

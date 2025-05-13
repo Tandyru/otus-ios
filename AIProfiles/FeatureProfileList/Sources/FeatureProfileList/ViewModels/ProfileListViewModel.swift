@@ -10,7 +10,7 @@ import Combine
 import CoreProfile
 import CoreProfiles
 
-class ProfileListViewModel: ObservableObject {
+public final class ProfileListViewModel: ObservableObject {
 
     @Published var profiles: [Profile] = []
     @Published var searchText: String = ""
@@ -20,8 +20,7 @@ class ProfileListViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     private var allProfiles: [Profile] = []
     
-    init() {
-        
+    public init() {
         store.state
             .receive(on: DispatchQueue.main)
             .sink { [weak self] state in

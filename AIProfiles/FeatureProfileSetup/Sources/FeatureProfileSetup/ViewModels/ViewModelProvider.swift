@@ -10,18 +10,10 @@ import CoreProfiles
 import CoreLLM
 import FeatureChat
 
-public final class ViewModelProvider {
-    private let store: ProfilesStore
-    private let llmService: LLMQuestionnaireService
-    private let chatViewModelFactory: (Profile) -> ChatViewModel
+public final class ViewModelProvider: @unchecked Sendable {
+    @Inject private var store: ProfilesStore
     
-    public init(store: ProfilesStore,
-                llmService: LLMServiceProtocol,
-                chatViewModelFactory: @escaping (Profile) -> ChatViewModel
-    ) {
-        self.store = store
-        self.llmService = .init(llmService: llmService)
-        self.chatViewModelFactory = chatViewModelFactory
+    public init() {
     }
     
     private var profileSetupViewModelStorage: ProfileSetupViewModel? = nil
@@ -30,20 +22,12 @@ public final class ViewModelProvider {
         if let viewModel = profileSetupViewModelStorage, viewModel.profile?.id == profile?.id {
             return viewModel
         }
-        let viewModel = ProfileSetupViewModel(profile: profile, store: store)
+        let viewModel = ProfileSetupViewModel(profile: profile)
         profileSetupViewModelStorage = viewModel
         return viewModel
     }
     
     func resetProfileSetupViewModel() {
         profileSetupViewModelStorage = nil
-    }
-    
-    func profileQuestionnaireViewModel(purpose: String) -> ProfileQuestionnaireViewModel {
-        ProfileQuestionnaireViewModel(purpose: purpose, llmService: llmService)
-    }
-    
-    func chatViewModel(profile: Profile) -> ChatViewModel {
-        chatViewModelFactory(profile)
     }
 }

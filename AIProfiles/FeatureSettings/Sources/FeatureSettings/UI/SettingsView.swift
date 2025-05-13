@@ -6,16 +6,19 @@
 //
 
 import SwiftUI
-import CoreLLM
 
-struct SettingsView: View {
+public struct SettingsView: View {
+    @StateObject var viewModel: SettingsViewModel
     @Environment(\.dismiss) private var dismiss
     @State private var apiKeyInput: String = ""
-    @Inject private var keyStorage: OpenRouterAPIKeyStorageProtocol
     @State private var debounceTask: Task<Void, Never>?
     private let debounceDelay: UInt64 = 500_000_000 // 0.5 секунды
 
-    var body: some View {
+    public init() {
+        _viewModel = StateObject(wrappedValue: SettingsViewModel())
+    }
+    
+    public var body: some View {
         NavigationStack {
             Form {
                 Section("OpenRouter API Key") {
@@ -37,33 +40,15 @@ struct SettingsView: View {
     private func handleKeyChange(newValue: String) {
         debounceTask?.cancel()
         debounceTask = Task {
-            // Ждем указанную задержку перед сохранением
             try? await Task.sleep(nanoseconds: debounceDelay)
-            
-            // Проверяем не отменена ли задача
             guard !Task.isCancelled else { return }
-            
             await MainActor.run {
-                do {
-                    if newValue.isEmpty {
-                        try keyStorage.deleteKey()
-                    } else {
-                        try keyStorage.saveKey(newValue)
-                    }
-                } catch {
-                    print("Ошибка сохранения ключа: \(error.localizedDescription)")
-                }
+                viewModel.saveKey(newValue)
             }
         }
     }
     
     private func loadSavedKey() {
-        do {
-            apiKeyInput = try keyStorage.getKey()
-        } catch {
-            if case KeyStorageError.keyNotFound = error {
-                apiKeyInput = ""
-            }
-        }
+        apiKeyInput = viewModel.getKey()
     }
 }

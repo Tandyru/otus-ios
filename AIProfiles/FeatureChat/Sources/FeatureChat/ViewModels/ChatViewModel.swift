@@ -18,11 +18,10 @@ public class ChatViewModel: ObservableObject {
     var profileTitle: String {
         profile.title
     }
-    private let chatService: LLMChatService
+    @Inject private var chatService: LLMChatService
     private let profile: Profile
     
-    init(chatService: LLMChatService, profile: Profile) {
-        self.chatService = chatService
+    public init(profile: Profile) {
         self.profile = profile
     }
     

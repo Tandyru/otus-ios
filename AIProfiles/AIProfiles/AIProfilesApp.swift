@@ -13,8 +13,9 @@ struct AIProfilesApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ProfileListView(viewModel: ViewModelProvider().profileListViewModel)
-                .environment(\.viewModelProvider, ViewModelProvider())
+            RootView()
+//            ProfileListView(viewModel: ViewModelProvider().profileListViewModel)
+//                .environment(\.viewModelProvider, ViewModelProvider())
         }
     }
 }

@@ -15,7 +15,7 @@ struct ProfileCell: View {
     
     var body: some View {
         HStack(spacing: 0) {
-            Button(action: onProfileTapped) {
+            Button(action: onChatTapped) {
                 HStack(spacing: 0) {
                     VStack(alignment: .leading, spacing: 8) {
                         Text(profile.title)
@@ -31,8 +31,8 @@ struct ProfileCell: View {
                 }
             }
             .contentShape(Rectangle())
-            Button(action: onChatTapped) {
-                Image(systemName: "message")
+            Button(action: onProfileTapped) {
+                Image(systemName: "slider.vertical.3")
                     .foregroundColor(.blue)
                     .padding(.leading, 8)
             }

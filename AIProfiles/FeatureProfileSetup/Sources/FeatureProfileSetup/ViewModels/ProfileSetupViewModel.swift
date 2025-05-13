@@ -13,12 +13,11 @@ import CoreProfiles
 final class ProfileSetupViewModel: ObservableObject {
     var profile: Profile?
 
-    private let store: ProfilesStore
+    @Inject private var store: ProfilesStore
     private var cancellables = Set<AnyCancellable>()
     
-    init(profile: Profile?, store: ProfilesStore) {
+    init(profile: Profile?) {
         self.profile = profile
-        self.store = store
         store.state
             .receive(on: DispatchQueue.main)
             .sink { [weak self] state in

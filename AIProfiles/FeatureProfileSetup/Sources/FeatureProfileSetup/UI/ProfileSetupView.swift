@@ -113,7 +113,7 @@ public struct ProfileSetupView: View {
             }
         }
         .navigationDestination(isPresented: $showingParameterDetails) {
-            if let index = selectedParameterIndex {
+            if let index = selectedParameterIndex, index < parameters.count {
                 ParameterDetailView(
                     parameter: $parameters[index],
                     onDelete: {
@@ -159,7 +159,7 @@ public struct ProfileSetupView: View {
         }
         .navigationDestination(isPresented: $isChatting) {
             if let profile = viewModel.profile {
-                ChatView(chatViewModel: viewModelProvider.chatViewModel(profile: profile))
+                ChatView(profile: profile)
             }
         }
         .safeAreaInset(edge: .bottom) {
@@ -173,7 +173,7 @@ public struct ProfileSetupView: View {
     
     var aiButton: some View {
         Button {
-            questionnaireViewModel = viewModelProvider.profileQuestionnaireViewModel(purpose: purpose)
+            questionnaireViewModel = ProfileQuestionnaireViewModel(purpose: purpose)
         } label: {
             Image("AIIcon")
                 .resizable()

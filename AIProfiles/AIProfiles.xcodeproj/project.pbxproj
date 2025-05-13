@@ -13,6 +13,7 @@
 		641A3F852DD2891D00E5FF57 /* FeatureChat in Frameworks */ = {isa = PBXBuildFile; productRef = 641A3F842DD2891D00E5FF57 /* FeatureChat */; };
 		641A3F8A2DD318C500E5FF57 /* CoreProfiles in Frameworks */ = {isa = PBXBuildFile; productRef = 641A3F892DD318C500E5FF57 /* CoreProfiles */; };
 		641A3F8D2DD318D000E5FF57 /* FeatureProfileSetup in Frameworks */ = {isa = PBXBuildFile; productRef = 641A3F8C2DD318D000E5FF57 /* FeatureProfileSetup */; };
+		641A3FA22DD3B3DD00E5FF57 /* FeatureProfileList in Frameworks */ = {isa = PBXBuildFile; productRef = 641A3FA12DD3B3DD00E5FF57 /* FeatureProfileList */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +42,8 @@
 		641A3F822DD2859B00E5FF57 /* CoreUtils */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = CoreUtils; sourceTree = "<group>"; };
 		641A3F862DD3150B00E5FF57 /* FeatureProfileSetup */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = FeatureProfileSetup; sourceTree = "<group>"; };
 		641A3F872DD3169600E5FF57 /* CoreProfiles */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = CoreProfiles; sourceTree = "<group>"; };
+		641A3F922DD3AF8C00E5FF57 /* FeatureProfileList */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = FeatureProfileList; sourceTree = "<group>"; };
+		641A3FA32DD3B4DD00E5FF57 /* FeatureSettings */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = FeatureSettings; sourceTree = "<group>"; };
 		645DAAF72DBA792C004FE868 /* AIProfiles.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AIProfiles.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		645DAB0C2DBA792F004FE868 /* AIProfilesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AIProfilesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		645DAB162DBA792F004FE868 /* AIProfilesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AIProfilesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -75,6 +78,7 @@
 				641A3F8D2DD318D000E5FF57 /* FeatureProfileSetup in Frameworks */,
 				641A3F8A2DD318C500E5FF57 /* CoreProfiles in Frameworks */,
 				641A3F852DD2891D00E5FF57 /* FeatureChat in Frameworks */,
+				641A3FA22DD3B3DD00E5FF57 /* FeatureProfileList in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,8 +108,10 @@
 				641A3F5E2DD25B1D00E5FF57 /* CoreProfile */,
 				641A3F7D2DD27FF800E5FF57 /* CoreProfileStorage */,
 				641A3F872DD3169600E5FF57 /* CoreProfiles */,
+				641A3FA32DD3B4DD00E5FF57 /* FeatureSettings */,
 				641A3F812DD2840200E5FF57 /* FeatureChat */,
 				641A3F862DD3150B00E5FF57 /* FeatureProfileSetup */,
+				641A3F922DD3AF8C00E5FF57 /* FeatureProfileList */,
 				645DAAF92DBA792C004FE868 /* AIProfiles */,
 				645DAB0F2DBA792F004FE868 /* AIProfilesTests */,
 				645DAB192DBA792F004FE868 /* AIProfilesUITests */,
@@ -149,6 +155,7 @@
 				641A3F842DD2891D00E5FF57 /* FeatureChat */,
 				641A3F892DD318C500E5FF57 /* CoreProfiles */,
 				641A3F8C2DD318D000E5FF57 /* FeatureProfileSetup */,
+				641A3FA12DD3B3DD00E5FF57 /* FeatureProfileList */,
 			);
 			productName = AIProfiles;
 			productReference = 645DAAF72DBA792C004FE868 /* AIProfiles.app */;
@@ -239,6 +246,7 @@
 				641A3F832DD2891D00E5FF57 /* XCLocalSwiftPackageReference "FeatureChat" */,
 				641A3F882DD318C500E5FF57 /* XCLocalSwiftPackageReference "CoreProfiles" */,
 				641A3F8B2DD318D000E5FF57 /* XCLocalSwiftPackageReference "FeatureProfileSetup" */,
+				641A3FA02DD3B3DD00E5FF57 /* XCLocalSwiftPackageReference "FeatureProfileList" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 645DAAF82DBA792C004FE868 /* Products */;
@@ -631,6 +639,10 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = FeatureProfileSetup;
 		};
+		641A3FA02DD3B3DD00E5FF57 /* XCLocalSwiftPackageReference "FeatureProfileList" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = FeatureProfileList;
+		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -657,6 +669,10 @@
 		641A3F8C2DD318D000E5FF57 /* FeatureProfileSetup */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = FeatureProfileSetup;
+		};
+		641A3FA12DD3B3DD00E5FF57 /* FeatureProfileList */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FeatureProfileList;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
