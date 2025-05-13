@@ -8,8 +8,7 @@
 import CoreData
 import CoreProfile
 
-@preconcurrency
-public class CoreDataService: ProfileRepositoryProtocol {
+public class CoreDataService: ProfileRepositoryProtocol, @unchecked Sendable {
     public static let shared = CoreDataService()
     
     private let container: NSPersistentContainer

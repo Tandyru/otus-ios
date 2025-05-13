@@ -1,12 +1,12 @@
 //
-//  AppReducer.swift
+//  ProfilesReducer.swift
 //  AIProfiles
 //
 //  Created by Andrey Tanakov on 25.04.2025.
 //
 
-final class AppReducer {
-    func reduce(state: AppState, action: Action) -> AppState {
+final class ProfilesReducer {
+    func reduce(state: ProfilesState, action: Action) -> ProfilesState {
         var newState = state
         if let action = action as? ProfileAction {
             switch action {

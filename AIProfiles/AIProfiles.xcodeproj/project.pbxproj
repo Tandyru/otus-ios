@@ -11,6 +11,8 @@
 		641A3F7B2DD2799700E5FF57 /* CoreLLM in Frameworks */ = {isa = PBXBuildFile; productRef = 641A3F7A2DD2799700E5FF57 /* CoreLLM */; };
 		641A3F802DD282A400E5FF57 /* CoreProfileStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 641A3F7F2DD282A400E5FF57 /* CoreProfileStorage */; };
 		641A3F852DD2891D00E5FF57 /* FeatureChat in Frameworks */ = {isa = PBXBuildFile; productRef = 641A3F842DD2891D00E5FF57 /* FeatureChat */; };
+		641A3F8A2DD318C500E5FF57 /* CoreProfiles in Frameworks */ = {isa = PBXBuildFile; productRef = 641A3F892DD318C500E5FF57 /* CoreProfiles */; };
+		641A3F8D2DD318D000E5FF57 /* FeatureProfileSetup in Frameworks */ = {isa = PBXBuildFile; productRef = 641A3F8C2DD318D000E5FF57 /* FeatureProfileSetup */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,6 +39,8 @@
 		641A3F7D2DD27FF800E5FF57 /* CoreProfileStorage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = CoreProfileStorage; sourceTree = "<group>"; };
 		641A3F812DD2840200E5FF57 /* FeatureChat */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = FeatureChat; sourceTree = "<group>"; };
 		641A3F822DD2859B00E5FF57 /* CoreUtils */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = CoreUtils; sourceTree = "<group>"; };
+		641A3F862DD3150B00E5FF57 /* FeatureProfileSetup */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = FeatureProfileSetup; sourceTree = "<group>"; };
+		641A3F872DD3169600E5FF57 /* CoreProfiles */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = CoreProfiles; sourceTree = "<group>"; };
 		645DAAF72DBA792C004FE868 /* AIProfiles.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AIProfiles.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		645DAB0C2DBA792F004FE868 /* AIProfilesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AIProfilesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		645DAB162DBA792F004FE868 /* AIProfilesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AIProfilesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -68,6 +72,8 @@
 				641A3F802DD282A400E5FF57 /* CoreProfileStorage in Frameworks */,
 				641A3F772DD25CBC00E5FF57 /* CoreProfile in Frameworks */,
 				641A3F7B2DD2799700E5FF57 /* CoreLLM in Frameworks */,
+				641A3F8D2DD318D000E5FF57 /* FeatureProfileSetup in Frameworks */,
+				641A3F8A2DD318C500E5FF57 /* CoreProfiles in Frameworks */,
 				641A3F852DD2891D00E5FF57 /* FeatureChat in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -92,6 +98,8 @@
 		645DAAEE2DBA792C004FE868 = {
 			isa = PBXGroup;
 			children = (
+				641A3F872DD3169600E5FF57 /* CoreProfiles */,
+				641A3F862DD3150B00E5FF57 /* FeatureProfileSetup */,
 				641A3F822DD2859B00E5FF57 /* CoreUtils */,
 				641A3F812DD2840200E5FF57 /* FeatureChat */,
 				641A3F7D2DD27FF800E5FF57 /* CoreProfileStorage */,
@@ -139,6 +147,8 @@
 				641A3F7A2DD2799700E5FF57 /* CoreLLM */,
 				641A3F7F2DD282A400E5FF57 /* CoreProfileStorage */,
 				641A3F842DD2891D00E5FF57 /* FeatureChat */,
+				641A3F892DD318C500E5FF57 /* CoreProfiles */,
+				641A3F8C2DD318D000E5FF57 /* FeatureProfileSetup */,
 			);
 			productName = AIProfiles;
 			productReference = 645DAAF72DBA792C004FE868 /* AIProfiles.app */;
@@ -227,6 +237,8 @@
 				641A3F792DD2799700E5FF57 /* XCLocalSwiftPackageReference "CoreLLM" */,
 				641A3F7E2DD282A400E5FF57 /* XCLocalSwiftPackageReference "CoreProfileStorage" */,
 				641A3F832DD2891D00E5FF57 /* XCLocalSwiftPackageReference "FeatureChat" */,
+				641A3F882DD318C500E5FF57 /* XCLocalSwiftPackageReference "CoreProfiles" */,
+				641A3F8B2DD318D000E5FF57 /* XCLocalSwiftPackageReference "FeatureProfileSetup" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 645DAAF82DBA792C004FE868 /* Products */;
@@ -611,6 +623,14 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = FeatureChat;
 		};
+		641A3F882DD318C500E5FF57 /* XCLocalSwiftPackageReference "CoreProfiles" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = CoreProfiles;
+		};
+		641A3F8B2DD318D000E5FF57 /* XCLocalSwiftPackageReference "FeatureProfileSetup" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = FeatureProfileSetup;
+		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -629,6 +649,14 @@
 		641A3F842DD2891D00E5FF57 /* FeatureChat */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = FeatureChat;
+		};
+		641A3F892DD318C500E5FF57 /* CoreProfiles */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoreProfiles;
+		};
+		641A3F8C2DD318D000E5FF57 /* FeatureProfileSetup */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FeatureProfileSetup;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

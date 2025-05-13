@@ -7,7 +7,7 @@
 
 import CoreProfile
 
-enum ProfileAction: Action {
+public enum ProfileAction: Action {
     case fetchProfiles
     case saveProfile(Profile)
     case deleteProfile(Profile)

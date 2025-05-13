@@ -8,6 +8,7 @@
 import SwiftUI
 import CoreProfile
 import FeatureChat
+import FeatureProfileSetup
 
 struct ProfileListView: View {
     @StateObject private var viewModel: ProfileListViewModel
@@ -16,7 +17,8 @@ struct ProfileListView: View {
     @State private var selectedChatProfile: Profile? = nil
     @State private var selectedSettings = false
     @Environment(\.viewModelProvider) var viewModelProvider
-    
+    @Environment(\.profileSetupViewModelProvider) var profileSetupViewModelProvider
+
     init(viewModel: ProfileListViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel)
     }
@@ -45,7 +47,7 @@ struct ProfileListView: View {
                     }
                     .navigationTitle("Мои профили")
                     .navigationDestination(item: $selectedProfile) { profile in
-                        ProfileSetupView(viewModelProvider: viewModelProvider, existingProfile: profile)
+                        ProfileSetupView(viewModelProvider: profileSetupViewModelProvider, existingProfile: profile)
                     }
                     .navigationDestination(item: $selectedChatProfile) { profile in
                         ChatView(chatViewModel: viewModelProvider.chatViewModel(profile: profile))
@@ -65,7 +67,7 @@ struct ProfileListView: View {
                 Spacer().frame(height: 80)
             }
             .overlay(
-                NavigationLink(destination: ProfileSetupView(viewModelProvider: viewModelProvider)) {
+                NavigationLink(destination: ProfileSetupView(viewModelProvider: profileSetupViewModelProvider)) {
                     Image(systemName: "plus")
                         .font(.system(size: 24, weight: .bold))
                         .foregroundColor(.white)

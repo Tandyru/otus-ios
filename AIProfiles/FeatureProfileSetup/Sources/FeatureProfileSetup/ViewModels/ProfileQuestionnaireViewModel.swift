@@ -9,7 +9,8 @@ import Foundation
 import Combine
 import CoreProfile
 
-class ProfileQuestionnaireViewModel: ObservableObject, Equatable {
+@preconcurrency
+final class ProfileQuestionnaireViewModel: ObservableObject, Equatable {
     @Published var currentQuestion: String?
     @Published var answer: String = ""
     @Published var parameters: [PreferenceParameterType] = []
@@ -18,16 +19,16 @@ class ProfileQuestionnaireViewModel: ObservableObject, Equatable {
     @Published var isLoading = false
     @Published var canFinishEarly: Bool = false
     
-    @Inject private var llmService: LLMQuestionnaireService
-    
+    private let llmService: LLMQuestionnaireService
     private(set) var currentParamType: PreferenceType?
     private(set) var currentParamOptions: [String]?
     private let profilePurpose: String
     private var cancellables = Set<AnyCancellable>()
     private let id = UUID()
     
-    init(purpose: String) {
+    init(purpose: String, llmService: LLMQuestionnaireService) {
         self.profilePurpose = purpose
+        self.llmService = llmService
     }
     
     static func == (lhs: ProfileQuestionnaireViewModel, rhs: ProfileQuestionnaireViewModel) -> Bool {

@@ -9,8 +9,12 @@ import Foundation
 import CoreProfile
 import CoreLLM
 
-class LLMQuestionnaireService {
-    @Inject private var llmService: LLMServiceProtocol
+final class LLMQuestionnaireService {
+    private let llmService: LLMServiceProtocol
+    
+    init(llmService: LLMServiceProtocol) {
+        self.llmService = llmService
+    }
     
     func generateNextQuestion(profilePurpose: String, existingParams: [PreferenceParameterType]) async throws -> (question: String, paramType: PreferenceType?, [String]?) {
         let context = """

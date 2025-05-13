@@ -5,4 +5,4 @@
 //  Created by Andrey Tanakov on 25.04.2025.
 //
 
-typealias AppStore = Store<AppState, Action>
+public typealias ProfilesStore = Store<ProfilesState, Action>

@@ -8,13 +8,13 @@
 import Foundation
 import Combine
 
-public final class Store<State, Action> {
+public final class Store<State, Action>: @unchecked Sendable {
 
     public var state: AnyPublisher<State, Never> {
         stateSubject.eraseToAnyPublisher()
     }
     
-    public typealias Middleware = (_ action: Action, _ state: State, _ dispatch: @escaping (Action) -> State?) -> Void
+    public typealias Middleware = (_ action: Action, _ state: State, _ dispatch: @escaping @MainActor (Action) -> State?) -> Void
     public typealias Reducer = (_ state: State, _ action: Action) -> State
     
     private let stateSubject: CurrentValueSubject<State, Never>

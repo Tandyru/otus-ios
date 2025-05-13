@@ -9,7 +9,7 @@ import SwiftUI
 import CoreProfile
 import FeatureChat
 
-struct ProfileSetupView: View {
+public struct ProfileSetupView: View {
     @StateObject var viewModel: ProfileSetupViewModel
     @Environment(\.dismiss) private var dismiss
     @State private var title: String
@@ -29,7 +29,7 @@ struct ProfileSetupView: View {
         viewModel.profile != nil
     }
 
-    init(viewModelProvider: ViewModelProvider, existingProfile: Profile? = nil) {
+    public init(viewModelProvider: ViewModelProvider, existingProfile: Profile? = nil) {
         self.viewModelProvider = viewModelProvider
         _viewModel = StateObject(wrappedValue: viewModelProvider.profileSetupViewModel(profile: existingProfile))
         _title = State(initialValue: existingProfile?.title ?? "")
@@ -37,7 +37,7 @@ struct ProfileSetupView: View {
         _parameters = State(initialValue: existingProfile?.parameters ?? [])
     }
     
-    var body: some View {
+    public var body: some View {
         Form {
             Section {
                 TextField("Название профиля", text: $title)
@@ -173,7 +173,7 @@ struct ProfileSetupView: View {
     
     var aiButton: some View {
         Button {
-            questionnaireViewModel = ProfileQuestionnaireViewModel(purpose: purpose)
+            questionnaireViewModel = viewModelProvider.profileQuestionnaireViewModel(purpose: purpose)
         } label: {
             Image("AIIcon")
                 .resizable()

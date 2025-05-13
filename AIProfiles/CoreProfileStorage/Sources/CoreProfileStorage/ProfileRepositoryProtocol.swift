@@ -7,7 +7,7 @@
 
 import CoreProfile
 
-public protocol ProfileRepositoryProtocol {
+public protocol ProfileRepositoryProtocol: Sendable {
     func saveProfile(_ profile: Profile) async throws
     func fetchProfiles() async throws -> [Profile]
     func deleteProfile(_ profile: Profile) async throws

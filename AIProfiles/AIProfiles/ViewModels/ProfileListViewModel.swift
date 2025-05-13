@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 import CoreProfile
+import CoreProfiles
 
 class ProfileListViewModel: ObservableObject {
 
@@ -15,7 +16,7 @@ class ProfileListViewModel: ObservableObject {
     @Published var searchText: String = ""
     @Published var error: String? = nil
     
-    @Inject private var store: AppStore
+    @Inject private var store: ProfilesStore
     private var cancellables = Set<AnyCancellable>()
     private var allProfiles: [Profile] = []
     
