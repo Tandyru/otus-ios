@@ -42,6 +42,9 @@ public struct ChatView: View {
                 TextField("Type a message...", text: $viewModel.inputText)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .disableAutocorrection(true)
+                    .onSubmit {
+                        viewModel.sendMessage()
+                    }
                 
                 Button {
                     viewModel.sendMessage()

@@ -17,6 +17,7 @@ struct MessageView: View {
             }
             
             Text(message.attributedText)
+                .textSelection(.enabled)
                 .padding()
                 .background(message.isUser ? Color.blue : Color.gray.opacity(0.2))
                 .foregroundColor(message.isUser ? Color.white : .primary)
@@ -31,9 +32,11 @@ struct MessageView: View {
 
 fileprivate extension ChatMessage {
     var attributedText: AttributedString {
-        if let attributedText = try? AttributedString(markdown: text) {
+        let options = AttributedString.MarkdownParsingOptions(interpretedSyntax: .inlineOnlyPreservingWhitespace)
+        if let attributedText = try? AttributedString(markdown: text, options: options) {
             return attributedText
         }
         return AttributedString(text)
     }
 }
+
