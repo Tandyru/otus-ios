@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "FeatureProfileList",
+    name: "CoreRouting",
     platforms: [
         .iOS(.v17),
         .macOS(.v10_13),
@@ -14,28 +14,17 @@ let package = Package(
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "FeatureProfileList",
-            targets: ["FeatureProfileList"]),
-    ],
-    dependencies: [
-        .package(path: "../CoreProfile"),
-        .package(path: "../CoreRouting"),
-        .package(path: "../FeatureChat"),
-        .package(path: "../FeatureProfileSetup"),
+            name: "CoreRouting",
+            targets: ["CoreRouting"]),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "FeatureProfileList",
-            dependencies: ["CoreProfile", "CoreRouting", "FeatureChat", "FeatureProfileSetup"],
-            swiftSettings: [
-                .unsafeFlags(["-Xfrontend", "-strict-concurrency=none"])
-            ]
-        ),
+            name: "CoreRouting"),
         .testTarget(
-            name: "FeatureProfileListTests",
-            dependencies: ["FeatureProfileList"]
+            name: "CoreRoutingTests",
+            dependencies: ["CoreRouting"]
         ),
     ]
 )

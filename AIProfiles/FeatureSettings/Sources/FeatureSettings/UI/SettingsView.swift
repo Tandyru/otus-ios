@@ -9,7 +9,7 @@ import SwiftUI
 
 public struct SettingsView: View {
     @StateObject var viewModel: SettingsViewModel
-    @Environment(\.dismiss) private var dismiss
+    //@Environment(\.dismiss) private var dismiss
     @State private var apiKeyInput: String = ""
     @State private var debounceTask: Task<Void, Never>?
     private let debounceDelay: UInt64 = 500_000_000 // 0.5 секунды
@@ -19,21 +19,19 @@ public struct SettingsView: View {
     }
     
     public var body: some View {
-        NavigationStack {
-            Form {
-                Section("OpenRouter API Key") {
-                    SecureField("Введите ваш API ключ", text: $apiKeyInput)
-                        .disableAutocorrection(true)
-                        .autocapitalization(.none)
-                }
+        Form {
+            Section("OpenRouter API Key") {
+                SecureField("Введите ваш API ключ", text: $apiKeyInput)
+                    .disableAutocorrection(true)
+                    .autocapitalization(.none)
             }
-            .navigationTitle("Настройки")
-            .onChange(of: apiKeyInput) { _, newValue in
-                handleKeyChange(newValue: newValue)
-            }
-            .onAppear {
-                loadSavedKey()
-            }
+        }
+        .navigationTitle("Настройки")
+        .onChange(of: apiKeyInput) { _, newValue in
+            handleKeyChange(newValue: newValue)
+        }
+        .onAppear {
+            loadSavedKey()
         }
     }
     

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreRouting
 
 struct RouterView<Content: View>: View {
     @inlinable
@@ -16,14 +17,14 @@ struct RouterView<Content: View>: View {
     var body: some View {
         NavigationStack(path: $router.path) {
             content
-                .navigationDestination(for: Router.Route.self) {
+                .navigationDestination(for: Route.self) {
                     router.view(for: $0)
-                        .navigationBarBackButtonHidden()
+//                        .navigationBarBackButtonHidden()
                 }
         }
-        .environmentObject(router)
+        .environmentObject(router as Router)
     }
 
-    @StateObject private var router = Router()
+    @StateObject private var router = RouterImpl()
     private let content: Content
 }

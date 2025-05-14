@@ -14,6 +14,8 @@
 		641A3F8A2DD318C500E5FF57 /* CoreProfiles in Frameworks */ = {isa = PBXBuildFile; productRef = 641A3F892DD318C500E5FF57 /* CoreProfiles */; };
 		641A3F8D2DD318D000E5FF57 /* FeatureProfileSetup in Frameworks */ = {isa = PBXBuildFile; productRef = 641A3F8C2DD318D000E5FF57 /* FeatureProfileSetup */; };
 		641A3FA22DD3B3DD00E5FF57 /* FeatureProfileList in Frameworks */ = {isa = PBXBuildFile; productRef = 641A3FA12DD3B3DD00E5FF57 /* FeatureProfileList */; };
+		641A3FA92DD465AC00E5FF57 /* CoreRouting in Frameworks */ = {isa = PBXBuildFile; productRef = 641A3FA82DD465AC00E5FF57 /* CoreRouting */; };
+		641A3FAC2DD46FE600E5FF57 /* FeatureSettings in Frameworks */ = {isa = PBXBuildFile; productRef = 641A3FAB2DD46FE600E5FF57 /* FeatureSettings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +46,7 @@
 		641A3F872DD3169600E5FF57 /* CoreProfiles */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = CoreProfiles; sourceTree = "<group>"; };
 		641A3F922DD3AF8C00E5FF57 /* FeatureProfileList */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = FeatureProfileList; sourceTree = "<group>"; };
 		641A3FA32DD3B4DD00E5FF57 /* FeatureSettings */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = FeatureSettings; sourceTree = "<group>"; };
+		641A3FA62DD4654100E5FF57 /* CoreRouting */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = CoreRouting; sourceTree = "<group>"; };
 		645DAAF72DBA792C004FE868 /* AIProfiles.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AIProfiles.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		645DAB0C2DBA792F004FE868 /* AIProfilesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AIProfilesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		645DAB162DBA792F004FE868 /* AIProfilesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AIProfilesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -74,8 +77,10 @@
 			files = (
 				641A3F802DD282A400E5FF57 /* CoreProfileStorage in Frameworks */,
 				641A3F772DD25CBC00E5FF57 /* CoreProfile in Frameworks */,
+				641A3FAC2DD46FE600E5FF57 /* FeatureSettings in Frameworks */,
 				641A3F7B2DD2799700E5FF57 /* CoreLLM in Frameworks */,
 				641A3F8D2DD318D000E5FF57 /* FeatureProfileSetup in Frameworks */,
+				641A3FA92DD465AC00E5FF57 /* CoreRouting in Frameworks */,
 				641A3F8A2DD318C500E5FF57 /* CoreProfiles in Frameworks */,
 				641A3F852DD2891D00E5FF57 /* FeatureChat in Frameworks */,
 				641A3FA22DD3B3DD00E5FF57 /* FeatureProfileList in Frameworks */,
@@ -102,6 +107,7 @@
 		645DAAEE2DBA792C004FE868 = {
 			isa = PBXGroup;
 			children = (
+				641A3FA62DD4654100E5FF57 /* CoreRouting */,
 				641A3F822DD2859B00E5FF57 /* CoreUtils */,
 				641A3F7C2DD27A9F00E5FF57 /* CoreKeychain */,
 				641A3F782DD278D000E5FF57 /* CoreLLM */,
@@ -156,6 +162,8 @@
 				641A3F892DD318C500E5FF57 /* CoreProfiles */,
 				641A3F8C2DD318D000E5FF57 /* FeatureProfileSetup */,
 				641A3FA12DD3B3DD00E5FF57 /* FeatureProfileList */,
+				641A3FA82DD465AC00E5FF57 /* CoreRouting */,
+				641A3FAB2DD46FE600E5FF57 /* FeatureSettings */,
 			);
 			productName = AIProfiles;
 			productReference = 645DAAF72DBA792C004FE868 /* AIProfiles.app */;
@@ -247,6 +255,8 @@
 				641A3F882DD318C500E5FF57 /* XCLocalSwiftPackageReference "CoreProfiles" */,
 				641A3F8B2DD318D000E5FF57 /* XCLocalSwiftPackageReference "FeatureProfileSetup" */,
 				641A3FA02DD3B3DD00E5FF57 /* XCLocalSwiftPackageReference "FeatureProfileList" */,
+				641A3FA72DD465AC00E5FF57 /* XCLocalSwiftPackageReference "CoreRouting" */,
+				641A3FAA2DD46FE600E5FF57 /* XCLocalSwiftPackageReference "FeatureSettings" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 645DAAF82DBA792C004FE868 /* Products */;
@@ -643,6 +653,14 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = FeatureProfileList;
 		};
+		641A3FA72DD465AC00E5FF57 /* XCLocalSwiftPackageReference "CoreRouting" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = CoreRouting;
+		};
+		641A3FAA2DD46FE600E5FF57 /* XCLocalSwiftPackageReference "FeatureSettings" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = FeatureSettings;
+		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -673,6 +691,14 @@
 		641A3FA12DD3B3DD00E5FF57 /* FeatureProfileList */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = FeatureProfileList;
+		};
+		641A3FA82DD465AC00E5FF57 /* CoreRouting */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoreRouting;
+		};
+		641A3FAB2DD46FE600E5FF57 /* FeatureSettings */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FeatureSettings;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
